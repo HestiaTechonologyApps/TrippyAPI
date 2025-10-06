@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace Trippy.Domain.DTO
 {
-    public class RequestOtpDto {
-        public string MobileNumber { get; set; }
-    }
-    public class VerifyOtpDto { 
-        public string MobileNumber { get; set; } public string OTP { get; set; }
-    }
+  
     public class LookUpDTO
     {
         public int Id { get; set; }

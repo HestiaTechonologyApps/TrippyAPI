@@ -16,4 +16,6 @@ namespace Trippy.Domain.Entities
         public DateTime ChangedAt { get; set; }
         public string ChangeDetails { get; set; }
     }
+
+  
 }

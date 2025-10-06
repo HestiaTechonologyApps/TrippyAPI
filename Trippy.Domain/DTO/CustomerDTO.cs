@@ -1,12 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Trippy.Domain.Entities
+﻿namespace Trippy.Domain.DTO
 {
-    public class Customer
+    public class CustomerDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int CustomerId { get; set; } // Primary key
 
         public string CustomerName { get; set; }
@@ -14,10 +10,7 @@ namespace Trippy.Domain.Entities
         public string CustomerEmail { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        public List<AuditLogDTO> AuditTrails { get; set; }
     }
-
-   
-
-
-
 }

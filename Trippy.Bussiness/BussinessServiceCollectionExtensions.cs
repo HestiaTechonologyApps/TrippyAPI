@@ -16,11 +16,11 @@ namespace Trippy.Bussiness
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
 
-                        services.AddScoped<IJwtService, JwtService>();            
+            services.AddScoped<IJwtService, JwtService>();            
            
             services.AddScoped<IAuditLogService, AuditLogService>();
            
-            services.AddScoped<IConfigurationServices, ConfigurationServices>();
+           
            
             services.AddScoped<IExceptionLogService, ExceptionLogService>();
           
@@ -30,8 +30,6 @@ namespace Trippy.Bussiness
             services.AddScoped<ICompanyBranchService, CompanyBranchService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryTaxService, CategoryTaxService>();
-            services.AddScoped<IAppNotificationService, AppNotificationService>();
-
 
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));

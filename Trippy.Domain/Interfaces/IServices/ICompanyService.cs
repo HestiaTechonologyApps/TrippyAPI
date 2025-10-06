@@ -58,14 +58,5 @@ namespace Trippy.Domain.Interfaces.IServices
         
     }
 
-    public interface IAppNotificationService
-    {
-
-        Task<List<AppNotification>> GetAllAsync();
-        Task<AppNotification?> GetByIdAsync(int id);
-        Task<AppNotification> CreateAsync(AppNotification coupon);
-        Task<bool> UpdateAsync(AppNotification coupon);
-        Task<bool> DeleteAsync(int id);
-
-    }
+  
 }

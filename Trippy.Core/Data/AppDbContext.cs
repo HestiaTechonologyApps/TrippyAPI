@@ -32,8 +32,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<InvoiceDetailTax> InvoiceDetailTaxes { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
     
-        public DbSet<AppNotification> AppNotifications { get; set; }
-
+     
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

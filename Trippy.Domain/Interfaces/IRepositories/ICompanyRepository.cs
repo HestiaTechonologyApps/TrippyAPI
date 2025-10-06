@@ -33,7 +33,5 @@ namespace Trippy.Domain.Interfaces.IRepositories
     {
     }
 
-    public interface IAppNotificationRepository : IGenericRepository<AppNotification>
-    {
-    }
+  
 }

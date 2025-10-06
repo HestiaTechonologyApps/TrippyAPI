@@ -75,13 +75,6 @@ namespace Trippy.InfraCore.Repositories
             _context = context;
         }
     }
-    public class AppNotificationRepository : GenericRepository<AppNotification>, IAppNotificationRepository
-    {
-        private readonly AppDbContext _context;
-        public AppNotificationRepository(AppDbContext context) : base(context)
-        {
-            _context = context;
-        }
-    }
+  
     
 }

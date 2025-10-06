@@ -30,7 +30,7 @@ namespace Trippy.InfraCore
             services.AddScoped<IExceptionLogRepository , ExceptionLogRepository>();
           
             services.AddScoped<IFinancialYearRepository  , FinancialYearRepository>();
-            services.AddScoped<IAppNotificationRepository   , AppNotificationRepository>();
+           
            
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
