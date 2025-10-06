@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trippy.InfraCore.Data;
 
@@ -11,9 +12,11 @@ using Trippy.InfraCore.Data;
 namespace TRIPPY.CORE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251006090449_addedriveragain")]
+    partial class addedriveragain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,7 +274,7 @@ namespace TRIPPY.CORE.Migrations
                     b.Property<DateTime?>("DOB")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DriverName")
+                    b.Property<string>("Deivername")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

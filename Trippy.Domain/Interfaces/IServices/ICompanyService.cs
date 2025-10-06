@@ -57,6 +57,4 @@ namespace Trippy.Domain.Interfaces.IServices
             Task<bool> DeleteAsync(int id);
         
     }
-
-  
 }

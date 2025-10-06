@@ -11,6 +11,7 @@ using Trippy.Domain.Interfaces.IServices;
 using Trippy.InfraCore.Data;
 using Trippy.InfraCore.External;
 using Trippy.InfraCore.Repositories;
+using TRIPPY.DOMAIN.Interfaces.IRepositories;
 
 namespace Trippy.InfraCore
 {
@@ -30,6 +31,7 @@ namespace Trippy.InfraCore
             services.AddScoped<IExceptionLogRepository , ExceptionLogRepository>();
           
             services.AddScoped<IFinancialYearRepository  , FinancialYearRepository>();
+            services.AddScoped<IDriverRepository  , DriverRepository>();
            
            
             services.AddScoped<ICompanyRepository, CompanyRepository>();

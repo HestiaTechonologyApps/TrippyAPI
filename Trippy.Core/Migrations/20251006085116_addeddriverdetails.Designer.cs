@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Trippy.InfraCore.Data;
 
@@ -11,9 +12,11 @@ using Trippy.InfraCore.Data;
 namespace TRIPPY.CORE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251006085116_addeddriverdetails")]
+    partial class addeddriverdetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,48 +257,6 @@ namespace TRIPPY.CORE.Migrations
                     b.HasKey("CompanyBranchId");
 
                     b.ToTable("CompanyBranches");
-                });
-
-            modelBuilder.Entity("Trippy.Domain.Entities.Driver", b =>
-                {
-                    b.Property<int>("DriverId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DriverId"));
-
-                    b.Property<string>("ContactNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DOB")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DriverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageSrc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRented")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("License")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DriverId");
-
-                    b.ToTable("Drivers");
                 });
 
             modelBuilder.Entity("Trippy.Domain.Entities.ExceptionLog", b =>

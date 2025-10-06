@@ -20,6 +20,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<CompanyBranch> CompanyBranches { get; set; }
 
         public DbSet<Category> Categorys { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
         public DbSet<CategoryTax> CategoryTaxes { get; set; }
         public DbSet<FinancialYear> FinancialYears { get; set; }
 

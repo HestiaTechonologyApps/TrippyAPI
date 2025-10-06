@@ -75,6 +75,5 @@ namespace Trippy.InfraCore.Repositories
             _context = context;
         }
     }
-  
-    
+
 }
