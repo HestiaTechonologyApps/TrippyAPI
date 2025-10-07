@@ -18,22 +18,31 @@ jobs:
         
     - name: Restore, Build & Publish
       run: |
-        dotnet restore
-        dotnet build --configuration Release --no-restore
-        dotnet publish TrippyAPI/TrippyAPI.csproj --configuration Release --output ./publish --no-build
+        # Find and use the solution file
+        SOLUTION_FILE=$(find . -maxdepth 1 -name "*.sln" | head -1)
+        echo "Using solution file: $SOLUTION_FILE"
+        
+        # Restore all projects using the solution file
+        dotnet restore "$SOLUTION_FILE"
+        
+        # Build the entire solution
+        dotnet build "$SOLUTION_FILE" --configuration Release --no-restore
+        
+        # Publish the API project (adjust path if needed - case sensitive!)
+        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish
         
         echo "Files ready for deployment:"
         find ./publish -type f | wc -l
         echo "Key files:"
         find ./publish -name "*.dll" -o -name "*.json" -o -name "*.config" -o -name "web.config" | head -10
-
+    
     # 1️⃣ Upload app_offline.htm to stop IIS and unlock DLLs
     - name: Put app_offline.htm (Maintenance Mode)
       run: |
         echo "<h1>Maintenance in progress...</h1>" > app_offline.htm
         curl -T app_offline.htm --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
         ftp://win8231.site4now.net/trippyapi/app_offline.htm
-
+    
     # 2️⃣ Deploy all files while IIS is stopped
     - name: Deploy to SmarterASP via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
