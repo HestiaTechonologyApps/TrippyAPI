@@ -21,6 +21,7 @@ namespace Trippy.InfraCore.Data
 
         public DbSet<Category> Categorys { get; set; }
         public DbSet<Driver> Drivers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<CategoryTax> CategoryTaxes { get; set; }
         public DbSet<FinancialYear> FinancialYears { get; set; }
 

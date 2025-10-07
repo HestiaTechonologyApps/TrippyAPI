@@ -9,6 +9,7 @@ using Trippy.Bussiness.Services;
 using Trippy.Domain.Configurations;
 using Trippy.Domain.Interfaces.IServices;
 using TRIPPY.BUSSINESS.Services;
+using TRIPPY.DOMAIN.Interfaces.IServices;
 
 namespace Trippy.Bussiness
 {
@@ -32,7 +33,7 @@ namespace Trippy.Bussiness
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryTaxService, CategoryTaxService>();
             services.AddScoped<IDriverService, DriverService>();
-
+            services.AddScoped<ICustomerService, CustomerService>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));
 
