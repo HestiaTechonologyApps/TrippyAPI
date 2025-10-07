@@ -1,0 +1,67 @@
+name: Deploy to SmarterASP via FTP (Working Solution)
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Restore, Build & Publish
+      run: |
+        dotnet restore
+        dotnet build --configuration Release --no-restore
+        dotnet publish TrippyAPI/TrippyAPI.csproj --configuration Release --output ./publish --no-build
+        
+        echo "Files ready for deployment:"
+        find ./publish -type f | wc -l
+        echo "Key files:"
+        find ./publish -name "*.dll" -o -name "*.json" -o -name "*.config" -o -name "web.config" | head -10
+
+    # 1️⃣ Upload app_offline.htm to stop IIS and unlock DLLs
+    - name: Put app_offline.htm (Maintenance Mode)
+      run: |
+        echo "<h1>Maintenance in progress...</h1>" > app_offline.htm
+        curl -T app_offline.htm --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+        ftp://win8231.site4now.net/trippyapi/app_offline.htm
+
+    # 2️⃣ Deploy all files while IIS is stopped
+    - name: Deploy to SmarterASP via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: win8231.site4now.net
+        username: ${{ secrets.WEB_DEPLOY_USERNAME }}
+        password: ${{ secrets.WEB_DEPLOY_PASSWORD }}
+        local-dir: ./publish/
+        server-dir: /trippyapi/
+        port: 21
+        protocol: ftp
+        timeout: 600000
+        log-level: verbose
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/obj/**
+          **/*.pdb
+          **/ref/**
+    
+    # 3️⃣ Remove app_offline.htm so IIS restarts with new files
+    - name: Delete app_offline.htm
+      run: |
+        curl -v --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+        ftp://win8231.site4now.net/trippyapi/app_offline.htm -Q "-DELE /trippyapi/app_offline.htm"
+    
+    # 4️⃣ Simple confirmation output
+    - name: Verify Deployment
+      run: |
+        echo "✅ Deployment completed! Your API should be available at:"
+        echo "🌐 http://sreenathganga-001-site13.jtempurl.com/"
