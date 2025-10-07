@@ -31,6 +31,7 @@ namespace Trippy.InfraCore.External
             response.StatusCode = (int)statuscode;
 
 
+
         }
 
         public void CustomErrorReponse(ref CustomApiResponse response, int? statuscode = 0,string?message="")
