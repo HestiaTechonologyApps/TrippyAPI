@@ -32,7 +32,7 @@ jobs:
         
         # Build in dependency order using actual GitHub file names
         echo "✅ Building Domain (base layer)..."
-        dotnet build Trippy.Domain/TRIPPY.DOMAIN.csproj --configuration Release
+        dotnet build Trippy.Domain/Trippy.Domain.csproj --configuration Release
         
         echo "✅ Building Core (infrastructure layer)..."  
         dotnet build Trippy.Core/TRIPPY.CORE.csproj --configuration Release
