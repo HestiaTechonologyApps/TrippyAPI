@@ -25,11 +25,23 @@ jobs:
         
     - name: Restore, Build & Publish
       run: |
-        echo "Building projects with current GitHub file names..."
+        echo "Building projects in dependency order with correct file names..."
         
-        # Use the actual ALL CAPS file names that exist on GitHub
-        echo "✅ Publishing API project..."
-        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish
+        # Remove the problematic solution file to avoid conflicts
+        rm -f Trippy.sln
+        
+        # Build in dependency order using actual GitHub file names
+        echo "✅ Building Domain (base layer)..."
+        dotnet build Trippy.Domain/TRIPPY.DOMAIN.csproj --configuration Release
+        
+        echo "✅ Building Core (infrastructure layer)..."  
+        dotnet build Trippy.Core/TRIPPY.CORE.csproj --configuration Release
+        
+        echo "✅ Building Business (business logic layer)..."
+        dotnet build Trippy.Bussiness/TRIPPY.BUSSINESS.csproj --configuration Release
+        
+        echo "✅ Publishing API (presentation layer)..."
+        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish --no-build
         
         echo "📁 Deployment files ready:"
         find ./publish -type f | wc -l
