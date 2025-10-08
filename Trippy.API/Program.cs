@@ -7,7 +7,7 @@ using Trippy.Bussiness;
 using Trippy.Domain.Configurations;
 using Microsoft.Extensions.Configuration;
 using Trippy.InfraCore;
-using Serilog;
+using Trippy.InfraCore;
 using System.Reflection;
 
 

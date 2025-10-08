@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trippy.Bussiness.Services;
+using Trippy.BUSSINESS.Services;
 using Trippy.Domain.Configurations;
 using Trippy.Domain.Interfaces.IServices;
-using Trippy.BUSSINESS.Services;
-using Trippy.Domain.Interfaces.IServices;
+
 
 namespace Trippy.Bussiness
 {

@@ -12,13 +12,13 @@ using Trippy.InfraCore.Data;
 using Trippy.InfraCore.External;
 using Trippy.InfraCore.Repositories;
 using Trippy.CORE.Repositories;
-using Trippy.Domain.Interfaces.IRepositories;
+
 
 namespace Trippy.InfraCore
 {
     public static class InfraCoreServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfraCoreServiceCollectionExtensions(this IServiceCollection services, IConfiguration configuration)
+             public static IServiceCollection AddInfraCoreServiceCollectionExtensions(this IServiceCollection services, IConfiguration configuration)
         {
        
             services.AddDbContext<AppDbContext>(options =>

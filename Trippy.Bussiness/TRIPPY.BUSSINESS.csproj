@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trippy.Core\Trippy.CORE.csproj" />
     <ProjectReference Include="..\Trippy.Domain\Trippy.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
