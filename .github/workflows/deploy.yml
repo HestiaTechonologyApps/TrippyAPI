@@ -25,32 +25,16 @@ jobs:
         
     - name: Restore, Build & Publish
       run: |
-        # Remove problematic solution file to avoid conflicts
-        rm -f Trippy.sln
+        echo "Building projects with current GitHub file names..."
         
-        echo "Building projects individually..."
-        
-        # Build each project directly using actual file names
-        echo "✅ Restoring Trippy.API..."
-        dotnet restore Trippy.API/TRIPPY.API.csproj
-        
-        echo "✅ Restoring Trippy.Domain..."
-        dotnet restore Trippy.Domain/TRIPPY.DOMAIN.csproj
-        
-        echo "✅ Restoring Trippy.Core..."
-        dotnet restore Trippy.Core/TRIPPY.CORE.csproj
-        
-        echo "✅ Restoring Trippy.Bussiness..."
-        dotnet restore Trippy.Bussiness/TRIPPY.BUSSINESS.csproj
-        
-        echo "✅ Building all projects..."
-        dotnet build Trippy.Domain/TRIPPY.DOMAIN.csproj --configuration Release --no-restore
-        dotnet build Trippy.Core/TRIPPY.CORE.csproj --configuration Release --no-restore
-        dotnet build Trippy.Bussiness/TRIPPY.BUSSINESS.csproj --configuration Release --no-restore
-        dotnet build Trippy.API/TRIPPY.API.csproj --configuration Release --no-restore
-        
+        # Use the actual ALL CAPS file names that exist on GitHub
         echo "✅ Publishing API project..."
-        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish --no-build
+        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish
+        
+        echo "📁 Deployment files ready:"
+        find ./publish -type f | wc -l
+        echo "🔍 Key files:"
+        find ./publish -name "*.dll" -o -name "*.json" -o -name "*.config" -o -name "web.config" | head -10
         
         echo "Files ready for deployment:"
         find ./publish -type f | wc -l
