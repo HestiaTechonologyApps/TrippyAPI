@@ -1,9 +1,7 @@
 name: Deploy to SmarterASP via FTP (Working Solution)
-
 on:
   push:
     branches: [ main, master ]
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,20 +14,40 @@ jobs:
       with:
         dotnet-version: '8.0.x'
         
+    - name: Debug Repository Structure
+      run: |
+        echo "Repository root:"
+        ls -la
+        echo "Looking for .csproj files:"
+        find . -name "*.csproj" -type f
+        echo "Looking for solution files:"
+        find . -name "*.sln" -type f
+        
     - name: Restore, Build & Publish
       run: |
-        # Find and use the solution file
-        SOLUTION_FILE=$(find . -maxdepth 1 -name "*.sln" | head -1)
-        echo "Using solution file: $SOLUTION_FILE"
+        # Build without using solution file to avoid path issues
+        echo "Building projects individually..."
         
-        # Restore all projects using the solution file
-        dotnet restore "$SOLUTION_FILE"
+        # Restore packages for all projects
+        dotnet restore
         
-        # Build the entire solution
-        dotnet build "$SOLUTION_FILE" --configuration Release --no-restore
+        # Build all projects
+        dotnet build --configuration Release --no-restore
         
-        # Publish the API project (adjust path if needed - case sensitive!)
-        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish
+        # Find the correct API project file (case-insensitive)
+        API_PROJECT=$(find . -name "*.csproj" -path "*/Trippy.API/*" -o -path "*/Trippy.Api/*" | head -1)
+        
+        if [ -z "$API_PROJECT" ]; then
+          echo "❌ Could not find API project file!"
+          echo "Available .csproj files:"
+          find . -name "*.csproj" -type f
+          exit 1
+        fi
+        
+        echo "✅ Found API project: $API_PROJECT"
+        
+        # Publish the API project
+        dotnet publish "$API_PROJECT" --configuration Release --output ./publish --no-build
         
         echo "Files ready for deployment:"
         find ./publish -type f | wc -l
