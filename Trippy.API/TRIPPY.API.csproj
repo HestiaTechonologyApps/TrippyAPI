@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Trippy.Bussiness\Trippy.Bussiness.csproj" />
-    <ProjectReference Include="..\Trippy.Domain\TRIPPY.DOMAIN.csproj" />
+    <ProjectReference Include="..\Trippy.Domain\Trippy.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

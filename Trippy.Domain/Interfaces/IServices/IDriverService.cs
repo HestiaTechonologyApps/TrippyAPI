@@ -1,5 +1,5 @@
 ﻿using Trippy.Domain.Entities;
-using TRIPPY.DOMAIN.DTO;
+using Trippy.Domain.DTO;
 
 namespace Trippy.Domain.Interfaces.IServices
 {

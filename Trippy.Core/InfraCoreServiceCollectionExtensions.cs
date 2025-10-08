@@ -11,8 +11,8 @@ using Trippy.Domain.Interfaces.IServices;
 using Trippy.InfraCore.Data;
 using Trippy.InfraCore.External;
 using Trippy.InfraCore.Repositories;
-using TRIPPY.CORE.Repositories;
-using TRIPPY.DOMAIN.Interfaces.IRepositories;
+using Trippy.CORE.Repositories;
+using Trippy.Domain.Interfaces.IRepositories;
 
 namespace Trippy.InfraCore
 {

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Trippy.Bussiness.Services;
 using Trippy.Domain.Configurations;
 using Trippy.Domain.Interfaces.IServices;
-using TRIPPY.BUSSINESS.Services;
-using TRIPPY.DOMAIN.Interfaces.IServices;
+using Trippy.BUSSINESS.Services;
+using Trippy.Domain.Interfaces.IServices;
 
 namespace Trippy.Bussiness
 {

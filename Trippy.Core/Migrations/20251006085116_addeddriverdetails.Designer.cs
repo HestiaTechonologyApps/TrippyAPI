@@ -9,7 +9,7 @@ using Trippy.InfraCore.Data;
 
 #nullable disable
 
-namespace TRIPPY.CORE.Migrations
+namespace Trippy.CORE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20251006085116_addeddriverdetails")]

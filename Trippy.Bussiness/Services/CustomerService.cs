@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TRIPPY.DOMAIN.Interfaces.IRepositories;
+using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.Domain.Interfaces.IServices;
-using TRIPPY.DOMAIN.Interfaces.IServices;
-using TRIPPY.DOMAIN.DTO;
+using Trippy.Domain.Interfaces.IServices;
+using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.DTO;
 
-namespace TRIPPY.BUSSINESS.Services
+namespace Trippy.BUSSINESS.Services
 {
     public class CustomerService : ICustomerService
     {

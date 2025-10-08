@@ -1,6 +1,6 @@
 ﻿using Trippy.Domain.Entities;
 using Trippy.InfraCore.Data;
-using TRIPPY.DOMAIN.Interfaces.IRepositories;
+using Trippy.Domain.Interfaces.IRepositories;
 
 namespace Trippy.InfraCore.Repositories
 {

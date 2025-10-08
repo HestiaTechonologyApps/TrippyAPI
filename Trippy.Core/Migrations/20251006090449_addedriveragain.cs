@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TRIPPY.CORE.Migrations
+namespace Trippy.CORE.Migrations
 {
     /// <inheritdoc />
     public partial class addedriveragain : Migration

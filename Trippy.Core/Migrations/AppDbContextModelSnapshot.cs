@@ -8,7 +8,7 @@ using Trippy.InfraCore.Data;
 
 #nullable disable
 
-namespace TRIPPY.CORE.Migrations
+namespace Trippy.CORE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot

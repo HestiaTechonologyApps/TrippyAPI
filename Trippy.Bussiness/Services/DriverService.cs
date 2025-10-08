@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.Domain.Interfaces.IServices;
-using TRIPPY.DOMAIN.DTO;
-using TRIPPY.DOMAIN.Interfaces.IRepositories;
+using Trippy.Domain.DTO;
+using Trippy.Domain.Interfaces.IRepositories;
 
-namespace TRIPPY.BUSSINESS.Services
+namespace Trippy.BUSSINESS.Services
 {
     public class DriverService : IDriverService
     {

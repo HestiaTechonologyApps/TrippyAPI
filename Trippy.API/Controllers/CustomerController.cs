@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
-using TRIPPY.DOMAIN.Interfaces.IServices;
+using Trippy.Domain.Interfaces.IServices;
 
-namespace TRIPPY.API.Controllers
+namespace Trippy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
