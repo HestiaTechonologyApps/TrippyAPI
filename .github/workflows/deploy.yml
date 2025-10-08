@@ -40,6 +40,12 @@ jobs:
         echo "✅ Building Business (business logic layer)..."
         dotnet build Trippy.Bussiness/TRIPPY.BUSSINESS.csproj --configuration Release
         
+        echo "✅ Restoring API project packages..."
+        dotnet restore Trippy.API/TRIPPY.API.csproj
+        
+        echo "✅ Building API project..."
+        dotnet build Trippy.API/TRIPPY.API.csproj --configuration Release --no-restore
+        
         echo "✅ Publishing API (presentation layer)..."
         dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish --no-build
         
