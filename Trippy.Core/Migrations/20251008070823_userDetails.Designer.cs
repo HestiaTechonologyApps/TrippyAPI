@@ -9,7 +9,7 @@ using Trippy.InfraCore.Data;
 
 #nullable disable
 
-namespace TRIPPY.CORE.Migrations
+namespace Trippy.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20251008070823_userDetails")]

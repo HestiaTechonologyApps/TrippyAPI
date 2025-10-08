@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TRIPPY.CORE.Migrations
+namespace Trippy.Core.Migrations
 {
     /// <inheritdoc />
     public partial class userDetails : Migration

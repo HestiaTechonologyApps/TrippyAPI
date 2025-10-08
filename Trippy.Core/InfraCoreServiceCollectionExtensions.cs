@@ -12,7 +12,7 @@ using Trippy.InfraCore.Data;
 using Trippy.InfraCore.External;
 using Trippy.InfraCore.Repositories;
 using Trippy.CORE.Repositories;
-using TRIPPY.CORE.Repositories;
+using Trippy.Core.Repositories;
 
 
 namespace Trippy.InfraCore

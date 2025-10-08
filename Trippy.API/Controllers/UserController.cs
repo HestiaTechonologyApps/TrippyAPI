@@ -5,7 +5,7 @@ using Trippy.Domain.Entities;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
 
-namespace TRIPPY.API.Controllers
+namespace Trippy.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

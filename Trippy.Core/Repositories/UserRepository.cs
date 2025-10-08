@@ -8,7 +8,7 @@ using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.InfraCore.Data;
 using Trippy.Domain.Entities;
 
-namespace TRIPPY.CORE.Repositories
+namespace Trippy.Core.Repositories
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
