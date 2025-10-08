@@ -59,7 +59,6 @@ builder.Services.AddMemoryCache();
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Services.Configure<OtpSettings>(builder.Configuration.GetSection("OtpSettings"));
 builder.Services.Configure<WalletSettings>(builder.Configuration.GetSection("Wallet"));
-builder.Services.Configure<AgoraSettings>(builder.Configuration.GetSection("Agora"));
 
 // Register AppDbContext with SQL Server (adjust as needed)
 builder.Services.AddInfraCoreServiceCollectionExtensions(builder.Configuration);
