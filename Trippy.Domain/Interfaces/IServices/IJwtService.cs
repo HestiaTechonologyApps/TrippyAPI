@@ -6,4 +6,5 @@ public interface IJwtService
 {
     string GenerateToken(AppUserDTO user);
     ClaimsPrincipal? ValidateToken(string token);
+
 }
