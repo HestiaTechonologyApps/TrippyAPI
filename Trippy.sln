@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRIPPY.API", "Trippy.API\TRIPPY.Api.csproj", "{D6EC8EE8-7FE3-A386-7567-C0F9AB641E27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trippy.Domain", "Trippy.Domain\Trippy.Domain.csproj", "{CEB960AB-F0B8-FC33-9DDB-A679CF64ADDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRIPPY.BUSSINESS", "Trippy.Bussiness\TRIPPY.BUSSINESS.csproj", "{D1908D93-910F-FFBC-43A3-7FE92982A509}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trippy.Api", "Trippy.Api\Trippy.Api.csproj", "{05E3F841-228A-E2BB-D541-403ECBB601BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRIPPY.CORE", "Trippy.Core\TRIPPY.CORE.csproj", "{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trippy.Core", "Trippy.Core\Trippy.Core.csproj", "{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRIPPY.DOMAIN", "Trippy.Domain\TRIPPY.DOMAIN.csproj", "{CEB960AB-F0B8-FC33-9DDB-A679CF64ADDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trippy.Bussiness", "Trippy.Bussiness\Trippy.Bussiness.csproj", "{D1908D93-910F-FFBC-43A3-7FE92982A509}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D6EC8EE8-7FE3-A386-7567-C0F9AB641E27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6EC8EE8-7FE3-A386-7567-C0F9AB641E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6EC8EE8-7FE3-A386-7567-C0F9AB641E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6EC8EE8-7FE3-A386-7567-C0F9AB641E27}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CEB960AB-F0B8-FC33-9DDB-A679CF64ADDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CEB960AB-F0B8-FC33-9DDB-A679CF64ADDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEB960AB-F0B8-FC33-9DDB-A679CF64ADDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEB960AB-F0B8-FC33-9DDB-A679CF64ADDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05E3F841-228A-E2BB-D541-403ECBB601BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05E3F841-228A-E2BB-D541-403ECBB601BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05E3F841-228A-E2BB-D541-403ECBB601BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05E3F841-228A-E2BB-D541-403ECBB601BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD6E9349-A98F-E3C2-F628-33A8D417A3CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1908D93-910F-FFBC-43A3-7FE92982A509}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

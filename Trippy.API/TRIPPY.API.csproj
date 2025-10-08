@@ -27,12 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trippy.Bussiness\Trippy.Bussiness.csproj" />
-    <ProjectReference Include="..\Trippy.Core\Trippy.Core.csproj" />
-    <ProjectReference Include="..\Trippy.Domain\Trippy.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="wwwroot\data\gifts.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -55,6 +49,12 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Trippy.Bussiness\Trippy.Bussiness.csproj" />
+    <ProjectReference Include="..\Trippy.Core\Trippy.Core.csproj" />
+    <ProjectReference Include="..\Trippy.Domain\Trippy.Domain.csproj" />
   </ItemGroup>
 
 </Project>
