@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Trippy.Domain.DTO;
 
-namespace TRIPPY.DOMAIN.DTO
+namespace Trippy.Domain.DTO
 {
     public class UserDTO
     {

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
-using TRIPPY.DOMAIN.Entities;
-using TRIPPY.DOMAIN.Interfaces.IServices;
+using Trippy.Domain.Entities;
+using Trippy.Domain.Interfaces.IServices;
 
 namespace TRIPPY.API.Controllers
 {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TRIPPY.DOMAIN.DTO;
+using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
-using TRIPPY.DOMAIN.Entities;
 
-namespace TRIPPY.DOMAIN.Interfaces.IServices
+
+namespace Trippy.Domain.Interfaces.IServices
 {
     public interface IUserService
     {

@@ -12,6 +12,7 @@ using Trippy.InfraCore.Data;
 using Trippy.InfraCore.External;
 using Trippy.InfraCore.Repositories;
 using Trippy.CORE.Repositories;
+using TRIPPY.CORE.Repositories;
 
 
 namespace Trippy.InfraCore
@@ -34,6 +35,7 @@ namespace Trippy.InfraCore
             services.AddScoped<IFinancialYearRepository  , FinancialYearRepository>();
             services.AddScoped<IDriverRepository  , DriverRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
            
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();

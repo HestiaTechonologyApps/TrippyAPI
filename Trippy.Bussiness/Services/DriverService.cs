@@ -9,7 +9,7 @@ using Trippy.Domain.Interfaces.IServices;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Interfaces.IRepositories;
 
-namespace Trippy.BUSSINESS.Services
+namespace Trippy.Bussiness.Services
 {
     public class DriverService : IDriverService
     {

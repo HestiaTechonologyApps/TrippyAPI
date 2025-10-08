@@ -10,7 +10,7 @@ using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.DTO;
 
-namespace Trippy.BUSSINESS.Services
+namespace Trippy.Bussiness.Services
 {
     public class CustomerService : ICustomerService
     {

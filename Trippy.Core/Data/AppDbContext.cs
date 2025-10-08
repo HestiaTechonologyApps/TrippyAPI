@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Trippy.Domain.Entities;
-using TRIPPY.DOMAIN.Entities;
+using Trippy.Domain.Entities;
 
 
 namespace Trippy.InfraCore.Data

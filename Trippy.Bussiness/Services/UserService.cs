@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TRIPPY.DOMAIN.DTO;
-using Trippy.Domain.Entities;
-using TRIPPY.DOMAIN.Interfaces.IRepositories;
-using TRIPPY.DOMAIN.Entities;
 using Trippy.Domain.DTO;
+using Trippy.Domain.Entities;
+using Trippy.Domain.Interfaces.IRepositories;
+using Trippy.Domain.Interfaces.IServices;
 
-namespace TRIPPY.BUSSINESS.Services
+
+namespace Trippy.Bussiness.Services
 {
-    public class UserService
+    public class UserService :IUserService
     {
         private readonly IUserRepository _repo;
         
@@ -77,7 +77,9 @@ namespace TRIPPY.BUSSINESS.Services
             return q == null ? null : ConvertUserToDTO(q);
         }
 
-
-       
+        public Task<bool> UpdateAsync(User coupon)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

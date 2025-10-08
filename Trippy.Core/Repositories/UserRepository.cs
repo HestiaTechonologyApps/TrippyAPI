@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trippy.Domain.Entities;
-using TRIPPY.DOMAIN.Interfaces.IRepositories;
+using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.InfraCore.Data;
-using TRIPPY.DOMAIN.Entities;
+using Trippy.Domain.Entities;
 
 namespace TRIPPY.CORE.Repositories
 {

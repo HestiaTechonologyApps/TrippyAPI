@@ -25,7 +25,7 @@ namespace TRIPPY.CORE.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TRIPPY.DOMAIN.Entities.User", b =>
+            modelBuilder.Entity("Trippy.Domain.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
