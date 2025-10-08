@@ -25,29 +25,14 @@ jobs:
         
     - name: Restore, Build & Publish
       run: |
-        echo "Building projects in dependency order with correct file names..."
+        echo "Building project with automatic dependency resolution..."
         
         # Remove the problematic solution file to avoid conflicts
         rm -f Trippy.sln
         
-        # Build in dependency order using actual GitHub file names
-        echo "✅ Building Domain (base layer)..."
-        dotnet build Trippy.Domain/Trippy.Domain.csproj --configuration Release
-        
-        echo "✅ Building Core (infrastructure layer)..."  
-        dotnet build Trippy.Core/TRIPPY.CORE.csproj --configuration Release
-        
-        echo "✅ Building Business (business logic layer)..."
-        dotnet build Trippy.Bussiness/TRIPPY.BUSSINESS.csproj --configuration Release
-        
-        echo "✅ Restoring API project packages..."
-        dotnet restore Trippy.API/TRIPPY.API.csproj
-        
-        echo "✅ Building API project..."
-        dotnet build Trippy.API/TRIPPY.API.csproj --configuration Release --no-restore
-        
-        echo "✅ Publishing API (presentation layer)..."
-        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish --no-build
+        # Let dotnet publish handle all dependencies automatically
+        echo "✅ Publishing API project (this will build all dependencies)..."
+        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish
         
         echo "📁 Deployment files ready:"
         find ./publish -type f | wc -l
