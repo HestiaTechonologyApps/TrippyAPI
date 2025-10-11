@@ -29,16 +29,9 @@ jobs:
       run: |
         echo "Building project with automatic dependency resolution..."
         
-        # Use solution file for proper dependency resolution
-        echo "📦 Restoring packages..."
-        dotnet restore Trippy.sln
-        
-        echo "🔨 Building solution..."
-        dotnet build Trippy.sln --configuration Release --no-restore
-        
-        # Publish with correct case-sensitive filename
-        echo "✅ Publishing API project (this will include all dependencies)..."
-        dotnet publish Trippy.API/Trippy.Api.csproj --configuration Release --output ./publish --no-build
+        # Publish directly - dotnet publish will restore and build all dependencies automatically
+        echo "✅ Publishing API project (this will restore and build all dependencies)..."
+        dotnet publish Trippy.API/Trippy.Api.csproj --configuration Release --output ./publish
         
         echo "📁 Deployment files ready:"
         find ./publish -type f | wc -l
