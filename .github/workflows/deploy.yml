@@ -1,7 +1,9 @@
 name: Deploy to SmarterASP via FTP (Working Solution)
+
 on:
   push:
     branches: [ main, master ]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,21 +29,20 @@ jobs:
       run: |
         echo "Building project with automatic dependency resolution..."
         
-        # Remove the problematic solution file to avoid conflicts
-        rm -f Trippy.sln
+        # Use solution file for proper dependency resolution
+        echo "📦 Restoring packages..."
+        dotnet restore Trippy.sln
         
-        # Let dotnet publish handle all dependencies automatically
-        echo "✅ Publishing API project (this will build all dependencies)..."
-        dotnet publish Trippy.API/TRIPPY.API.csproj --configuration Release --output ./publish
+        echo "🔨 Building solution..."
+        dotnet build Trippy.sln --configuration Release --no-restore
+        
+        # Publish with correct case-sensitive filename
+        echo "✅ Publishing API project (this will include all dependencies)..."
+        dotnet publish Trippy.API/Trippy.Api.csproj --configuration Release --output ./publish --no-build
         
         echo "📁 Deployment files ready:"
         find ./publish -type f | wc -l
         echo "🔍 Key files:"
-        find ./publish -name "*.dll" -o -name "*.json" -o -name "*.config" -o -name "web.config" | head -10
-        
-        echo "Files ready for deployment:"
-        find ./publish -type f | wc -l
-        echo "Key files:"
         find ./publish -name "*.dll" -o -name "*.json" -o -name "*.config" -o -name "web.config" | head -10
     
     # 1️⃣ Upload app_offline.htm to stop IIS and unlock DLLs
