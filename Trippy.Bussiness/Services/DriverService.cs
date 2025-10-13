@@ -123,6 +123,14 @@ namespace Trippy.Bussiness.Services
         {
             _repo.Update(coupon);
             await _repo.SaveChangesAsync();
+            await _auditRepository.LogAuditAsync<Driver>(
+               tableName: "Drivers",
+               action: "update",
+               recordId: coupon.DriverId,
+               oldEntity: null,
+               newEntity: coupon,
+               changedBy: "System" // Replace with actual user info
+           );
             return true;
         }
     }
