@@ -22,5 +22,7 @@ namespace Trippy.Domain.DTO
         public String DOBString { get; set; } = "";
         public bool IsRented { get; set; } = true;
         public bool IsActive { get; set; } = true;
+
+        public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
     }
 }

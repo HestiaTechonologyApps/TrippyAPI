@@ -1,12 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Trippy.Domain.Entities
+﻿namespace Trippy.Domain.DTO
 {
-    public class TripOrder
+    public class TripOrderDTO
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int TripOrderId { get; set; } // Primary key
         public int TripBookingModeId { get; set; }
 
@@ -36,17 +32,14 @@ namespace Trippy.Domain.Entities
         public decimal AdvanceAmount { get; set; } = 0;
         public decimal BalanceAmount { get; set; } = 0;
         public bool IsActive { get; set; } = true;
-     
 
 
+        public String TripBookingModeName { get; set; } = "";
+        public required string CustomerName { get; set; }
 
-       
+        public string DriverName { get; set; } = "";
+
 
 
     }
-
-
-
-   
-
 }

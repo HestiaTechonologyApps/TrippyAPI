@@ -1,7 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Trippy.Domain.Entities;
 using Trippy.InfraCore.Data;
 
@@ -29,3 +31,4 @@ public class AuditLogRepository : IAuditLogRepository
         return await _context.AuditLogs.FindAsync(logId);
     }
 }
+

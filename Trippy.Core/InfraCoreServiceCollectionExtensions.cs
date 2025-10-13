@@ -31,6 +31,7 @@ namespace Trippy.InfraCore
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
             
             services.AddScoped<IExceptionLogRepository , ExceptionLogRepository>();
+            services.AddScoped<IAuditRepository , AuditRepository>();
           
             services.AddScoped<IFinancialYearRepository  , FinancialYearRepository>();
             services.AddScoped<IDriverRepository  , DriverRepository>();
