@@ -37,6 +37,7 @@ namespace Trippy.InfraCore
             services.AddScoped<IDriverRepository  , DriverRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITripOrderRepository, TripOrderRepository>();
            
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();

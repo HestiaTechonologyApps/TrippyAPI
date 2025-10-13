@@ -17,7 +17,7 @@ namespace Trippy.Domain.DTO
         public string ImageSrc { get; set; } = "";
 
         public String ContactNumber { get; set; } = "";
-
+        public String NationalId { get; set; } = "";
         public DateTime? DOB { get; set; }
         public String DOBString { get; set; } = "";
         public bool IsRented { get; set; } = true;

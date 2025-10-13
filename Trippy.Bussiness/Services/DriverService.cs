@@ -96,6 +96,7 @@ namespace Trippy.Bussiness.Services
             driverDTO.DriverId = driver.DriverId;
             driverDTO.DriverName = driver.DriverName;
             driverDTO.Nationality = driver.Nationality;
+            driverDTO.NationalId = driver.NationalId;
             driverDTO.License = driver.License;
             driverDTO.ImageSrc = driver.ImageSrc;
             driverDTO.IsActive = driver.IsActive;

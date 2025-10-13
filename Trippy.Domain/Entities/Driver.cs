@@ -17,14 +17,13 @@ namespace Trippy.Domain.Entities
 
         public String ContactNumber { get; set; } = "";
 
+        public String NationalId { get; set; } = "";
         public DateTime?  DOB { get; set; }       
 
         public bool IsRented { get; set; } = true;
         public bool IsActive { get; set; } = true;
 
     }
- 
 
-
-
-}
+  
+    }
