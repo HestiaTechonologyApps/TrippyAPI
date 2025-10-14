@@ -14,9 +14,11 @@
         public string Gender { get; set; } = "";
         public string Nationality { get; set; } = "";
         public DateTime CreatedAt { get; set; }
+        public string CreateAtString { get; set; } = "";
 
         public bool IsActive { get; set; } = true;
 
         public  List<AuditLogDTO> AuditTrails { get; set; }
+        
     }
 }

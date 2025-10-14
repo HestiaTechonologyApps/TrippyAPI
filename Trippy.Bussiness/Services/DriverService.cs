@@ -120,16 +120,16 @@ namespace Trippy.Bussiness.Services
             return dirverdto;
         }
 
-        public async Task<bool> UpdateAsync(Driver coupon)
+        public async Task<bool> UpdateAsync(Driver driver)
         {
-            _repo.Update(coupon);
+            _repo.Update(driver);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Driver>(
                tableName: "Drivers",
                action: "update",
-               recordId: coupon.DriverId,
+               recordId: driver.DriverId,
                oldEntity: null,
-               newEntity: coupon,
+               newEntity: driver,
                changedBy: "System" // Replace with actual user info
            );
             return true;

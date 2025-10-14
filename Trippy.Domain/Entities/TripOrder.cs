@@ -5,6 +5,8 @@ namespace Trippy.Domain.Entities
 {
     public class TripOrder
     {
+        public object AuditLogs;
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TripOrderId { get; set; } // Primary key
@@ -17,8 +19,10 @@ namespace Trippy.Domain.Entities
         public int DriverId { get; set; }
 
         public DateTime? FromDate { get; set; }
-        public DateTime? ToDate { get; set; }
 
+        public string FromDateString { get; set; } = "";
+        public DateTime? ToDate { get; set; }
+        public string ToDateString { get; set; } = "";
         public string FromLocation { get; set; } = "";
 
         public string ToLocation1 { get; set; } = "";
@@ -31,18 +35,18 @@ namespace Trippy.Domain.Entities
         public string BookedBy { get; set; } = "";
         public string TripDetails { get; set; } = "";
 
-
+       
 
         public string TripStatus { get; set; } = "";// Planned, InProgress, Completed, Cancelled
         public decimal TripAmount { get; set; } = 0;
         public decimal AdvanceAmount { get; set; } = 0;
         public decimal BalanceAmount { get; set; } = 0;
         public bool IsActive { get; set; } = true;
-     
 
 
 
        
+
 
 
     }

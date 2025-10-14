@@ -14,17 +14,26 @@ namespace Trippy.Bussiness.Services
     public class UserService :IUserService
     {
         private readonly IUserRepository _repo;
-        
+        private readonly IAuditRepository _auditRepository;
 
-        public UserService(IUserRepository repo)
+        public UserService(IUserRepository repo, IAuditRepository auditRepository   )
         {
             _repo = repo;
+            _auditRepository = auditRepository;
         }
         public async Task<UserDTO> CreateAsync(User user)
         {
             await _repo.AddAsync(user);
             await _repo.SaveChangesAsync();
-            return ConvertUserToDTO(user);
+            await this._auditRepository.LogAuditAsync<User>(
+               tableName: "Users",
+               action: "create",
+               recordId: user.UserId,
+               oldEntity: null,
+               newEntity: user,
+               changedBy: "System" // Replace with actual user info
+           );
+            return await ConvertUserToDTO(user);
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -32,6 +41,14 @@ namespace Trippy.Bussiness.Services
             var user = await _repo.GetByIdAsync(id);
             if (user == null) return false;
             _repo.Delete(user);
+            await _auditRepository.LogAuditAsync<User>(
+               tableName: "Users",
+               action: "Delete",
+               recordId: user.UserId,
+               oldEntity: null,
+               newEntity: user,
+               changedBy: "System" // Replace with actual user info
+           );
             await _repo.SaveChangesAsync();
             return true;
         }
@@ -46,7 +63,7 @@ namespace Trippy.Bussiness.Services
 
             foreach (var user in users)
             {
-                UserDTO userDTO = ConvertUserToDTO(user);
+                UserDTO userDTO = await ConvertUserToDTO(user);
                 userdtos.Add(userDTO);
 
 
@@ -55,7 +72,7 @@ namespace Trippy.Bussiness.Services
             return userdtos;
         }
 
-        private UserDTO ConvertUserToDTO(User user)
+        private async Task <UserDTO> ConvertUserToDTO(User user)
         {
             UserDTO userDTO = new UserDTO();
             userDTO.UserId = user.UserId;
@@ -63,23 +80,40 @@ namespace Trippy.Bussiness.Services
             userDTO.UserEmail = user.UserEmail;
             userDTO.Address = user.Address;
             userDTO.PhoneNumber = user.PhoneNumber;
-            userDTO.PasswordHash = user.PasswordHash;
             userDTO.Islocked = user.Islocked;
             userDTO.CreateAt = user.CreateAt;
             userDTO.Lastlogin = user.Lastlogin;
+            userDTO.LastloginString = user.Lastlogin.HasValue ? user.Lastlogin.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
+            userDTO.CreateAtSyring = user.CreateAt.ToString("dd MMMM yyyy hh:mm tt");
+
+
             userDTO.IsActive = user.IsActive;
+            userDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("User", user.UserId);
             return userDTO;
         }
 
         public async Task<UserDTO?> GetByIdAsync(int id)
         {
             var q = await _repo.GetByIdAsync(id);
-            return q == null ? null : ConvertUserToDTO(q);
+            if (q == null) return null;
+            var userdto = await  ConvertUserToDTO(q);
+            userdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("User", userdto.UserId);
+            return userdto;
         }
 
-        public Task<bool> UpdateAsync(User coupon)
+        public async Task<bool> UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            _repo.Update(user);
+            await _repo.SaveChangesAsync();
+            await _auditRepository.LogAuditAsync<User>(
+               tableName: "Users",
+               action: "update",
+               recordId: user.UserId,
+               oldEntity: null,
+               newEntity: user,
+               changedBy: "System" // Replace with actual user info
+           );
+            return true;
         }
     }
 }

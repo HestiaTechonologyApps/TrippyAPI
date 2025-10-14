@@ -13,7 +13,9 @@
         public int DriverId { get; set; }
 
         public DateTime? FromDate { get; set; }
+        public string FromDateString { get; set; } = "";
         public DateTime? ToDate { get; set; }
+        public string ToDateString { get; set; } = "";
 
         public string FromLocation { get; set; } = "";
 
@@ -33,13 +35,14 @@
         public decimal BalanceAmount { get; set; } = 0;
         public bool IsActive { get; set; } = true;
 
-
-        public String TripBookingModeName { get; set; } = "";
-        public required string CustomerName { get; set; }
+        public string PaymentMode { get; set; } = "";
+        public string PaymentDetails { get; set; } = "";
+        
+        public string CustomerName { get; set; } = "";
 
         public string DriverName { get; set; } = "";
 
-
+        public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
 
     }
 }

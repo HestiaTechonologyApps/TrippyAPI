@@ -15,15 +15,25 @@ namespace Trippy.Bussiness.Services
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _repo;
-        public CustomerService(ICustomerRepository repo)
+        private readonly IAuditRepository _auditRepository;
+        public CustomerService(ICustomerRepository repo , IAuditRepository auditRepository)
         {
             _repo = repo;
+            this._auditRepository = auditRepository;
         }
         public async Task<CustomerDTO> CreateAsync(Customer customer)
         {
             await _repo.AddAsync(customer);
             await _repo.SaveChangesAsync();
-            return ConvertCustomerToDTO(customer);
+            await this._auditRepository.LogAuditAsync<Customer>(
+                tableName: "Customers",
+                action: "create",
+                recordId: customer.CustomerId,
+                oldEntity: null,
+                newEntity: customer,
+                changedBy: "System" // Replace with actual user info
+            );
+            return await ConvertCustomerToDTO(customer);
         }
         public async Task<bool> DeleteAsync(int id)
         {
@@ -31,6 +41,14 @@ namespace Trippy.Bussiness.Services
             if (customer == null) return false;
             _repo.Delete(customer);
             await _repo.SaveChangesAsync();
+            await _auditRepository.LogAuditAsync<Customer>(
+               tableName: "Customers",
+               action: "Delete",
+               recordId: customer.CustomerId,
+               oldEntity: null,
+               newEntity: customer,
+               changedBy: "System" // Replace with actual user info
+           );
             return true;
         }
         public async Task<List<CustomerDTO>> GetAllAsync()
@@ -43,7 +61,7 @@ namespace Trippy.Bussiness.Services
 
             foreach (var driver in customers)
             {
-                CustomerDTO customerDTO = ConvertCustomerToDTO(driver);
+                CustomerDTO customerDTO = await ConvertCustomerToDTO(driver);
                 customerdtos.Add(customerDTO);
 
 
@@ -55,17 +73,29 @@ namespace Trippy.Bussiness.Services
         public async Task<CustomerDTO?> GetByIdAsync(int id)
         {
             var q = await _repo.GetByIdAsync(id);
-            return q  == null ? null : ConvertCustomerToDTO(q);
+            if (q == null) return null;
+            var customerdto = await ConvertCustomerToDTO(q);
+            customerdto.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer", customerdto.CustomerId);
+            return customerdto;
         }
 
-        public async Task<bool> UpdateAsync(Customer coupon)
+        public async Task<bool> UpdateAsync(Customer customer)
         {
-            _repo.Update(coupon);
+            var oldentity = await _repo.GetByIdAsync(customer.CustomerId);
+            _repo.Update(customer);
             await _repo.SaveChangesAsync();
+            await _auditRepository.LogAuditAsync<Customer>(
+              tableName: "Customers",
+              action: "update",
+              recordId: customer.CustomerId,
+              oldEntity: oldentity,
+              newEntity: customer,
+              changedBy: "System" // Replace with actual user info
+          );
             return true;
         }
 
-        private CustomerDTO ConvertCustomerToDTO(Customer customer)
+        private async  Task<CustomerDTO> ConvertCustomerToDTO(Customer customer)
         {
             CustomerDTO customerDTO = new CustomerDTO();
             customerDTO.CustomerId = customer.CustomerId;
@@ -79,8 +109,12 @@ namespace Trippy.Bussiness.Services
             customerDTO.Nationality = customer.Nationalilty;
             customerDTO.IsActive = customer.IsActive;
             customerDTO.CreatedAt = customer.CreatedAt;
+            customerDTO.CreateAtString = customer.CreatedAt.ToString("dd MMMM yyyy hh:mm tt");
+
+            customerDTO.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer",customer.CustomerId );
             return customerDTO;
         }
+
     }
 
 
