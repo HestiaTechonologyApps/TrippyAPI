@@ -57,4 +57,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         predicate == null ? await _dbSet.CountAsync() : await _dbSet.CountAsync(predicate);
 
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+    public void Detach<T>(T entity) 
+    {
+        var entry = _context.Entry(entity);
+        if (entry != null)
+            entry.State = EntityState.Detached;
+    }
 }

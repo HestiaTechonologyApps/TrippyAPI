@@ -75,13 +75,14 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
             var customerdto = await ConvertCustomerToDTO(q);
-            customerdto.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer", customerdto.CustomerId);
+            customerdto.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customers", customerdto.CustomerId);
             return customerdto;
         }
 
         public async Task<bool> UpdateAsync(Customer customer)
         {
             var oldentity = await _repo.GetByIdAsync(customer.CustomerId);
+            _repo.Detach(oldentity);
             _repo.Update(customer);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Customer>(
