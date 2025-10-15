@@ -53,7 +53,30 @@ namespace Trippy.Core.Repositories
                         }).First();
            
         }
-                            
+
+
+        public  IEnumerable<TripListDataDTO> GetTripListAsync()
+        {
+            return  (from tripOrder in _context.TripOrders
+                    join
+                    cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
+                    join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+
+                    select new TripListDataDTO
+                    {
+                        TripOrderId = tripOrder.TripOrderId,
+                        TripCode = "T-" + tripOrder.TripOrderId.ToString(),
+                        DepartureDate = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+                        IsActive = tripOrder.IsActive,
+                        CustomerName = cust.CustomerName,
+                        DriverName = drv.DriverName,
+                        PickUpFrom = tripOrder.FromLocation,
+                        RecivedVia = tripOrder.BookedBy,
+                        Status = tripOrder.TripStatus
+
+                    }).ToList();
 
         }
+
     }
+}

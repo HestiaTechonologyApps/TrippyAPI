@@ -80,7 +80,7 @@ namespace Trippy.Bussiness.Services
                tableName: "Drivers",
                action: "Delete",
                recordId: tripOrder.TripOrderId,
-               oldEntity: null,
+               oldEntity: tripOrder,
                newEntity: tripOrder,
                changedBy: "System" // Replace with actual user info
            );
@@ -104,23 +104,39 @@ namespace Trippy.Bussiness.Services
 
             return tripOrderdtos;
         }
+
+
+        public IEnumerable<TripListDataDTO> GetAll()
+        {
+
+
+
+
+            var tripOrders = _repo.GetTripListAsync();
+
+            
+
+            return  tripOrders;
+        }
         public async Task<TripOrderDTO?> GetByIdAsync(int id)
         {
             var tripOrderdto =  _repo.GetTripDetails(id);
             if (tripOrderdto == null) return null;
-            tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrder", tripOrderdto.TripOrderId);
+            tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrders", tripOrderdto.TripOrderId);
             return tripOrderdto;
         }
 
         public async Task<bool> UpdateAsync(TripOrder tripOrder)
         {
+            var oldentity = await _repo.GetByIdAsync(tripOrder.TripOrderId);
+            _repo.Detach(oldentity);
             _repo.Update(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(
               tableName: "TripOrder",
               action: "update",
               recordId: tripOrder.TripOrderId,
-              oldEntity: null,
+              oldEntity: oldentity,
               newEntity: tripOrder,
               changedBy: "System" // Replace with actual user info
           );

@@ -11,5 +11,6 @@ namespace Trippy.Domain.Interfaces.IRepositories
     public interface ITripOrderRepository:IGenericRepository<TripOrder>
     {
         TripOrderDTO GetTripDetails(int tripid);
+        IEnumerable<TripListDataDTO> GetTripListAsync();
     }
 }

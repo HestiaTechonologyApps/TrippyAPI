@@ -38,6 +38,7 @@ namespace Trippy.Bussiness.Services
         public async Task<bool> DeleteAsync(int id)
         {
             var customer = await _repo.GetByIdAsync(id);
+
             if (customer == null) return false;
             _repo.Delete(customer);
             await _repo.SaveChangesAsync();
@@ -45,7 +46,7 @@ namespace Trippy.Bussiness.Services
                tableName: "Customers",
                action: "Delete",
                recordId: customer.CustomerId,
-               oldEntity: null,
+               oldEntity: customer,
                newEntity: customer,
                changedBy: "System" // Replace with actual user info
            );

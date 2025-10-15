@@ -45,7 +45,7 @@ namespace Trippy.Bussiness.Services
                tableName: "Users",
                action: "Delete",
                recordId: user.UserId,
-               oldEntity: null,
+               oldEntity: user,
                newEntity: user,
                changedBy: "System" // Replace with actual user info
            );
@@ -97,19 +97,21 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
             var userdto = await  ConvertUserToDTO(q);
-            userdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("User", userdto.UserId);
+            userdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Users", userdto.UserId);
             return userdto;
         }
 
         public async Task<bool> UpdateAsync(User user)
         {
+            var oldentity = await _repo.GetByIdAsync(user.UserId);
+            _repo.Detach(oldentity);
             _repo.Update(user);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<User>(
                tableName: "Users",
                action: "update",
                recordId: user.UserId,
-               oldEntity: null,
+               oldEntity: oldentity,
                newEntity: user,
                changedBy: "System" // Replace with actual user info
            );

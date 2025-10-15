@@ -15,8 +15,27 @@ namespace Trippy.Api.Controllers
         {
             _service = service;
         }
+        [HttpGet("GetAllTripList")]
+        public  CustomApiResponse GetAll()
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var tripOrders = _service.GetAll();
+                response.IsSucess = true;
+                response.Value = tripOrders;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+        }
         [HttpGet]
-        public async Task<CustomApiResponse> GetAll()
+        public async Task<CustomApiResponse> GetAllAsync()
         {
             var response = new CustomApiResponse();
             try
@@ -34,7 +53,6 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
-
         [HttpGet("{id}")]
         public async Task<CustomApiResponse> GetById(int id)
         {

@@ -46,7 +46,7 @@ namespace Trippy.Bussiness.Services
                 tableName: "Drivers",
                 action: "Delete",
                 recordId: driver.DriverId,
-                oldEntity: null,
+                oldEntity: driver,
                 newEntity: driver,
                 changedBy: "System" // Replace with actual user info
             );
@@ -115,20 +115,22 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if(q == null) return null;
             var dirverdto = await ConvertDriverToDTO(q);
-            dirverdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Driver", dirverdto.DriverId);
+            dirverdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Drivers", dirverdto.DriverId);
 
             return dirverdto;
         }
 
         public async Task<bool> UpdateAsync(Driver driver)
         {
+            var oldentity = await _repo.GetByIdAsync(driver.DriverId);
+            _repo.Detach(oldentity);
             _repo.Update(driver);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Driver>(
                tableName: "Drivers",
                action: "update",
                recordId: driver.DriverId,
-               oldEntity: null,
+               oldEntity: oldentity,
                newEntity: driver,
                changedBy: "System" // Replace with actual user info
            );
