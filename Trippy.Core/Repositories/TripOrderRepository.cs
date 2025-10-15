@@ -71,7 +71,10 @@ namespace Trippy.Core.Repositories
                         CustomerName = cust.CustomerName,
                         DriverName = drv.DriverName,
                         PickUpFrom = tripOrder.FromLocation,
-                        RecivedVia = tripOrder.BookedBy,
+                        RecivedVia = tripOrder.TripBookingModeId == 1 ? "Phone" :
+                         tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
+                         tripOrder.TripBookingModeId == 3 ? "Website" :
+                         "Unknown",
                         Status = tripOrder.TripStatus
 
                     }).ToList();
