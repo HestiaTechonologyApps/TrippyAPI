@@ -13,13 +13,15 @@ namespace Trippy.Domain.Entities
         public string License { get; set; } = "";
         public string Nationality { get; set; } = "";
 
-        public string ImageSrc { get; set; } = "";  
+        public string ProfileImagePath { get; set; } = "";  
 
         public String ContactNumber { get; set; } = "";
 
         public String NationalId { get; set; } = "";
-        public DateTime?  DOB { get; set; }       
+        public DateTime?  DOB { get; set; }
 
+    
+       
         public bool IsRented { get; set; } = true;
         public bool IsActive { get; set; } = true;
 

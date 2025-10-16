@@ -58,7 +58,7 @@
         public string PickUpFrom { get; set; }
         public string Status { get; set; }
         public string AddedBy { get; set; }
-
+        
         public bool IsActive { get; set; } = true;
     }
 }

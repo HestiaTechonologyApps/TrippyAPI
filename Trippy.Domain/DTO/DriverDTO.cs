@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Trippy.Domain.DTO
         public string License { get; set; } = "";
         public string Nationality { get; set; } = "";
 
-        public string ImageSrc { get; set; } = "";
+        public string ProfileImagePath { get; set; } = "";
 
         public String ContactNumber { get; set; } = "";
         public String NationalId { get; set; } = "";
@@ -24,5 +25,10 @@ namespace Trippy.Domain.DTO
         public bool IsActive { get; set; } = true;
 
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
+    }
+    public class ProfilePicUploadDto
+    {
+        public int AppUserId { get; set; }
+        public IFormFile ProfilePic { get; set; }
     }
 }

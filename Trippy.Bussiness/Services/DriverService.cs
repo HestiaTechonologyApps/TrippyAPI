@@ -98,12 +98,12 @@ namespace Trippy.Bussiness.Services
             driverDTO.Nationality = driver.Nationality;
             driverDTO.NationalId = driver.NationalId;
             driverDTO.License = driver.License;
-            driverDTO.ImageSrc = driver.ImageSrc;
+            driverDTO.ProfileImagePath = driver.ProfileImagePath;
             driverDTO.IsActive = driver.IsActive;
             driverDTO.IsRented = driver.IsRented;
             driverDTO.DOB = driver.DOB;
             driverDTO.DOBString = driver.DOB.HasValue ? driver.DOB.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
-
+            driverDTO.ContactNumber = driver.ContactNumber;
             driverDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Driver", driver.DriverId);
 
 
@@ -135,6 +135,19 @@ namespace Trippy.Bussiness.Services
                changedBy: "System" // Replace with actual user info
            );
             return true;
+        }
+
+        public async Task<CustomApiResponse> UpdateProfilePicAsync(int Driverid, string profileImagePath)
+        {
+            var user = await _repo.GetByIdAsync(Driverid);
+            if (user == null)
+                return new CustomApiResponse { IsSucess = false, Error = "User not found", StatusCode = 404 };
+
+            user.ProfileImagePath = profileImagePath;
+             _repo.Update(user);
+            await _repo.SaveChangesAsync();
+
+            return new CustomApiResponse { IsSucess = true, Value = profileImagePath, StatusCode = 200 };
         }
     }
 }

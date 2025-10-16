@@ -10,6 +10,7 @@ namespace Trippy.Domain.Entities
         public int InvoiceDetailId { get; set; }
         public int InvoicemasterId { get; set; }
 
+        public int TripOrderId { get; set; }
         public int CategoryId { get; set; } 
 
          public decimal Ammount { get; set; }

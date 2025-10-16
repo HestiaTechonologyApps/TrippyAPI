@@ -10,7 +10,6 @@ namespace Trippy.Domain.Entities
         public int InvoicemasterId { get; set; }
         public String InvoiceNum { get; set; }
       
-        public int PurchaseOrderId { get; set; }
         public int FinancialYearId { get; set; }
         public int CompanyId { get; set; }
 

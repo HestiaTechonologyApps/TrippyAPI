@@ -15,7 +15,7 @@ namespace Trippy.Domain.Entities
         public  string CustomerAddress { get; set; } = "";
 
         public DateTime DOB { get; set; }
-        public required string Gender { get; set; } = "";
+      
         public required string Nationalilty { get; set; } = "";
         public DateTime CreatedAt { get; set; }
 

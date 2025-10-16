@@ -107,7 +107,7 @@ namespace Trippy.Bussiness.Services
             customerDTO.CustomerAddress = customer.CustomerAddress;
             customerDTO.DOB = customer.DOB;
             customerDTO.DOBString= customer.DOB.ToString("dd MMMM yyyy hh:mm tt");
-            customerDTO.Gender = customer.Gender;
+            
             customerDTO.Nationality = customer.Nationalilty;
             customerDTO.IsActive = customer.IsActive;
             customerDTO.CreatedAt = customer.CreatedAt;

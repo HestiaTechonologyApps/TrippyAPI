@@ -11,7 +11,7 @@
         public string CustomerAddress { get; set; }= "";
         public DateTime? DOB { get; set; }
         public String DOBString { get; set; } = "";
-        public string Gender { get; set; } = "";
+        
         public string Nationality { get; set; } = "";
         public DateTime CreatedAt { get; set; }
         public string CreateAtString { get; set; } = "";
