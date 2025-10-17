@@ -66,7 +66,7 @@ namespace Trippy.Core.Repositories
                     {
                         TripOrderId = tripOrder.TripOrderId,
                         TripCode = "T-" + tripOrder.TripOrderId.ToString(),
-                        DepartureDate = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+                        FromDate = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
                         IsActive = tripOrder.IsActive,
                         CustomerName = cust.CustomerName,
                         DriverName = drv.DriverName,

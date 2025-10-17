@@ -51,7 +51,7 @@
         public int TripOrderId { get; set; }
 
         public string TripCode { get; set; }
-        public string DepartureDate { get; set; }
+        public string FromDate { get; set; }
         public string CustomerName { get; set; }
         public string RecivedVia { get; set; }
         public string DriverName { get; set; }
