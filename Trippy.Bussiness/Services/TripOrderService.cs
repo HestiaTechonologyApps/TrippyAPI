@@ -120,11 +120,14 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<TripOrderDTO?> GetByIdAsync(int id)
         {
-            var tripOrderdto =  _repo.GetTripDetails(id);
-            if (tripOrderdto == null) return null;
+            var q = await _repo.GetByIdAsync(id);
+            if (q == null) return null;
+            var tripOrderdto = await ConvertTripOrderToDTO(q);
             tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrders", tripOrderdto.TripOrderId);
+
             return tripOrderdto;
         }
+
 
         public async Task<bool> UpdateAsync(TripOrder tripOrder)
         {
@@ -133,13 +136,13 @@ namespace Trippy.Bussiness.Services
             _repo.Update(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(
-              tableName: "TripOrder",
-              action: "update",
-              recordId: tripOrder.TripOrderId,
-              oldEntity: oldentity,
-              newEntity: tripOrder,
-              changedBy: "System" // Replace with actual user info
-          );
+               tableName: "TripOders",
+               action: "update",
+               recordId: tripOrder.TripOrderId,
+               oldEntity: oldentity,
+               newEntity: tripOrder,
+               changedBy: "System" // Replace with actual user info
+           );
             return true;
         }
     }   
