@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Threading.Tasks;
+using Trippy.Core.Helpers;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.InfraCore.Data;
@@ -70,8 +71,8 @@ namespace Trippy.Core.Repositories
             var auditLog = new AuditLog
             {
                 LogID = Guid.NewGuid(),
-                TableName = tableName,
-                Action = action,
+                TableName = tableName.ToUpper(),
+                Action = action.ToUpper (),
                 RecordID = recordId,
                 ChangedBy = changedBy,
                 ChangedAt = DateTime.UtcNow,
@@ -87,7 +88,7 @@ namespace Trippy.Core.Repositories
         public async Task<List<AuditLogDTO>> GetAuditLogsForEntityAsync(string tableName, int recordId)
         {
             var auditLogs = await _dbContext.AuditLogs
-                .Where(a => a.TableName == tableName && a.RecordID == recordId)
+                .Where(a => a.TableName.ToUpper () == tableName.ToLower() && a.RecordID == recordId)
                 .OrderByDescending(a => a.ChangedAt)
                 .ToListAsync();
 
@@ -292,8 +293,8 @@ namespace Trippy.Core.Repositories
                     Action = auditLog.Action,
                     RecordID = auditLog.RecordID,
                     ChangedBy = auditLog.ChangedBy,
-                    ChangedAt = auditLog.ChangedAt,
-                    ChangeDetails = auditLog.ChangeDetails,
+                    ChangedAt = CustomDateHelper.ConvertToLocalTimeFormat(auditLog.ChangedAt) ,
+                    ChangeDetails = "",// no need to show json string
                     Changes = ParseChangeDetails(auditLog.ChangeDetails, auditLog.Action)
                 };
 
@@ -382,7 +383,7 @@ namespace Trippy.Core.Repositories
 
                     changes.Add(new AuditLogChangeDetailsDTO
                     {
-                        Item = propertyName,
+                        Item = propertyName.ToUpper(),
                         From = "N/A",
                         TO = newValue
                     });
@@ -425,7 +426,7 @@ namespace Trippy.Core.Repositories
 
                     changes.Add(new AuditLogChangeDetailsDTO
                     {
-                        Item = propertyName,
+                        Item = propertyName.ToUpper(),
                         From = oldValue,
                         TO = newValue
                     });
@@ -457,7 +458,7 @@ namespace Trippy.Core.Repositories
 
                     changes.Add(new AuditLogChangeDetailsDTO
                     {
-                        Item = propertyName,
+                        Item = propertyName.ToUpper(),
                         From = oldValue,
                         TO = "N/A"
                     });
@@ -498,7 +499,7 @@ namespace Trippy.Core.Repositories
 
                 changes.Add(new AuditLogChangeDetailsDTO
                 {
-                    Item = propertyName,
+                    Item = propertyName.ToUpper(),
                     From = oldValue,
                     TO = newValue
                 });
@@ -538,7 +539,7 @@ namespace Trippy.Core.Repositories
 
                 changes.Add(new AuditLogChangeDetailsDTO
                 {
-                    Item = propertyName,
+                    Item = propertyName.ToUpper(),
                     From = oldValue,
                     TO = newValue
                 });

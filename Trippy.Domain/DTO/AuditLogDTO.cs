@@ -12,7 +12,7 @@
         public int? RecordID { get; set; }
 
         public String? ChangedBy { get; set; }
-        public DateTime ChangedAt { get; set; }
+        public string ChangedAt { get; set; }
         public string ChangeDetails { get; set; }
 
         public List<AuditLogChangeDetailsDTO> Changes { get; set; }

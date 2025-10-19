@@ -27,5 +27,7 @@ namespace Trippy.Domain.Entities
 
     }
 
+
+   
   
     }

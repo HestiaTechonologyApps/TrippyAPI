@@ -4,7 +4,7 @@ using Trippy.Domain.Entities;
 
 public interface IJwtService
 {
-    string GenerateToken(AppUserDTO user);
+    string GenerateToken(UserDTO user);
     ClaimsPrincipal? ValidateToken(string token);
 
 }

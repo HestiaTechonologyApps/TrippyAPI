@@ -17,6 +17,4 @@ namespace Trippy.Domain.Entities
         public string ChangeDetails { get; set; }
 
     }
-
-  
 }

@@ -29,6 +29,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<TripOrder> TripOrders { get; set; }
         public DbSet<TripNotes> TripNotes { get; set; }
 
+        public DbSet<Attachment> Attachments { get; set; }
         public DbSet<TripBookingMode> TripBookingModes { get; set; }
 
 

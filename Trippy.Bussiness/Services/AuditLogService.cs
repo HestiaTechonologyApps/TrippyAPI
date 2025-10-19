@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 
 
 public class AuditLogService : IAuditLogService
 {
     private readonly IAuditLogRepository _repo;
-    public AuditLogService(IAuditLogRepository repo)
+    private readonly IAuditRepository auditRepository;
+    public AuditLogService(IAuditLogRepository repo, IAuditRepository auditRepository)
     {
         _repo = repo;
+        this.auditRepository = auditRepository;
     }
 
     public async Task AddLogAsync(AuditLog log)
@@ -22,11 +25,18 @@ public class AuditLogService : IAuditLogService
         return await _repo.GetAllAsync();
     }
 
+    public async Task<List<AuditLogDTO>> GetAuditLogsForEntityAsync(string tableName, int recordId)
+    {
+        return await auditRepository.GetAuditLogsForEntityAsync(tableName, recordId);
+    }
+
     public async Task<AuditLog> GetLogByIdAsync(Guid logId)
     {
         return await _repo.GetByIdAsync(logId);
     }
+
+    public async Task LogAuditAsync<T>(string tableName, string action, int? recordId, T oldEntity, T newEntity, string changedBy) where T : class
+    {
+        await auditRepository.LogAuditAsync(tableName, action, recordId, oldEntity, newEntity, changedBy);
+    }
 }
-
-
-

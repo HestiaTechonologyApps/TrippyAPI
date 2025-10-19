@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trippy.Core.Helpers;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IRepositories;
@@ -66,7 +67,8 @@ namespace Trippy.Core.Repositories
                     {
                         TripOrderId = tripOrder.TripOrderId,
                         TripCode = "T-" + tripOrder.TripOrderId.ToString(),
-                        FromDate = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+                        FromDate=CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate,""),
+                        //FromDate = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
                         IsActive = tripOrder.IsActive,
                         CustomerName = cust.CustomerName,
                         DriverName = drv.DriverName,

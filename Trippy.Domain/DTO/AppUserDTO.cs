@@ -1,4 +1,7 @@
-﻿namespace Trippy.Domain.DTO
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Trippy.Domain.DTO
 {
    
     public class AppUserListDTO
@@ -37,7 +40,6 @@
         public string ProfileImagePath { get; set; } = ""; // Path to profile image
 
     }
-
 
 
 
@@ -84,6 +86,4 @@
         public String ResponseText { get; set; }
         public string PaymentId { get; set; }
     }
-    
-
 }

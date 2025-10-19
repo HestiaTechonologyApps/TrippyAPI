@@ -29,9 +29,6 @@ namespace Trippy.Domain.Interfaces.IRepositories
         Task<CategoryDTO> GetCategoryDTO(int CategoryId);
         Task<List<CategoryDTO>> GetAllCategoryDTOs();
     }
-    public interface ICategoryTaxRepository : IGenericRepository<CategoryTax>
-    {
-    }
 
-  
+
 }

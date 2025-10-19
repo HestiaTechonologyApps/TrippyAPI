@@ -29,6 +29,7 @@ namespace Trippy.InfraCore
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+            services.AddScoped<IAttachmentRepository, AttachmentRepository>();
             
             services.AddScoped<IExceptionLogRepository , ExceptionLogRepository>();
             services.AddScoped<IAuditRepository , AuditRepository>();
@@ -46,7 +47,7 @@ namespace Trippy.InfraCore
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryTaxRepository, CategoryTaxRepository>();
             services.AddScoped<ITwilioSmsSender, TwilioSmsSender>();
-            services.AddScoped<ICustomResponseBuilder, CustomResponseBuilder>();
+            //services.AddScoped<ICustomResponseBuilder, CustomResponseBuilder>();
 
             //// Add helpers or utilities
             //services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();

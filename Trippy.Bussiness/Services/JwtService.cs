@@ -10,12 +10,13 @@ public class JwtService : IJwtService
     private readonly IConfiguration _config;
     public JwtService(IConfiguration config) => _config = config;
 
-    public string GenerateToken(AppUserDTO user)
+    public string GenerateToken(UserDTO user)
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.AppUserId .ToString()),
-            new Claim(ClaimTypes.MobilePhone, user.MobileNumber)
+            new Claim(ClaimTypes.NameIdentifier, user.UserId .ToString()),
+            new Claim(ClaimTypes.MobilePhone, user.UserEmail),
+            new Claim(ClaimTypes.Name , user.UserName)
         };
 
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

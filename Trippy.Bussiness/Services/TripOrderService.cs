@@ -15,7 +15,9 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ITripOrderRepository _repo;
         private readonly IAuditRepository _auditRepository;
-        public TripOrderService(ITripOrderRepository repo ,IAuditRepository auditRepository)
+
+        public String AuditTableName { get; set; } = "TRIPORDER"; // THIS name eill be added everywhere to avoid spelling mistake
+        public TripOrderService(ITripOrderRepository repo, IAuditRepository auditRepository)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
@@ -25,7 +27,7 @@ namespace Trippy.Bussiness.Services
             await _repo.AddAsync(tripOrder);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<TripOrder>(
-               tableName: "TripOrders",
+               tableName: AuditTableName,
                action: "create",
                recordId: tripOrder.TripOrderId,
                oldEntity: null,
@@ -35,7 +37,7 @@ namespace Trippy.Bussiness.Services
             return await ConvertTripOrderToDTO(tripOrder);
         }
 
-        private async Task <TripOrderDTO> ConvertTripOrderToDTO(TripOrder tripOrder)
+        private async Task<TripOrderDTO> ConvertTripOrderToDTO(TripOrder tripOrder)
         {
 
             TripOrderDTO tripOrderDTO = new TripOrderDTO();
@@ -63,7 +65,7 @@ namespace Trippy.Bussiness.Services
             tripOrderDTO.IsActive = tripOrder.IsActive;
             tripOrderDTO.PaymentMode = tripOrder.PaymentMode;
             tripOrderDTO.PaymentDetails = tripOrder.PaymentDetails;
-           
+
 
             tripOrderDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrder", tripOrder.TripOrderId);
 
@@ -77,7 +79,7 @@ namespace Trippy.Bussiness.Services
             _repo.Delete(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(
-               tableName: "TripOrders",
+               tableName: AuditTableName,
                action: "Delete",
                recordId: tripOrder.TripOrderId,
                oldEntity: tripOrder,
@@ -114,16 +116,16 @@ namespace Trippy.Bussiness.Services
 
             var tripOrders = _repo.GetTripListAsync();
 
-            
 
-            return  tripOrders;
+
+            return tripOrders;
         }
         public async Task<TripOrderDTO?> GetByIdAsync(int id)
         {
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
             var tripOrderdto = await ConvertTripOrderToDTO(q);
-            tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrders", tripOrderdto.TripOrderId);
+            tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync(AuditTableName, tripOrderdto.TripOrderId);
 
             return tripOrderdto;
         }
@@ -136,7 +138,7 @@ namespace Trippy.Bussiness.Services
             _repo.Update(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(
-               tableName: "TripOders",
+               tableName: AuditTableName,
                action: "update",
                recordId: tripOrder.TripOrderId,
                oldEntity: oldentity,
@@ -145,5 +147,5 @@ namespace Trippy.Bussiness.Services
            );
             return true;
         }
-    }   
+    }
 }
