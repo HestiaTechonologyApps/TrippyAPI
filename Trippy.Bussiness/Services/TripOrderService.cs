@@ -136,7 +136,7 @@ namespace Trippy.Bussiness.Services
             _repo.Update(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(
-               tableName: "TripOders",
+               tableName: "TripOrders",
                action: "update",
                recordId: tripOrder.TripOrderId,
                oldEntity: oldentity,
