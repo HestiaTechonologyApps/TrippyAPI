@@ -104,7 +104,7 @@ namespace Trippy.Bussiness.Services
             driverDTO.DOB = driver.DOB;
             driverDTO.DOBString = driver.DOB.HasValue ? driver.DOB.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             driverDTO.ContactNumber = driver.ContactNumber;
-            driverDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Driver", driver.DriverId);
+            driverDTO.AuditLog = await _auditRepository.GetAuditLogsForEntityAsync("Driver", driver.DriverId);
 
 
             return driverDTO;
@@ -115,7 +115,7 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if(q == null) return null;
             var dirverdto = await ConvertDriverToDTO(q);
-            dirverdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Drivers", dirverdto.DriverId);
+            dirverdto.AuditLog = await _auditRepository.GetAuditLogsForEntityAsync("Drivers", dirverdto.DriverId);
 
             return dirverdto;
         }

@@ -42,7 +42,7 @@
 
         public string DriverName { get; set; } = "";
 
-        public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
+        public List<AuditLogDTO> AuditLogs { get; set; } //= new List<AuditLogDTO>();
 
     }
 
