@@ -25,7 +25,7 @@ namespace Trippy.Bussiness.Services
             await _repo.AddAsync(tripOrder);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<TripOrder>(
-               tableName: "TripOrder",
+               tableName: "TripOrders",
                action: "create",
                recordId: tripOrder.TripOrderId,
                oldEntity: null,
@@ -77,7 +77,7 @@ namespace Trippy.Bussiness.Services
             _repo.Delete(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(
-               tableName: "Drivers",
+               tableName: "TripOrders",
                action: "Delete",
                recordId: tripOrder.TripOrderId,
                oldEntity: tripOrder,
