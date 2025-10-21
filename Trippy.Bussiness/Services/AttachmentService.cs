@@ -72,6 +72,7 @@ public class AttachmentService : IAttachmentService
             FileName = file.FileName,
             FileType = Path.GetExtension(file.FileName),
             FilePath = filePath,
+            AttachmentPath=filePath ,
             UploaddedOn = DateTime.UtcNow,
             UploadedBy = "System" // replace with actual user
         };
