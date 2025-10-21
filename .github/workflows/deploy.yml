@@ -67,10 +67,10 @@ jobs:
           **/ref/**
     
     # 3️⃣ Remove app_offline.htm so IIS restarts with new files
-    - name: Delete app_offline.htm
+    - name: Delete app_offline.htm (ignore missing)
       run: |
         curl -v --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
-        ftp://win8231.site4now.net/trippyapi/app_offline.htm -Q "-DELE /trippyapi/app_offline.htm"
+        ftp://win8231.site4now.net/trippyapi/app_offline.htm -Q "-DELE /trippyapi/app_offline.htm" || echo "⚠️ app_offline.htm not found — skipping delete"
     
     # 4️⃣ Simple confirmation output
     - name: Verify Deployment
