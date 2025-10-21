@@ -24,7 +24,7 @@ namespace Trippy.API.Controllers
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<CustomApiResponse>> Upload([FromForm] AttachmentUploadRequestDTO request)
         {
-            var uploadPath = Path.Combine(_env.WebRootPath, "uploads", request.TableName);
+            var uploadPath = Path.Combine(_env.WebRootPath, "uploads", request.TableName,request.RecordId.ToString ());
             // var response = await _attachmentService.UploadFileAsync(file, uploadPath,tableName, recordId, description);
 
             var response = await _attachmentService.UploadFileAsync(
