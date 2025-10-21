@@ -17,6 +17,7 @@ namespace Trippy.Core.Helpers
                 StatusCode = (int)code,
                 Value = data,
                 CustomMessage = message
+
             };
 
         public static CustomApiResponse Fail(string message = "", HttpStatusCode code = HttpStatusCode.BadRequest, string? error = null)
