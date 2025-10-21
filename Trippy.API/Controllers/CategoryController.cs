@@ -31,6 +31,20 @@ public class CategoryController : ControllerBase
         }
     }
 
+    [HttpGet("admin-getall-categorydetails")]
+    public async Task<CustomApiResponse> categorydetails()
+    {
+        try
+        {
+            var categorys = await _service.GetAllCategoryDTOAsync();
+            return ApiResponseFactory.Success(categorys, string.Empty, System.Net.HttpStatusCode.OK);
+        }
+        catch (Exception ex)
+        {
+            return ApiResponseFactory.Exception(ex);
+        }
+    }
+
 
     [HttpGet("admin-lookUp-category")]
     public async Task<CustomApiResponse> GetCategoryLookUp()
