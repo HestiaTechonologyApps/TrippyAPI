@@ -58,7 +58,7 @@ jobs:
         protocol: ftp
         timeout: 600000
         log-level: verbose
-        dangerous-clean-slate: true
+        # dangerous-clean-slate: true
         exclude: |
           **/.git*
           **/.git*/**
