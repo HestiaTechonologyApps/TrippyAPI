@@ -107,6 +107,7 @@ namespace Trippy.Bussiness.Services
             return tripOrderdtos;
         }
 
+        
 
         public IEnumerable<TripListDataDTO> GetAll()
         {
@@ -146,6 +147,23 @@ namespace Trippy.Bussiness.Services
                changedBy: "System" // Replace with actual user info
            );
             return true;
+        }
+
+        public async Task<List<TripOrderDTO>> GetAllTripListbyStatusAsync(string Status)
+        {
+            List<TripOrderDTO> tripOrderdtos = new List<TripOrderDTO>();
+
+            var tripOrders = await _repo.GetAllAsync();
+
+            foreach (var tripOrder in tripOrders.Where (u=>u.TripStatus.ToLower()== Status.ToLower ()))
+            {
+                TripOrderDTO tripOrderDTO = await ConvertTripOrderToDTO(tripOrder);
+                tripOrderdtos.Add(tripOrderDTO);
+
+
+            }
+
+            return tripOrderdtos;
         }
     }
 }

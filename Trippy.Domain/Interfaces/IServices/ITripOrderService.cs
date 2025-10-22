@@ -11,6 +11,7 @@ namespace Trippy.Domain.Interfaces.IServices
     public interface ITripOrderService
     {
         Task<List<TripOrderDTO>> GetAllAsync();
+        Task<List<TripOrderDTO>> GetAllTripListbyStatusAsync(string Status);
 
         IEnumerable<TripListDataDTO> GetAll();
         Task<TripOrderDTO?> GetByIdAsync(int id);

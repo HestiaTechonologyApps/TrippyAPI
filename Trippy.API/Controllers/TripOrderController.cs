@@ -38,12 +38,12 @@ namespace Trippy.Api.Controllers
         }
 
         [HttpGet("GetAllTripListbyStatus")]
-        public CustomApiResponse GetAllTripListbyStatus(String Status)
+        public CustomApiResponse GetAllTripListbyStatus(String Status,int Userid=0)
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripOrders = _service.GetAll();
+                var tripOrders = _service.GetAllTripListbyStatusAsync(Status);
                 response.IsSucess = true;
                 response.Value = tripOrders;
                 response.StatusCode = 200;
@@ -219,5 +219,9 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
+
+
+
+
     }
 }

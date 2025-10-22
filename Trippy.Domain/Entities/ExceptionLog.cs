@@ -13,7 +13,7 @@
         public string ExceptionType { get; set; }
         public string StackTrace { get; set; }
         public string Source { get; set; }
-        public string InnerException { get; set; }
+        public string InnerException { get; set; } = "";
         public string TraceId { get; set; }
     }
 }
