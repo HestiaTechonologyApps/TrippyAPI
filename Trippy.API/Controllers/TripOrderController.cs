@@ -179,6 +179,29 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
+
+        [HttpGet("CancelTrip")]
+        public CustomApiResponse CancelTrip(int id)
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var tripNotes = _tripNotesService.GetByIdAsync(id);
+                response.IsSucess = true;
+                response.Value = tripNotes;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+        }
+
+
+
         [HttpGet("GetTripNotespfTrip")]
         public CustomApiResponse GetTripNotesOfTrip(int id)
         {
