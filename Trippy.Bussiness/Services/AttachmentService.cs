@@ -40,12 +40,32 @@ public class AttachmentService : IAttachmentService
         return true;
     }
 
-    Task<Attachment?> IAttachmentService.GetByIdAsync(int id)
+     Task<Attachment?> IAttachmentService.GetByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
+    public async Task<(Stream? FileStream, string? FileName, string? ContentType, string? ErrorMessage)> DownloadAttachmentAsync(int attachmentId)
+    {
+        var attachment = await _repo.GetByIdAsync(attachmentId);
+        if (attachment == null || attachment.IsDeleted)
+            return (null, null, null, "Attachment not found");
 
+        if (!File.Exists(attachment.FilePath))
+            return (null, null, null, "File not found on server");
+
+        var fileStream = new FileStream(attachment.FilePath, FileMode.Open, FileAccess.Read);
+        var contentType = GetContentType(attachment.FileName);
+        return (fileStream, attachment.FileName, contentType, null);
+    }
+
+    private string GetContentType(string fileName)
+    {
+        var provider = new Microsoft.AspNetCore.StaticFiles.FileExtensionContentTypeProvider();
+        if (!provider.TryGetContentType(fileName, out var contentType))
+            contentType = "application/octet-stream";
+        return contentType;
+    }
     public async Task<CustomApiResponse> UploadFileAsync(IFormFile file, string uploadPath, string tableName, int recordId, string description)
     {
         if (file == null || file.Length == 0)

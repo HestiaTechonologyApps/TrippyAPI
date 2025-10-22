@@ -52,6 +52,17 @@ namespace Trippy.API.Controllers
             return response;
             
         }
+
+        [HttpGet("download/{attachmentId}")]
+        public async Task<IActionResult> Download(int attachmentId)
+        {
+            var result = await _attachmentService.DownloadAttachmentAsync(attachmentId);
+
+            if (result.ErrorMessage != null)
+                return NotFound(ApiResponseFactory.Fail(result.ErrorMessage, System.Net.HttpStatusCode.NotFound));
+
+            return File(result.FileStream!, result.ContentType!, result.FileName!);
+        }
     }
 
     public class AttachmentUploadRequestDTO
