@@ -15,7 +15,7 @@ namespace Trippy.Bussiness.Services
     {
         private readonly IDriverRepository _repo;
         private readonly IAuditRepository _auditRepository;
-        public String AuditTableName { get; set; } = "TRIPNOTES";
+        public String AuditTableName { get; set; } = "DRIVER";
         public DriverService(IDriverRepository repo, IAuditRepository auditRepository)
         {
             _repo = repo;

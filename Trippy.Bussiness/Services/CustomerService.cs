@@ -16,7 +16,7 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ICustomerRepository _repo;
         private readonly IAuditRepository _auditRepository;
-        public String AuditTableName { get; set; } = "TRIPNOTES";
+        public String AuditTableName { get; set; } = "CUSTOMER";
         public CustomerService(ICustomerRepository repo , IAuditRepository auditRepository)
         {
             _repo = repo;

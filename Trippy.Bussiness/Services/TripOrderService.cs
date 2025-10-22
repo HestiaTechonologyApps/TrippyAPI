@@ -67,7 +67,7 @@ namespace Trippy.Bussiness.Services
             tripOrderDTO.PaymentDetails = tripOrder.PaymentDetails;
 
 
-            tripOrderDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrder", tripOrder.TripOrderId);
+            //tripOrderDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrder", tripOrder.TripOrderId);
 
             return tripOrderDTO;
 
