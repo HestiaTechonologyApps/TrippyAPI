@@ -11,12 +11,14 @@ namespace Trippy.Api.Controllers
     public class TripOrderController : ControllerBase
     {
         private readonly ITripOrderService _service;
-        public TripOrderController(ITripOrderService service)
+        private readonly ITripNoteService _tripNotesService;
+        public TripOrderController(ITripOrderService service ,ITripNoteService tripNotesService)
         {
             _service = service;
+            _tripNotesService = tripNotesService;
         }
         [HttpGet("GetAllTripList")]
-        public  CustomApiResponse GetAll()
+        public CustomApiResponse GetAll()
         {
             var response = new CustomApiResponse();
             try
@@ -135,6 +137,65 @@ namespace Trippy.Api.Controllers
                 response.IsSucess = true;
                 response.Value = null;
                 response.StatusCode = 204;
+            }
+            return response;
+        }
+        [HttpGet("GetTripNotes")]
+        public CustomApiResponse GetTripNotes()
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var tripNotes = _tripNotesService.GetAllAsync();
+                response.IsSucess = true;
+                response.Value = tripNotes;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+        }
+        [HttpGet("GetTripNotespfTrip")]
+        public CustomApiResponse GetTripNotesOfTrip(int id)
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var tripNotes = _tripNotesService.GetTripNotesOfTrip(id);
+                response.IsSucess = true;
+                response.Value = tripNotes;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+        }
+
+
+        [HttpPost("CreateTripNotes")]
+        public async Task<CustomApiResponse> CreateTripNotes([FromBody] TripNotes tripNotes)
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var created = await _tripNotesService.CreateAsync(tripNotes);
+                response.IsSucess = true;
+                response.Value = created;
+                response.StatusCode = 201;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
             }
             return response;
         }

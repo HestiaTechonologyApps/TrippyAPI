@@ -16,17 +16,19 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ICustomerRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        public String AuditTableName { get; set; } = "TRIPNOTES";
         public CustomerService(ICustomerRepository repo , IAuditRepository auditRepository)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
+
         }
         public async Task<CustomerDTO> CreateAsync(Customer customer)
         {
             await _repo.AddAsync(customer);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<Customer>(
-                tableName: "Customers",
+                tableName: AuditTableName,
                 action: "create",
                 recordId: customer.CustomerId,
                 oldEntity: null,
@@ -43,7 +45,7 @@ namespace Trippy.Bussiness.Services
             _repo.Delete(customer);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Customer>(
-               tableName: "Customers",
+               tableName: AuditTableName,
                action: "Delete",
                recordId: customer.CustomerId,
                oldEntity: customer,
@@ -76,7 +78,7 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
             var customerdto = await ConvertCustomerToDTO(q);
-            customerdto.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customers", customerdto.CustomerId);
+           // customerdto.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customers", customerdto.CustomerId);
             return customerdto;
         }
 
@@ -87,7 +89,7 @@ namespace Trippy.Bussiness.Services
             _repo.Update(customer);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Customer>(
-              tableName: "Customers",
+              tableName: AuditTableName,
               action: "update",
               recordId: customer.CustomerId,
               oldEntity: oldentity,
@@ -113,7 +115,7 @@ namespace Trippy.Bussiness.Services
             customerDTO.CreatedAt = customer.CreatedAt;
             customerDTO.CreateAtString = customer.CreatedAt.ToString("dd MMMM yyyy hh:mm tt");
 
-            customerDTO.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer",customer.CustomerId );
+            //customerDTO.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer",customer.CustomerId );
             return customerDTO;
         }
 
