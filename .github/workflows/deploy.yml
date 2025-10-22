@@ -73,7 +73,6 @@ jobs:
         FILES_TO_DELETE=(
           "Trippy.Api.dll"
           "Trippy.Api.deps.json"
-          "Trippy.Api.runtimeconfig.json"
           "Trippy.Api.pdb"
         )
         
