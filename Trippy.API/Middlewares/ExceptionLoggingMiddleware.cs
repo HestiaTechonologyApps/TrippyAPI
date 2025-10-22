@@ -46,7 +46,7 @@ public class ExceptionLoggingMiddleware
 
             // Optionally, rethrow or return a generic error response
             context.Response.StatusCode = 500;
-            await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
+            await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." + ex.Message  });
         }
     }
 }
