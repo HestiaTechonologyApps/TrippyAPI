@@ -18,19 +18,19 @@ jobs:
     
     - name: Show Git Info
       run: |
-        echo "📋 Deploying commit: $(git log -1 --oneline)"
-        echo "📂 Changed files:"
+        echo "Deploying commit: $(git log -1 --oneline)"
+        echo "Changed files:"
         git diff-tree --no-commit-id --name-only -r HEAD | head -10
         
     - name: Clean Previous Build
       run: |
-        echo "🧹 Cleaning previous builds..."
+        echo "Cleaning previous builds..."
         dotnet clean Trippy.API/Trippy.Api.csproj || true
         rm -rf ./publish
         
     - name: Build and Publish
       run: |
-        echo "📦 Building and publishing project..."
+        echo "Building and publishing project..."
         dotnet publish Trippy.API/Trippy.Api.csproj \
           --configuration Release \
           --output ./publish \
@@ -40,49 +40,36 @@ jobs:
           -v minimal
         
         echo ""
-        echo "✅ Build completed successfully!"
-        echo "📊 Main DLL size: $(ls -lh ./publish/Trippy.Api.dll | awk '{print $5}')"
-        echo "📦 Total files published: $(find ./publish -type f | wc -l)"
+        echo "Build completed successfully!"
+        echo "Main DLL size: $(ls -lh ./publish/Trippy.Api.dll | awk '{print $5}')"
+        echo "Total files published: $(find ./publish -type f | wc -l)"
     
     - name: Verify Controllers in Build
       run: |
-        echo "🔍 Verifying controllers are compiled into DLL..."
+        echo "Verifying controllers are compiled into DLL..."
         echo "=========================================="
-        strings ./publish/Trippy.Api.dll | grep -i "Controller" | grep -v "ControllerBase" | grep -v "IController" | sort | uniq || echo "⚠️ No controller strings found"
+        strings ./publish/Trippy.Api.dll | grep -i "Controller" | grep -v "ControllerBase" | grep -v "IController" | sort | uniq || echo "WARNING: No controller strings found"
         echo "=========================================="
     
-    # STEP 1: Stop the application
     - name: "STEP 1/6: Stop Application"
       run: |
-        echo "🛑 Creating app_offline.htm to stop application..."
-        cat > app_offline.htm << 'EOF'
-    <!DOCTYPE html>
-    <html>
-    <head><title>Maintenance</title></head>
-    <body style="font-family: Arial; text-align: center; padding: 50px;">
-        <h1>🔄 Application Update in Progress</h1>
-        <p>The application is being updated. Please wait 30-60 seconds and refresh.</p>
-        <p><small>Started: $(date -u)</small></p>
-    </body>
-    </html>
-    EOF
+        echo "Creating app_offline.htm to stop application..."
+        echo '<html><body><h1>Maintenance in progress</h1></body></html>' > app_offline.htm
         
         curl -T app_offline.htm \
           --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
           ftp://win8231.site4now.net/trippyapi/app_offline.htm
         
-        echo "✅ Application stopped"
-        echo "⏳ Waiting 15 seconds for IIS to release all file locks..."
+        echo "Application stopped"
+        echo "Waiting 15 seconds for IIS to release all file locks..."
         sleep 15
     
-    # STEP 2: Nuclear option - delete DLLs only (preserve config files)
     - name: "STEP 2/6: Nuclear Clean - Delete DLLs Only (Preserve Configs)"
       run: |
-        echo "💣 NUCLEAR OPTION: Deleting ALL DLLs and runtime files..."
-        echo "⚠️  PRESERVING: appsettings.json and web.config"
+        echo "NUCLEAR OPTION: Deleting ALL DLLs and runtime files..."
+        echo "PRESERVING: appsettings.json and web.config"
         echo ""
         
-        # Only delete DLLs and runtime files, NOT config files
         FILES_TO_DELETE=(
           "Trippy.Api.dll"
           "Trippy.Api.deps.json"
@@ -90,7 +77,7 @@ jobs:
           "Trippy.Api.pdb"
         )
         
-        echo "🗑️ Deleting core DLL files:"
+        echo "Deleting core DLL files:"
         for file in "${FILES_TO_DELETE[@]}"; do
           echo "  - Deleting $file..."
           curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
@@ -99,11 +86,10 @@ jobs:
         done
         
         echo ""
-        echo "✅ Old DLL files deleted (configs preserved)"
-        echo "⏳ Waiting 10 seconds for file system to stabilize..."
+        echo "Old DLL files deleted (configs preserved)"
+        echo "Waiting 10 seconds for file system to stabilize..."
         sleep 10
     
-    # STEP 3: Deploy fresh files (excluding config files)
     - name: "STEP 3/6: Deploy Fresh Files via FTP"
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
@@ -127,109 +113,102 @@ jobs:
           **/appsettings.*.json
           **/web.config
     
-    # STEP 4: Verify upload
     - name: "STEP 4/6: Verify Files Uploaded"
       run: |
-        echo "📊 Checking uploaded files on server..."
+        echo "Checking uploaded files on server..."
         curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
-          ftp://win8231.site4now.net/trippyapi/ -l | grep -E "Trippy.Api.dll|web.config" || echo "⚠️ Files not visible yet"
+          ftp://win8231.site4now.net/trippyapi/ -l | grep -E "Trippy.Api.dll|web.config" || echo "WARNING: Files not visible yet"
         
         echo ""
-        echo "✅ Upload completed"
+        echo "Upload completed"
         sleep 5
     
-    # STEP 5: Force IIS restart by touching web.config (don't replace it)
     - name: "STEP 5/6: Force IIS Restart (Touch web.config)"
       run: |
-        echo "🔄 Forcing IIS restart by touching web.config..."
-        echo "⚠️  Downloading existing web.config to preserve it..."
+        echo "Forcing IIS restart by touching web.config..."
+        echo "Downloading existing web.config to preserve it..."
         
-        # Download existing web.config
         curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
           ftp://win8231.site4now.net/trippyapi/web.config -o web.config.existing 2>/dev/null
         
         if [ -f web.config.existing ]; then
-          echo "✅ Found existing web.config - adding timestamp comment..."
-          # Add a comment with timestamp to trigger IIS reload
+          echo "Found existing web.config - adding timestamp comment..."
           echo "" >> web.config.existing
           echo "<!-- Deployed: $(date -u +"%Y-%m-%d %H:%M:%S UTC") -->" >> web.config.existing
           echo "<!-- Commit: $(git log -1 --oneline) -->" >> web.config.existing
           
-          # Upload modified web.config
           curl -T web.config.existing \
             --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
             ftp://win8231.site4now.net/trippyapi/web.config
           
-          echo "✅ web.config touched - IIS will detect change"
+          echo "web.config touched - IIS will detect change"
         else
-          echo "⚠️ No existing web.config found - creating minimal one..."
-          cat > web.config.new << 'EOF'
-    <?xml version="1.0" encoding="utf-8"?>
-    <configuration>
-      <system.webServer>
-        <handlers>
-          <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
-        </handlers>
-        <aspNetCore processPath="dotnet" 
-                    arguments=".\Trippy.Api.dll" 
-                    stdoutLogEnabled="false" 
-                    stdoutLogFile=".\logs\stdout" 
-                    hostingModel="inprocess" />
-      </system.webServer>
-    </configuration>
-    EOF
+          echo "No existing web.config found - creating minimal one..."
+          cat > web.config.new << 'WEBCONFIG'
+        <?xml version="1.0" encoding="utf-8"?>
+        <configuration>
+          <system.webServer>
+            <handlers>
+              <add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+            </handlers>
+            <aspNetCore processPath="dotnet" 
+                        arguments=".\Trippy.Api.dll" 
+                        stdoutLogEnabled="false" 
+                        stdoutLogFile=".\logs\stdout" 
+                        hostingModel="inprocess" />
+          </system.webServer>
+        </configuration>
+        WEBCONFIG
           
           curl -T web.config.new \
             --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
             ftp://win8231.site4now.net/trippyapi/web.config
           
-          echo "✅ New web.config created"
+          echo "New web.config created"
         fi
         
-        echo "⏳ Waiting 8 seconds..."
+        echo "Waiting 8 seconds..."
         sleep 8
     
-    # STEP 6: Remove app_offline.htm to start the app
     - name: "STEP 6/6: Start Application"
       run: |
-        echo "✅ Removing app_offline.htm to start application with NEW code..."
+        echo "Removing app_offline.htm to start application with NEW code..."
         
         curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
           ftp://win8231.site4now.net/ \
           -Q "-DELE /trippyapi/app_offline.htm" 2>&1 | grep -v "550" || true
         
         echo ""
-        echo "🚀 Application starting with fresh DLL..."
-        echo "⏳ Waiting 20 seconds for application to fully start..."
+        echo "Application starting with fresh DLL..."
+        echo "Waiting 20 seconds for application to fully start..."
         sleep 20
     
-    # Final verification
     - name: Verify Deployment Success
       run: |
-        echo "🧪 Testing API endpoint..."
+        echo "Testing API endpoint..."
         echo ""
         
         HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://sreenathganga-001-site13.jtempurl.com/ 2>/dev/null || echo "000")
         
-        echo "📊 Response Code: $HTTP_CODE"
+        echo "Response Code: $HTTP_CODE"
         
         if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "404" ]; then
-          echo "✅ API is responding!"
+          echo "SUCCESS: API is responding!"
         elif [ "$HTTP_CODE" = "503" ]; then
-          echo "⚠️ API still starting (503) - wait 30 more seconds and try again"
+          echo "WARNING: API still starting (503) - wait 30 more seconds and try again"
         else
-          echo "⚠️ Unexpected response: $HTTP_CODE"
+          echo "WARNING: Unexpected response: $HTTP_CODE"
           echo "   This might be normal if the app is still starting"
         fi
         
         echo ""
         echo "=============================================="
-        echo "✅ DEPLOYMENT COMPLETE!"
+        echo "DEPLOYMENT COMPLETE!"
         echo "=============================================="
-        echo "🌐 Your API: http://sreenathganga-001-site13.jtempurl.com/"
-        echo "📝 Test your new endpoints now!"
-        echo "⏰ If not working yet, wait 1-2 minutes for IIS cache to fully clear"
+        echo "Your API: http://sreenathganga-001-site13.jtempurl.com/"
+        echo "Test your new endpoints now!"
+        echo "If not working yet, wait 1-2 minutes for IIS cache to fully clear"
         echo ""
-        echo "🔍 Deployed commit: $(git log -1 --oneline)"
-        echo "✅ Config files preserved on server"
+        echo "Deployed commit: $(git log -1 --oneline)"
+        echo "Config files preserved on server"
         echo "=============================================="
