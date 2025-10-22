@@ -42,7 +42,7 @@ public class ExceptionLoggingMiddleware
                 log.InnerException = "not available";
             }
             // Save to database
-            await exceptionLogService.LogExceptionAsync(log);
+           // await exceptionLogService.LogExceptionAsync(log);
 
             // Optionally, rethrow or return a generic error response
             context.Response.StatusCode = 500;
