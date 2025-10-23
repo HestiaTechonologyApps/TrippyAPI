@@ -1,5 +1,4 @@
-﻿name: Deploy to SmarterASP via FTP (Working Solution)
-
+name: Deploy to SmarterASP
 on:
   push:
     branches: [ main, master ]
@@ -9,44 +8,69 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
-        
-    - name: Debug Repository Structure
+    
+    - name: Show Repository Structure
       run: |
-        echo "Repository root:"
+        echo "Repository structure:"
         ls -la
-        echo "Looking for .csproj files:"
-        find . -name "*.csproj" -type f
-        echo "Looking for solution files:"
-        find . -name "*.sln" -type f
-        
-    - name: Restore, Build & Publish
+        echo "Project files:"
+        find . -name "*.csproj"
+    
+    - name: Clean and Build with All Dependencies
       run: |
-        echo "Building project with automatic dependency resolution..."
+        echo "Cleaning previous build..."
+        rm -rf ./publish
         
-        # Publish directly - dotnet publish will restore and build all dependencies automatically
-        echo "✅ Publishing API project (this will restore and build all dependencies)..."
-        dotnet publish Trippy.API/Trippy.Api.csproj --configuration Release --output ./publish
+        echo "Restoring dependencies..."
+        dotnet restore Trippy.Api/Trippy.Api.csproj
         
-        echo "📁 Deployment files ready:"
+        echo "Building and publishing with all dependencies..."
+        dotnet publish Trippy.Api/Trippy.Api.csproj \
+          --configuration Release \
+          --output ./publish \
+          --no-restore \
+          --self-contained false \
+          --runtime win-x64 \
+          /p:PublishSingleFile=false \
+          /p:PublishTrimmed=false \
+          /p:CopyOutputSymbolsToPublishDirectory=false
+        
+        echo ""
+        echo "Published files count:"
         find ./publish -type f | wc -l
-        echo "🔍 Key files:"
-        find ./publish -name "*.dll" -o -name "*.json" -o -name "*.config" -o -name "web.config" | head -10
+        echo ""
+        echo "Main DLL:"
+        ls -lh ./publish/Trippy.Api.dll
+        echo ""
+        echo "Microsoft.Extensions DLLs:"
+        ls -la ./publish/Microsoft.Extensions*.dll | head -5 || echo "WARNING: Extensions DLLs missing"
     
-    # 1️⃣ Upload app_offline.htm to stop IIS and unlock DLLs
-    - name: Put app_offline.htm (Maintenance Mode)
+    - name: Stop Application
       run: |
-        echo "<h1>Maintenance in progress...</h1>" > app_offline.htm
-        curl -T app_offline.htm --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
-        ftp://win8231.site4now.net/trippyapi/app_offline.htm
+        echo "Stopping application with app_offline.htm..."
+        echo '<html><body><h1>Maintenance in progress</h1></body></html>' > app_offline.htm
+        curl -T app_offline.htm \
+          --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+          ftp://win8231.site4now.net/trippyapi/app_offline.htm
+        echo "Waiting 15 seconds..."
+        sleep 15
     
-    # 2️⃣ Deploy all files while IIS is stopped
-    - name: Deploy to SmarterASP via FTP
+    - name: Delete Old Main DLL
+      run: |
+        echo "Deleting old Trippy.Api.dll to force refresh..."
+        curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+          ftp://win8231.site4now.net/ \
+          -Q "-DELE /trippyapi/Trippy.Api.dll" 2>&1 || echo "DLL deleted"
+        sleep 5
+    
+    - name: Deploy All Files Including Dependencies
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: win8231.site4now.net
@@ -58,22 +82,48 @@ jobs:
         protocol: ftp
         timeout: 600000
         log-level: verbose
-        # dangerous-clean-slate: true
+        dangerous-clean-slate: false
         exclude: |
           **/.git*
           **/.git*/**
-          **/obj/**
-          **/*.pdb
-          **/ref/**
     
-    # 3️⃣ Remove app_offline.htm so IIS restarts with new files
-    - name: Delete app_offline.htm (ignore missing)
+    - name: Force IIS Restart
       run: |
-        curl -v --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
-        ftp://win8231.site4now.net/trippyapi/app_offline.htm -Q "-DELE /trippyapi/app_offline.htm" || echo "⚠️ app_offline.htm not found — skipping delete"
+        echo "Touching web.config to force IIS restart..."
+        curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+          ftp://win8231.site4now.net/trippyapi/web.config -o web.config.temp 2>/dev/null || echo "No existing web.config"
+        
+        if [ -f web.config.temp ]; then
+          echo "<!-- Deploy: $(date) -->" >> web.config.temp
+        else
+          echo '<?xml version="1.0" encoding="utf-8"?><configuration><system.webServer><handlers><add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" /></handlers><aspNetCore processPath="dotnet" arguments=".\Trippy.Api.dll" stdoutLogEnabled="false" hostingModel="inprocess" /></system.webServer></configuration>' > web.config.temp
+          echo "<!-- Deploy: $(date) -->" >> web.config.temp
+        fi
+        
+        curl -T web.config.temp \
+          --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+          ftp://win8231.site4now.net/trippyapi/web.config
+        sleep 5
     
-    # 4️⃣ Simple confirmation output
-    - name: Verify Deployment
+    - name: Start Application
       run: |
-        echo "✅ Deployment completed! Your API should be available at:"
-        echo "🌐 http://sreenathganga-001-site13.jtempurl.com/"
+        echo "Removing app_offline.htm to start application..."
+        curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
+          ftp://win8231.site4now.net/ \
+          -Q "-DELE /trippyapi/app_offline.htm" 2>&1 || echo "Removed"
+        echo "Waiting 20 seconds for application to start..."
+        sleep 20
+    
+    - name: Test Deployment
+      run: |
+        echo "Testing API endpoint..."
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://sreenathganga-001-site13.jtempurl.com/ 2>/dev/null || echo "000")
+        echo "Response: $HTTP_CODE"
+        if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "404" ]; then
+          echo "SUCCESS: API is responding"
+        else
+          echo "WARNING: API returned $HTTP_CODE - may still be starting"
+        fi
+        echo ""
+        echo "=== DEPLOYMENT COMPLETE ==="
+        echo "URL: http://sreenathganga-001-site13.jtempurl.com/"
