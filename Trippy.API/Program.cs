@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+CleanOldStdoutLogs();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -98,3 +98,37 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+void CleanOldStdoutLogs()
+{
+    try
+    {
+        var logFolder = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+        if (!Directory.Exists(logFolder))
+            return;
+
+        var logFiles = Directory.GetFiles(logFolder, "stdout*");
+
+        foreach (var file in logFiles)
+        {
+            try
+            {
+                var info = new FileInfo(file);
+                // Delete if older than 7 days
+                if (info.CreationTime < DateTime.Now.AddDays(-7))
+                {
+                    info.Delete();
+                }
+            }
+            catch
+            {
+                // ignore errors if file is in use
+            }
+        }
+    }
+    catch (Exception)
+    {
+
+        throw;
+    }
+   
+}
