@@ -111,7 +111,8 @@ jobs:
           **/appsettings.json
           **/appsettings.*.json
           **/web.config
-    
+          **/runtimeconfig.json
+          **/deps.json
     - name: "STEP 4/6: Verify Files Uploaded"
       run: |
         echo "Checking uploaded files on server..."

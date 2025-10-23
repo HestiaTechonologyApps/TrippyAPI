@@ -13,6 +13,7 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<List<TripOrderDTO>> GetAllAsync();
         Task<List<TripOrderDTO>> GetAllTripListbyStatusAsync(string Status);
 
+
         IEnumerable<TripListDataDTO> GetAll();
         Task<TripOrderDTO?> GetByIdAsync(int id);
         Task<TripOrderDTO> CreateAsync(TripOrder coupon);
