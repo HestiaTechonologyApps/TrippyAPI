@@ -20,7 +20,6 @@ jobs:
       run: |
         echo "Repository structure:"
         ls -la
-        echo "Project files:"
         find . -name "*.csproj"
     
     - name: Clean and Build with All Dependencies
@@ -28,49 +27,36 @@ jobs:
         echo "Cleaning previous build..."
         rm -rf ./publish
         
-        echo "Restoring dependencies..."
-        dotnet restore Trippy.Api/Trippy.Api.csproj
-        
-        echo "Building and publishing with all dependencies..."
+        echo "Building and publishing..."
         dotnet publish Trippy.Api/Trippy.Api.csproj \
           --configuration Release \
-          --output ./publish \
-          --no-restore \
-          --self-contained false \
-          --runtime win-x64 \
-          /p:PublishSingleFile=false \
-          /p:PublishTrimmed=false \
-          /p:CopyOutputSymbolsToPublishDirectory=false
+          --output ./publish
         
         echo ""
-        echo "Published files count:"
+        echo "Files published:"
         find ./publish -type f | wc -l
-        echo ""
-        echo "Main DLL:"
         ls -lh ./publish/Trippy.Api.dll
-        echo ""
         echo "Microsoft.Extensions DLLs:"
-        ls -la ./publish/Microsoft.Extensions*.dll | head -5 || echo "WARNING: Extensions DLLs missing"
+        ls ./publish/Microsoft.Extensions*.dll 2>/dev/null | head -5 || echo "No Extensions DLLs found"
     
     - name: Stop Application
       run: |
-        echo "Stopping application with app_offline.htm..."
+        echo "Stopping application..."
         echo '<html><body><h1>Maintenance in progress</h1></body></html>' > app_offline.htm
         curl -T app_offline.htm \
           --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
           ftp://win8231.site4now.net/trippyapi/app_offline.htm
-        echo "Waiting 15 seconds..."
         sleep 15
     
-    - name: Delete Old Main DLL
+    - name: Delete Old DLL
       run: |
-        echo "Deleting old Trippy.Api.dll to force refresh..."
+        echo "Deleting old Trippy.Api.dll..."
         curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
           ftp://win8231.site4now.net/ \
-          -Q "-DELE /trippyapi/Trippy.Api.dll" 2>&1 || echo "DLL deleted"
+          -Q "-DELE /trippyapi/Trippy.Api.dll" 2>&1 || echo "Deleted"
         sleep 5
     
-    - name: Deploy All Files Including Dependencies
+    - name: Deploy All Files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: win8231.site4now.net
@@ -87,18 +73,13 @@ jobs:
           **/.git*
           **/.git*/**
     
-    - name: Force IIS Restart
+    - name: Touch web.config
       run: |
-        echo "Touching web.config to force IIS restart..."
+        echo "Forcing IIS restart..."
         curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
-          ftp://win8231.site4now.net/trippyapi/web.config -o web.config.temp 2>/dev/null || echo "No existing web.config"
+          ftp://win8231.site4now.net/trippyapi/web.config -o web.config.temp 2>/dev/null || echo '<?xml version="1.0" encoding="utf-8"?><configuration><system.webServer><handlers><add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" /></handlers><aspNetCore processPath="dotnet" arguments=".\Trippy.Api.dll" stdoutLogEnabled="false" hostingModel="inprocess" /></system.webServer></configuration>' > web.config.temp
         
-        if [ -f web.config.temp ]; then
-          echo "<!-- Deploy: $(date) -->" >> web.config.temp
-        else
-          echo '<?xml version="1.0" encoding="utf-8"?><configuration><system.webServer><handlers><add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" /></handlers><aspNetCore processPath="dotnet" arguments=".\Trippy.Api.dll" stdoutLogEnabled="false" hostingModel="inprocess" /></system.webServer></configuration>' > web.config.temp
-          echo "<!-- Deploy: $(date) -->" >> web.config.temp
-        fi
+        echo "<!-- Deploy: $(date) -->" >> web.config.temp
         
         curl -T web.config.temp \
           --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
@@ -107,23 +88,16 @@ jobs:
     
     - name: Start Application
       run: |
-        echo "Removing app_offline.htm to start application..."
+        echo "Starting application..."
         curl --user "${{ secrets.WEB_DEPLOY_USERNAME }}:${{ secrets.WEB_DEPLOY_PASSWORD }}" \
           ftp://win8231.site4now.net/ \
-          -Q "-DELE /trippyapi/app_offline.htm" 2>&1 || echo "Removed"
-        echo "Waiting 20 seconds for application to start..."
+          -Q "-DELE /trippyapi/app_offline.htm" 2>&1 || echo "Started"
         sleep 20
     
-    - name: Test Deployment
+    - name: Test
       run: |
-        echo "Testing API endpoint..."
+        echo "Testing..."
         HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://sreenathganga-001-site13.jtempurl.com/ 2>/dev/null || echo "000")
         echo "Response: $HTTP_CODE"
-        if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "404" ]; then
-          echo "SUCCESS: API is responding"
-        else
-          echo "WARNING: API returned $HTTP_CODE - may still be starting"
-        fi
-        echo ""
-        echo "=== DEPLOYMENT COMPLETE ==="
+        echo "=== DONE ==="
         echo "URL: http://sreenathganga-001-site13.jtempurl.com/"
