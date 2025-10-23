@@ -38,6 +38,7 @@ namespace Trippy.Bussiness
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITripOrderService, TripOrderService>();
+            services.AddScoped<ITripNoteService, TripNotesService>();
             services.AddScoped<IInvoiceMasterService, InvoiceMasterService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
