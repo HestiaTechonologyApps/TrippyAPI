@@ -181,12 +181,12 @@ namespace Trippy.Api.Controllers
         }
 
         [HttpGet("CancelTrip")]
-        public CustomApiResponse CancelTrip(int id)
+        public async Task <CustomApiResponse> CancelTrip(int id)
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripNotes = _tripNotesService.GetByIdAsync(id);
+                var tripNotes = await _tripNotesService.GetByIdAsync(id);
                 response.IsSucess = true;
                 response.Value = tripNotes;
                 response.StatusCode = 200;
