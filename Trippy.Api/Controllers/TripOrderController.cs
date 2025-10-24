@@ -203,12 +203,12 @@ namespace Trippy.Api.Controllers
 
 
         [HttpGet("GetTripNotespfTrip")]
-        public CustomApiResponse GetTripNotesOfTrip(int id)
+        public async Task <CustomApiResponse> GetTripNotesOfTrip(int id)
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripNotes = _tripNotesService.GetTripNotesOfTrip(id);
+                var tripNotes = await _tripNotesService.GetTripNotesOfTrip(id);
                 response.IsSucess = true;
                 response.Value = tripNotes;
                 response.StatusCode = 200;
