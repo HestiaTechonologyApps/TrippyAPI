@@ -13,6 +13,7 @@ namespace Trippy.Domain.DTO
 
         public string TripNote { get; set; } = "";
         public DateTime CreatedOn { get; set; }
+        public string CtreatedOnString { get; set; } = "";
         public List<AuditLogDTO> AuditLogg { get; set; } = new List<AuditLogDTO>();
     }
 }
