@@ -19,6 +19,7 @@ namespace Trippy.Bussiness.Helpers
         public static bool VerifyPassword(string password, string hashedPassword)
         {    if (password == hashedPassword)
                 return true;
+         
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
