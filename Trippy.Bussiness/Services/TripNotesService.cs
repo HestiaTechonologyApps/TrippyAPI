@@ -14,6 +14,12 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ITripNotesRepository _repo;
         private readonly IAuditRepository _auditRepository;
+
+        public TripNotesService(ITripNotesRepository repo, IAuditRepository auditRepository)
+        {
+            _repo = repo;
+            this._auditRepository = auditRepository;
+        }
         public String AuditTableName { get; set; } = "TRIPNOTES";
         public async Task<TripNotesDTO> CreateAsync(TripNotes tripNotes)
         {
@@ -36,7 +42,8 @@ namespace Trippy.Bussiness.Services
             tripNotesDTO.TripNoteId = tripNotes.TripNoteId;
             tripNotesDTO.TripNote = tripNotes.TripNote;
             tripNotesDTO.CreatedOn = tripNotes.CreatedOn;
-          //  tripNotesDTO.AuditLogg = await _auditRepository.GetAuditLogsForEntityAsync
+            tripNotesDTO.CtreatedOnString = tripNotes.CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
+            //  tripNotesDTO.AuditLogg = await _auditRepository.GetAuditLogsForEntityAsync
             return tripNotesDTO;
         }
 

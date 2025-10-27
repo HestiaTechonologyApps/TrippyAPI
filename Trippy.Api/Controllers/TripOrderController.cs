@@ -161,12 +161,12 @@ namespace Trippy.Api.Controllers
             return response;
         }
         [HttpGet("GetTripNotes")]
-        public CustomApiResponse GetTripNotes()
+        public async Task <CustomApiResponse> GetTripNotes()
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripNotes = _tripNotesService.GetAllAsync();
+                var tripNotes = await _tripNotesService.GetAllAsync();
                 response.IsSucess = true;
                 response.Value = tripNotes;
                 response.StatusCode = 200;
@@ -181,12 +181,12 @@ namespace Trippy.Api.Controllers
         }
 
         [HttpGet("CancelTrip")]
-        public CustomApiResponse CancelTrip(int id)
+        public async Task <CustomApiResponse> CancelTrip(int id)
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripNotes = _tripNotesService.GetByIdAsync(id);
+                var tripNotes = await _tripNotesService.GetByIdAsync(id);
                 response.IsSucess = true;
                 response.Value = tripNotes;
                 response.StatusCode = 200;
@@ -203,12 +203,12 @@ namespace Trippy.Api.Controllers
 
 
         [HttpGet("GetTripNotespfTrip")]
-        public CustomApiResponse GetTripNotesOfTrip(int id)
+        public async Task <CustomApiResponse> GetTripNotesOfTrip(int id)
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripNotes = _tripNotesService.GetTripNotesOfTrip(id);
+                var tripNotes = await _tripNotesService.GetTripNotesOfTrip(id);
                 response.IsSucess = true;
                 response.Value = tripNotes;
                 response.StatusCode = 200;
