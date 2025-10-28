@@ -15,6 +15,7 @@ namespace Trippy.Domain.Interfaces.IServices
 
 
         IEnumerable<TripListDataDTO> GetAll();
+        Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
         Task<TripOrderDTO?> GetByIdAsync(int id);
         Task<TripOrderDTO> CreateAsync(TripOrder coupon);
         Task<bool> UpdateAsync(TripOrder coupon);

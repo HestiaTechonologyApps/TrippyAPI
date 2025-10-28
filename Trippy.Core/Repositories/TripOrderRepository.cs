@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,22 @@ namespace Trippy.Core.Repositories
         {
             _context = context;
         }
-        public  TripOrderDTO  GetTripDetails(int tripid)
+
+        public async Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync()
+        {
+
+            return await _context.TripOrders
+                .Where(t => t.TripStatus == "Canceled").Select(t => new TripOrderDTO 
+            { 
+                TripOrderId = t.TripOrderId,
+                FromLocation = t.FromLocation,
+                FromDate = t.FromDate, 
+                TripStatus = t.TripStatus 
+            }).ToListAsync();
+
+        }
+
+        public TripOrderDTO  GetTripDetails(int tripid)
         {
          return  ( from tripOrder in _context.TripOrders
                         join
@@ -83,5 +99,7 @@ namespace Trippy.Core.Repositories
 
         }
 
+     
+        
     }
 }
