@@ -109,7 +109,7 @@ namespace Trippy.Bussiness.Services
             return tripOrderdtos;
         }
 
-        
+
 
         public IEnumerable<TripListDataDTO> GetAll()
         {
@@ -156,10 +156,10 @@ namespace Trippy.Bussiness.Services
             if (string.IsNullOrWhiteSpace(Status))
                 return new List<TripOrderDTO>();
 
-           
+
             var tripOrders = await _repo.GetAllByStatusAsync(Status);
 
-           
+
             var tripOrderDtos = new List<TripOrderDTO>();
 
             foreach (var tripOrder in tripOrders)
@@ -175,5 +175,92 @@ namespace Trippy.Bussiness.Services
         {
             return await _repo.GetCanceledTripsAsync();
         }
+
+        public async Task<int> GetTodaysTripCountAsync()
+        {
+            var today = DateTime.Today;
+            return await _repo.GetTodaysTripsCountAsync(today);
+        }
+
+
+        public async Task<List<TripDashboardDTO>> GetAllTripDashboardListbyStatusAsync()
+        {
+            DateTime today = DateTime.Today;
+            DateTime lastWeekStart = today.AddDays(-7);
+            DateTime prevWeekStart = today.AddDays(-14);
+            DateTime prevWeekEnd = today.AddDays(-7);
+
+          
+            int totalTrips = await _repo.GetTotalTripsAsync();
+            int todaysTrips = await _repo.GetTodaysTripsCountAsync(today);
+            int cancelled = await _repo.GetTripCountByStatusAsync("Canceled");
+            int completed = await _repo.GetTripCountByStatusAsync("Completed");
+            int scheduled = await _repo.GetTripCountByStatusAsync("Scheduled");
+
+         
+            int prevCancelled = await _repo.GetTripCountByStatusAndDateRangeAsync("Canceled", prevWeekStart, prevWeekEnd);
+            int prevCompleted = await _repo.GetTripCountByStatusAndDateRangeAsync("Completed", prevWeekStart, prevWeekEnd);
+            int prevTodaysTrip = await _repo.GetTripCountByStatusAndDateRangeAsync("Todays Trip", prevWeekStart, prevWeekEnd);
+            int prevScheduled = await _repo.GetTripCountByStatusAndDateRangeAsync("Scheduled", prevWeekStart, prevWeekEnd);
+            int prevTotal = totalTrips - 20; 
+
+           
+            int changeTotal = totalTrips - prevTotal;
+            int changeTodayTrip = todaysTrips - prevTodaysTrip;
+            int changeCancelled = cancelled - prevCancelled;
+            int changeCompleted = completed - prevCompleted;
+            int changeScheduled = scheduled - prevScheduled;
+
+           
+            var dashboard = new List<TripDashboardDTO>
+    {
+        new TripDashboardDTO
+        {
+            Title = "Total Trips",
+            Value = totalTrips,
+            Change = changeTotal,
+            Color = "#000",
+            Route = "total-trips"
+        },
+        new TripDashboardDTO
+        {
+            Title = "Today's Trips",
+            Value = todaysTrips,
+            Change = changeTodayTrip,
+            Color = "#9F9FF8",
+            Route = "today-trips"
+        },
+        new TripDashboardDTO
+        {
+            Title = "Cancelled",
+            Value = cancelled,
+            Change = changeCancelled,
+            Color = "#FF2A2A",
+            Route = "bookings"
+        },
+        new TripDashboardDTO
+        {
+            Title = "Completed",
+            Value = completed,
+            Change = changeCompleted,
+            Color = "#28A745",
+            Route = "completed"
+        },
+        new TripDashboardDTO
+        {
+            Title = "Scheduled",
+            Value = scheduled,
+            Change = changeScheduled,
+            Color = "#9F9FF8",
+            Route = "scheduled"
+        }
+    };
+
+            return dashboard;
+        }
+
+      
     }
-}
+        }
+
+    

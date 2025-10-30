@@ -15,5 +15,12 @@ namespace Trippy.Domain.Interfaces.IRepositories
         Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
         Task<IEnumerable<TripOrder>> GetAllByStatusAsync(string status);
 
+        Task<int> GetTotalTripsAsync();
+        Task<int> GetTripCountByStatusAsync(string ststus);
+        Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate);
+
+        // Task<List<TripOrderDTO>> GetTodaysTripsAsync(DateTime today);
+         Task<int> GetTodaysTripsCountAsync(DateTime today);
     }
+    
 }

@@ -106,6 +106,82 @@ namespace Trippy.Core.Repositories
                 .ToListAsync();
         }
 
+        public async Task<int> GetTotalTripsAsync()
+        {
+            return await _context.TripOrders.CountAsync();
+        }
 
+
+
+        public async Task<TripDashboardDTO> GetDashBoardData(string ststus)
+        {
+             var lst = new List<TripDashboardDTO>();
+
+            TripDashboardDTO totaltripdtp= new TripDashboardDTO();
+            totaltripdtp.Value = await GetTripCountByStatusAsync("All");
+            totaltripdtp.Title = "Total Trips";
+            lst.Add(totaltripdtp);
+
+            TripDashboardDTO inprogresstripdtp = new TripDashboardDTO();
+            totaltripdtp.Value = await GetTripCountByStatusAsync("All");
+            totaltripdtp.Title = "Total Trips";
+            lst.Add(totaltripdtp);
+
+
+            DateTime today = DateTime.Today;
+
+            TripDashboardDTO todaytripdtp = new TripDashboardDTO();
+            todaytripdtp.Value = await _context.TripOrders
+                .CountAsync(t => t.FromDate >= today && t.FromDate < today.AddDays(1));
+            todaytripdtp.Title = "Today's Trips";
+            todaytripdtp.Date = today;
+            lst.Add(todaytripdtp);
+
+
+            TripDashboardDTO canceltripdtp = new TripDashboardDTO();
+            canceltripdtp.Value = await GetTripCountByStatusAsync("Canceled");
+            canceltripdtp.Title = "Canceled Trips";
+            lst.Add(canceltripdtp);
+
+            TripDashboardDTO completedtripdtp = new TripDashboardDTO();
+            completedtripdtp.Value = await GetTripCountByStatusAsync("Completed");
+            completedtripdtp.Title = "Completed Trips";
+            lst.Add(completedtripdtp);
+
+          
+
+
+
+            return lst.FirstOrDefault();
+            
+        }
+
+
+        public async Task<int> GetTripCountByStatusAsync(string ststus)
+        {
+            
+            return await _context.TripOrders.CountAsync(t => t.TripStatus.ToLower() == ststus.ToLower());
+        }
+
+        public async Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate)
+        {
+            return await _context.TripOrders
+                .Where(t => t.TripStatus.ToLower() == status.ToLower() &&
+                            t.FromDate >= startDate &&
+                            t.FromDate <= endDate)
+                .CountAsync();
+        }
+
+        public async Task<int> GetTodaysTripsCountAsync(DateTime today)
+        {
+            var startOfDay = today.Date;
+            var endOfDay = startOfDay.AddDays(1);
+
+            return await _context.TripOrders
+                .CountAsync(t => t.ToDate.HasValue &&
+                                 t.ToDate.Value >= startOfDay &&
+                                 t.FromDate.Value < endOfDay);
+        }
     }
+    
 }
