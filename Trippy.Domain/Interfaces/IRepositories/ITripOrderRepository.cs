@@ -13,5 +13,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
         TripOrderDTO GetTripDetails(int tripid);
         IEnumerable<TripListDataDTO> GetTripListAsync();
         Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
+        Task<IEnumerable<TripOrder>> GetAllByStatusAsync(string status);
+
     }
 }

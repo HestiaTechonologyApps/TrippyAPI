@@ -153,19 +153,22 @@ namespace Trippy.Bussiness.Services
 
         public async Task<List<TripOrderDTO>> GetAllTripListbyStatusAsync(string Status)
         {
-            List<TripOrderDTO> tripOrderdtos = new List<TripOrderDTO>();
+            if (string.IsNullOrWhiteSpace(Status))
+                return new List<TripOrderDTO>();
 
-            var tripOrders = await _repo.GetAllAsync();
+           
+            var tripOrders = await _repo.GetAllByStatusAsync(Status);
 
-            foreach (var tripOrder in tripOrders.Where (u=>u.TripStatus.ToLower()== Status.ToLower ()))
+           
+            var tripOrderDtos = new List<TripOrderDTO>();
+
+            foreach (var tripOrder in tripOrders)
             {
-                TripOrderDTO tripOrderDTO = await ConvertTripOrderToDTO(tripOrder);
-                tripOrderdtos.Add(tripOrderDTO);
-
-
+                var dto = await ConvertTripOrderToDTO(tripOrder);
+                tripOrderDtos.Add(dto);
             }
 
-            return tripOrderdtos;
+            return tripOrderDtos;
         }
 
         public async Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync()

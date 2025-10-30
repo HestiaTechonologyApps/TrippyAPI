@@ -99,7 +99,13 @@ namespace Trippy.Core.Repositories
 
         }
 
-     
-        
+        public async Task<IEnumerable<TripOrder>> GetAllByStatusAsync(string status)
+        {
+            return await _context.TripOrders
+                .Where(t => t.TripStatus.ToLower() == status.ToLower())
+                .ToListAsync();
+        }
+
+
     }
 }
