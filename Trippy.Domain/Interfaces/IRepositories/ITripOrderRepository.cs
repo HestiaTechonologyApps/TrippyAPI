@@ -11,10 +11,12 @@ namespace Trippy.Domain.Interfaces.IRepositories
     public interface ITripOrderRepository:IGenericRepository<TripOrder>
     {
         TripOrderDTO GetTripDetails(int tripid);
-        IEnumerable<TripListDataDTO> GetTripListAsync();
-        Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
-        Task<IEnumerable<TripOrder>> GetAllByStatusAsync(string status);
+        Task<List<TripListDataDTO>> GetTripListAsync();
 
+        Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
+        Task<List<TripOrder>> GetAllByStatusAsync(string status);
+        Task<List<TripOrder>> GetAllByStatusAndYearAsync(string status, int year);
+        Task<List<TripOrder>> GetAllByYearAsync(int year);
         Task<int> GetTotalTripsAsync();
         Task<int> GetTripCountByStatusAsync(string ststus);
         Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate);
@@ -22,6 +24,8 @@ namespace Trippy.Domain.Interfaces.IRepositories
         Task<List<TripOrder>> GetTodaysTripsAsync(DateTime today);
         Task<List<TripOrder>> GetTripsByDateAsync(DateTime date);
         Task<int> GetTodaysTripsCountAsync(DateTime today);
+        Task<List<TripOrder>> GetAllTripsAsync();
+
     }
-    
+
 }

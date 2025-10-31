@@ -17,6 +17,28 @@ namespace Trippy.Api.Controllers
             _service = service;
             _tripNotesService = tripNotesService;
         }
+        [HttpGet("GetAllTripLists")]
+        public async Task<CustomApiResponse> GetAllTripList([FromQuery] string? status = null, [FromQuery] int? year = null, [FromQuery] int userId = 0)
+        {
+            var response = new CustomApiResponse();
+
+            try
+            {
+                var tripOrders = await _service.GetAllTripListAsync(status, year);
+                response.IsSucess = true;
+                response.Value = tripOrders;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+
+            return response;
+        }
+
         [HttpGet("GetAllTripList")]
         public CustomApiResponse GetAll()
         {

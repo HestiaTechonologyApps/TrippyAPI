@@ -72,39 +72,32 @@ namespace Trippy.Core.Repositories
         }
 
 
-        public  IEnumerable<TripListDataDTO> GetTripListAsync()
+
+        public async Task<List<TripListDataDTO>> GetTripListAsync()
         {
-            return  (from tripOrder in _context.TripOrders
-                    join
-                    cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
-                    join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
-
-                    select new TripListDataDTO
-                    {
-                        TripOrderId = tripOrder.TripOrderId,
-                        TripCode = "T-" + tripOrder.TripOrderId.ToString(),
-                        FromDate=CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate,""),
-                        //FromDate = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
-                        IsActive = tripOrder.IsActive,
-                        CustomerName = cust.CustomerName,
-                        DriverName = drv.DriverName,
-                        PickUpFrom = tripOrder.FromLocation,
-                        RecivedVia = tripOrder.TripBookingModeId == 1 ? "Phone" :
-                         tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
-                         tripOrder.TripBookingModeId == 3 ? "Website" :
-                         "Unknown",
-                        Status = tripOrder.TripStatus
-
-                    }).ToList();
-
+            return await (
+                from tripOrder in _context.TripOrders
+                join cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
+                join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+                select new TripListDataDTO
+                {
+                    TripOrderId = tripOrder.TripOrderId,
+                    TripCode = "T-" + tripOrder.TripOrderId.ToString(),
+                    FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
+                    IsActive = tripOrder.IsActive,
+                    CustomerName = cust.CustomerName,
+                    DriverName = drv.DriverName,
+                    PickUpFrom = tripOrder.FromLocation,
+                    RecivedVia = tripOrder.TripBookingModeId == 1 ? "Phone" :
+                                 tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
+                                 tripOrder.TripBookingModeId == 3 ? "Website" :
+                                 "Unknown",
+                    Status = tripOrder.TripStatus
+                }
+            ).ToListAsync();
         }
 
-        public async Task<IEnumerable<TripOrder>> GetAllByStatusAsync(string status)
-        {
-            return await _context.TripOrders
-                .Where(t => t.TripStatus.ToLower() == status.ToLower())
-                .ToListAsync();
-        }
+
 
         public async Task<int> GetTotalTripsAsync()
         {
@@ -206,6 +199,41 @@ namespace Trippy.Core.Repositories
                             t.FromDate.Value < endOfDay)
                 .ToListAsync();
         }
+
+        public async Task<List<TripOrder>> GetAllByStatusAndYearAsync(string status, int year)
+        {
+            return await _context.TripOrders
+               .Where(t => t.TripStatus != null &&
+                           t.TripStatus.ToLower() == status.ToLower() &&
+                           t.ToDate.HasValue &&
+                           t.FromDate.Value.Year == year)
+               .ToListAsync();
+        }
+
+        public async Task<List<TripOrder>> GetAllByYearAsync(int year)
+        {
+            return await _context.TripOrders
+                .Where(t => t.ToDate.HasValue &&
+                            t.ToDate.Value.Year == year)
+                .ToListAsync();
+        }
+
+        public async Task<List<TripOrder>> GetAllByStatusAsync(string status)
+        {
+            return await _context.TripOrders
+      .Where(t => t.TripStatus != null && t.TripStatus.ToLower() == status.ToLower())
+      .ToListAsync();
+        }
+
+        public async Task<List<TripOrder>> GetAllTripsAsync()
+        {
+            return await _context.TripOrders
+        .Include(t => t.CustomerId)
+        .Include(t => t.DriverId)
+        .ToListAsync();
+        }
     }
+    }
+
     
-}
+

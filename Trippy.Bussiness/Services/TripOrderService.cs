@@ -111,13 +111,13 @@ namespace Trippy.Bussiness.Services
 
 
 
-        public IEnumerable<TripListDataDTO> GetAll()
+        public async Task<List<TripListDataDTO>> GetAll()
         {
 
 
 
 
-            var tripOrders = _repo.GetTripListAsync();
+            var tripOrders = await _repo.GetTripListAsync();
 
 
 
@@ -321,6 +321,112 @@ namespace Trippy.Bussiness.Services
                 BalanceAmount = t.BalanceAmount,
                 IsActive = t.IsActive
 
+            }).ToList();
+        }
+
+        public async Task<List<TripOrderDTO>> GetAllTripListByYearAsync(int year)
+        {
+            var tripOrders = await _repo.GetAllByYearAsync(year);
+
+            return tripOrders.Select(t => new TripOrderDTO
+            {
+                TripOrderId = t.TripOrderId,
+                TripBookingModeId = t.TripBookingModeId,
+                CustomerId = t.CustomerId,
+                DriverId = t.DriverId,
+                FromDate = t.FromDate,
+                FromDateString = t.FromDateString,
+                ToDate = t.ToDate,
+                ToDateString = t.ToDateString,
+                FromLocation = t.FromLocation,
+                ToLocation1 = t.ToLocation1,
+                ToLocation2 = t.ToLocation2,
+                ToLocation3 = t.ToLocation3,
+                ToLocation4 = t.ToLocation4,
+                PaymentDetails = t.PaymentDetails,
+                PaymentMode = t.PaymentMode,
+                BookedBy = t.BookedBy,
+                TripDetails = t.TripDetails,
+                TripStatus = t.TripStatus,
+                TripAmount = t.TripAmount
+            }).ToList();
+        } 
+
+        public async Task<List<TripOrderDTO>> GetAllTripListByStatusAndYearAsync(string status, int year)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+                return new List<TripOrderDTO>();
+
+            var tripOrders = await _repo.GetAllByStatusAndYearAsync(status, year);
+
+            return tripOrders.Select(t => new TripOrderDTO
+            {
+                TripOrderId = t.TripOrderId,
+                TripBookingModeId = t.TripBookingModeId,
+                CustomerId = t.CustomerId,
+                DriverId = t.DriverId,
+                FromDate = t.FromDate,
+                FromDateString = t.FromDateString,
+                ToDate = t.ToDate,
+                ToDateString = t.ToDateString,
+                FromLocation = t.FromLocation,
+                ToLocation1 = t.ToLocation1,
+                ToLocation2 = t.ToLocation2,
+                ToLocation3 = t.ToLocation3,
+                ToLocation4 = t.ToLocation4,
+                PaymentDetails = t.PaymentDetails,
+                PaymentMode = t.PaymentMode,
+                BookedBy = t.BookedBy,
+                TripDetails = t.TripDetails,
+                TripStatus = t.TripStatus,
+                TripAmount = t.TripAmount
+            }).ToList();
+        }
+
+        public async Task<List<TripOrderDTO>> GetAllTripListAsync(string? status = null, int? year = null)
+        {
+            List<TripOrder> tripOrders;
+
+            // 🧠 Decide which repo method to call based on filters
+            if (!string.IsNullOrWhiteSpace(status) && year.HasValue)
+            {
+                tripOrders = await _repo.GetAllByStatusAndYearAsync(status, year.Value);
+            }
+            else if (!string.IsNullOrWhiteSpace(status))
+            {
+                tripOrders = await _repo.GetAllByStatusAsync(status);
+            }
+            else if (year.HasValue)
+            {
+                tripOrders = await _repo.GetAllByYearAsync(year.Value);
+            }
+            else
+            {
+                tripOrders = await _repo.GetAllTripsAsync();
+            }
+
+            // 🔄 Convert to DTO
+            return tripOrders.Select(t => new TripOrderDTO
+            {
+                TripOrderId = t.TripOrderId,
+                TripBookingModeId = t.TripBookingModeId,
+                CustomerId = t.CustomerId,
+                DriverId = t.DriverId,
+                FromDate = t.FromDate,
+                FromDateString = t.FromDateString,
+                ToDate = t.ToDate,
+                ToDateString = t.ToDateString,
+                FromLocation = t.FromLocation,
+                ToLocation1 = t.ToLocation1,
+                ToLocation2 = t.ToLocation2,
+                ToLocation3 = t.ToLocation3,
+                ToLocation4 = t.ToLocation4,
+                PaymentDetails = t.PaymentDetails,
+                PaymentMode = t.PaymentMode,
+                BookedBy = t.BookedBy,
+                TripDetails = t.TripDetails,
+                TripStatus = t.TripStatus,
+                TripAmount = t.TripAmount
             }).ToList();
         }
     }
