@@ -244,7 +244,5 @@ namespace Trippy.Api.Controllers
         }
 
 
-
-
     }
 }

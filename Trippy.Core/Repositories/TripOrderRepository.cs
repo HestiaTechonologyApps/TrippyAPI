@@ -182,6 +182,30 @@ namespace Trippy.Core.Repositories
                                  t.ToDate.Value >= startOfDay &&
                                  t.FromDate.Value < endOfDay);
         }
+
+        public async Task<List<TripOrder>> GetTodaysTripsAsync(DateTime today)
+        {
+            var startOfDay = today.Date;
+            var endOfDay = startOfDay.AddDays(1);
+
+            return await _context.TripOrders
+                .Where(t => t.ToDate.HasValue &&
+                            t.ToDate.Value >= startOfDay &&
+                            t.FromDate.Value < endOfDay)
+                .ToListAsync();
+        }
+
+        public async Task<List<TripOrder>> GetTripsByDateAsync(DateTime date)
+        {
+            var startOfDay = date.Date;
+            var endOfDay = startOfDay.AddDays(1);
+
+            return await _context.TripOrders
+                .Where(t => t.ToDate.HasValue &&
+                            t.ToDate.Value >= startOfDay &&
+                            t.FromDate.Value < endOfDay)
+                .ToListAsync();
+        }
     }
     
 }

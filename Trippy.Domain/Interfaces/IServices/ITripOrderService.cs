@@ -18,6 +18,8 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<int> GetTodaysTripCountAsync();
         IEnumerable<TripListDataDTO> GetAll();
         Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
+        Task<List<TripOrderDTO>> GetTodaysTripListAsync();
+        Task<List<TripOrderDTO>> GetTripsByDateAsync(DateTime date);
         Task<TripOrderDTO?> GetByIdAsync(int id);
         Task<TripOrderDTO> CreateAsync(TripOrder coupon);
         Task<bool> UpdateAsync(TripOrder coupon);

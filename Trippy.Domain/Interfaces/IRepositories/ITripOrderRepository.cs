@@ -19,8 +19,9 @@ namespace Trippy.Domain.Interfaces.IRepositories
         Task<int> GetTripCountByStatusAsync(string ststus);
         Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate);
 
-        // Task<List<TripOrderDTO>> GetTodaysTripsAsync(DateTime today);
-         Task<int> GetTodaysTripsCountAsync(DateTime today);
+        Task<List<TripOrder>> GetTodaysTripsAsync(DateTime today);
+        Task<List<TripOrder>> GetTripsByDateAsync(DateTime date);
+        Task<int> GetTodaysTripsCountAsync(DateTime today);
     }
     
 }

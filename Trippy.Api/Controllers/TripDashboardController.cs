@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Trippy.Bussiness.Services;
+using Trippy.Domain.DTO;
 using Trippy.Domain.Interfaces.IServices;
 
 namespace Trippy.Api.Controllers
@@ -28,6 +29,21 @@ namespace Trippy.Api.Controllers
                 value = dashboard
             });
         }
-      
+
+        [HttpGet("today")]
+        public async Task<ActionResult<List<TripOrderDTO>>> GetTodaysTrips()
+        {
+            var trips = await _service.GetTodaysTripListAsync();
+            return Ok(trips);
+        }
+
+        // ✅ 3. Get trips for a specific date
+        [HttpGet("by-date")]
+        public async Task<ActionResult<List<TripOrderDTO>>> GetTripsByDate([FromQuery] DateTime date)
+        {
+            var trips = await _service.GetTripsByDateAsync(date);
+            return Ok(trips);
+        }
+
     }
 }
