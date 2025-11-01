@@ -34,8 +34,4 @@ namespace Trippy.Domain.Entities
 
         public bool IsDeleted { get; set; } = false;
     }
-
-
-
-
 }

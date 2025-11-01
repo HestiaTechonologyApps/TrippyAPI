@@ -28,6 +28,8 @@ namespace Trippy.InfraCore.Data
         public DbSet<FinancialYear> FinancialYears { get; set; }
         public DbSet<TripOrder> TripOrders { get; set; }
         public DbSet<TripNotes> TripNotes { get; set; }
+        public DbSet<ExpenseType> ExpenseTypes { get; set; }
+        public DbSet<ExpenseMaster> ExpenseMasters { get; set; }
 
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<TripBookingMode> TripBookingModes { get; set; }

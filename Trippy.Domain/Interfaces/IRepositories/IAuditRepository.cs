@@ -1,4 +1,5 @@
 using Trippy.Domain.DTO;
+using Trippy.Domain.Entities;
 
 public interface IAuditRepository
 {
@@ -12,5 +13,5 @@ public interface IAuditRepository
     ) where T : class;
 
     Task<List<AuditLogDTO>> GetAuditLogsForEntityAsync(string tableName, int recordId);
-
+    //Task LogAuditAsync<T>(string tableName, string action, int recordId, object oldEntity, ExpenseType newEntity, string changedBy);
 }

@@ -42,6 +42,8 @@ namespace Trippy.Bussiness
             services.AddScoped<IInvoiceMasterService, InvoiceMasterService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAttachmentService, AttachmentService>();
+            services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
+            services.AddScoped<IExpenseMasterService, ExpenseMasterService>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));
 
