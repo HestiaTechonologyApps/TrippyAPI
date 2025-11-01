@@ -28,6 +28,6 @@ namespace Trippy.Domain.Entities
     }
 
 
-   
-  
-    }
+
+
+}
