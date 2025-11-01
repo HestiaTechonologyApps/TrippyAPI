@@ -31,7 +31,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<ExpenseType> ExpenseTypes { get; set; }
         public DbSet<ExpenseMaster> ExpenseMasters { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<VehicleMaintenanceRecord> vehicleMaintenanceRecords { get; set; }
+        public DbSet<VehicleMaintenanceRecord> VehicleMaintenanceRecords { get; set; }
         public DbSet<TripKiloMeter> TripKiloMeters { get; set; }
 
         public DbSet<Attachment> Attachments { get; set; }
