@@ -11,10 +11,11 @@ namespace Trippy.Api.Controllers
     public class TripDashboardController : ControllerBase
     {
         private readonly ITripOrderService _service;
-
-        public TripDashboardController(ITripOrderService service)
+        private readonly IExpenseTypeService _reportService;
+        public TripDashboardController(ITripOrderService service, IExpenseTypeService reportService)
         {
             _service = service;
+            _reportService = reportService;
         }
         [HttpGet("GetTripDashboard")]
         public async Task<IActionResult> GetTripDashboard()
@@ -45,5 +46,11 @@ namespace Trippy.Api.Controllers
             return Ok(trips);
         }
 
+        [HttpGet("monthly-summary")]
+        public async Task<IActionResult> GetMonthlySummary([FromQuery] int year)
+        {
+            var data = await _reportService.GetMonthlyExpenseInvoiceAsync(year);
+            return Ok(data);
+        }
     }
 }
