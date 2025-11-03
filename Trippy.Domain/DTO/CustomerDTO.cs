@@ -1,4 +1,6 @@
-﻿namespace Trippy.Domain.DTO
+﻿using Trippy.Domain.Entities;
+
+namespace Trippy.Domain.DTO
 {
     public class CustomerDTO
     {
@@ -19,6 +21,7 @@
         public bool IsActive { get; set; } = true;
 
         public  List<AuditLogDTO> AuditTrails { get; set; }
-        
+        public ICollection<TripOrder> TripOrders { get; set; } = new List<TripOrder>();
     }
 }
+

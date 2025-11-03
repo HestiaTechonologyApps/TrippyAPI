@@ -10,6 +10,7 @@ namespace Trippy.Domain.Entities
         public int ExpenseMasterId { get; set; } // Primary key
 
         public int ExpenseTypeId { get; set; } // Primary key
+        public decimal Amount { get; set; } // Primary key
        
         
         public String Remark { get; set; } = "";
@@ -17,7 +18,7 @@ namespace Trippy.Domain.Entities
 
          public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-
+        public string CreatedBy { get; set; } = "";
         public bool IsActive { get; set; } = true;
 
         public bool IsDeleted { get; set; } = false;

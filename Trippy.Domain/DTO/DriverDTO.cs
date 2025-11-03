@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trippy.Domain.Entities;
 
 namespace Trippy.Domain.DTO
 {
@@ -25,10 +26,12 @@ namespace Trippy.Domain.DTO
         public bool IsActive { get; set; } = true;
 
         public List<AuditLogDTO> AuditLog { get; set; } //= new List<AuditLogDTO>();
+        public ICollection<TripOrder> TripOrders { get; set; } = new List<TripOrder>();
     }
+}
     public class ProfilePicUploadDto
     {
         public int AppUserId { get; set; }
         public IFormFile ProfilePic { get; set; }
     }
-}
+

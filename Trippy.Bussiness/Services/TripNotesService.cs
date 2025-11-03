@@ -42,6 +42,7 @@ namespace Trippy.Bussiness.Services
             tripNotesDTO.TripNoteId = tripNotes.TripNoteId;
             tripNotesDTO.TripNote = tripNotes.TripNote;
             tripNotesDTO.CreatedOn = tripNotes.CreatedOn;
+            tripNotesDTO.CtreatedOnString = tripNotes.CreatedOn.ToString("yyyy-MM-dd");
             tripNotesDTO.CtreatedOnString = tripNotes.CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
             //  tripNotesDTO.AuditLogg = await _auditRepository.GetAuditLogsForEntityAsync
             return tripNotesDTO;

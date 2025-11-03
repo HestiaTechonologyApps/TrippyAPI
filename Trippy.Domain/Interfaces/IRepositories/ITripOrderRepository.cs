@@ -20,11 +20,13 @@ namespace Trippy.Domain.Interfaces.IRepositories
         Task<int> GetTotalTripsAsync();
         Task<int> GetTripCountByStatusAsync(string ststus);
         Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate);
-
+        Task<List<TripOrderDTO>> GetAllTripsDetailAsync();
         Task<List<TripOrder>> GetTodaysTripsAsync(DateTime today);
         Task<List<TripOrder>> GetTripsByDateAsync(DateTime date);
         Task<int> GetTodaysTripsCountAsync(DateTime today);
         Task<List<TripOrder>> GetAllTripsAsync();
+     
+        
 
     }
 

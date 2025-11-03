@@ -19,6 +19,7 @@ namespace Trippy.Domain.DTO
         public bool IsActive { get; set; } = true;
         public bool Islocked { get; set; } = false;
         public DateTime? CreateAt { get; set; } = DateTime.UtcNow;
+        public string CreateAtString { get; set; } = "";
         public DateTime? Lastlogin { get; set; }
         public string LastloginString { get; set; } = "";
         public string CreateAtSyring { get; set; } = "";

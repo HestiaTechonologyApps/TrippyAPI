@@ -24,19 +24,19 @@ namespace Trippy.Bussiness.Services
 
         public async Task<List<VehicleMaintenanceRecordDTO>> GetAllAsync()
         {
-            List<VehicleMaintenanceRecordDTO> vehicleMaintenanceRecorddtos = new List<VehicleMaintenanceRecordDTO>();
+           // List<VehicleMaintenanceRecordDTO> vehicleMaintenanceRecorddtos = new List<VehicleMaintenanceRecordDTO>();
 
-            var vehicleMaintenanceRecords = await _repo.GetAllAsync();
+            var vehicleMaintenanceRecords =  _repo.GetAllExpenses();
 
-            foreach (var vehicleMaintenanceRecord in vehicleMaintenanceRecords)
-            {
-                VehicleMaintenanceRecordDTO vehicleMaintenanceRecordDTO = await ConvertVehicleMaintenanceRecordToDTO(vehicleMaintenanceRecord);
-                vehicleMaintenanceRecorddtos.Add(vehicleMaintenanceRecordDTO);
+          //  foreach (var vehicleMaintenanceRecord in vehicleMaintenanceRecords)
+           // {
+              //  VehicleMaintenanceRecordDTO vehicleMaintenanceRecordDTO = await ConvertVehicleMaintenanceRecordToDTO(vehicleMaintenanceRecord);
+                //vehicleMaintenanceRecorddtos.Add(vehicleMaintenanceRecordDTO);
 
 
-            }
+          //  }
 
-            return vehicleMaintenanceRecorddtos;
+            return vehicleMaintenanceRecords;
         }
 
         private async Task<VehicleMaintenanceRecordDTO> ConvertVehicleMaintenanceRecordToDTO(VehicleMaintenanceRecord vehicleMaintenanceRecord)

@@ -14,6 +14,7 @@ namespace Trippy.Domain.DTO
         public string Color { get; set; } = "";
         public string Route { get; set; } = "";
         public DateTime? Date { get; set; }
+        public string DateString { get; set; } = "";
 
     }
 }

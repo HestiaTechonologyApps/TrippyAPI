@@ -46,6 +46,7 @@ namespace Trippy.Bussiness.Services
             tripOrderDTO.TripOrderId = tripOrder.TripOrderId;
             tripOrderDTO.TripBookingModeId = tripOrder.TripBookingModeId;
             tripOrderDTO.CustomerId = tripOrder.CustomerId;
+            
             tripOrderDTO.DriverId = tripOrder.DriverId;
             tripOrderDTO.FromDate = tripOrder.FromDate;
             tripOrderDTO.FromDateString = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
@@ -90,25 +91,26 @@ namespace Trippy.Bussiness.Services
            );
             return true;
         }
+
+
+
         public async Task<List<TripOrderDTO>> GetAllAsync()
         {
 
+           
+            var tripOrders =  await _repo.GetAllTripsDetailAsync(); // this must return List<TripOrderDTO>
 
-            List<TripOrderDTO> tripOrderdtos = new List<TripOrderDTO>();
+            // If you need transformation later, keep this loop
+            // List<TripOrderDTO> tripOrderDtos = new List<TripOrderDTO>();
+            // foreach (var trip in tripOrders)
+            // {
+            //     TripOrderDTO dto = await ConvertTripOrderToDTO(trip);
+            //     tripOrderDtos.Add(dto);
+            // }
+            // return tripOrderDtos;
 
-            var tripOrders = await _repo.GetAllAsync();
-
-            foreach (var tripOrder in tripOrders)
-            {
-                TripOrderDTO tripOrderDTO = await ConvertTripOrderToDTO(tripOrder);
-                tripOrderdtos.Add(tripOrderDTO);
-
-
-            }
-
-            return tripOrderdtos;
+            return tripOrders;
         }
-
 
 
         public async Task<List<TripListDataDTO>> GetAll()

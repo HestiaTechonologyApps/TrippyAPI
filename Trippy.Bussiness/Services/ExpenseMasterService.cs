@@ -24,17 +24,17 @@ namespace Trippy.Bussiness.Services
 
         public async Task<List<ExpenseMarkDTO>> GetAllAsync()
         {
-            List<ExpenseMarkDTO> expenseMasterdtos = new List<ExpenseMarkDTO>();
+           // List<ExpenseMarkDTO> expenseMasterdtos = new List<ExpenseMarkDTO>();
 
-            var expenseMasters = await _repo.GetAllAsync();
+            var expenseMasters =  _repo.GetAllExpenses();
 
-            foreach (var expenseMaster in expenseMasters)
-            {
-                ExpenseMarkDTO expenseMasterDTO = await ConvertExpenseMasterToDTO(expenseMaster);
-                expenseMasterdtos.Add(expenseMasterDTO);
-            }
+            //foreach (var expenseMaster in expenseMasters)
+            //{
+            //    ExpenseMarkDTO expenseMasterDTO = await ConvertExpenseMasterToDTO(expenseMaster);
+            //    expenseMasterdtos.Add(expenseMasterDTO);
+            //}
 
-            return expenseMasterdtos;
+            return expenseMasters;
         }
 
         public async Task<ExpenseMarkDTO?> GetByIdAsync(int id)
@@ -64,11 +64,13 @@ namespace Trippy.Bussiness.Services
         {
             ExpenseMarkDTO expenseMasterDTO = new ExpenseMarkDTO();
             expenseMasterDTO.ExpenseTypeId = expenseMaster.ExpenseTypeId;
+            
             expenseMasterDTO.Remark = expenseMaster.Remark;
             expenseMasterDTO.ExpenseMasterId = expenseMaster.ExpenseMasterId;
             expenseMasterDTO.CreatedOn = expenseMaster.CreatedOn;
             expenseMasterDTO.CreatedOnString = expenseMaster.CreatedOn.ToString("yyyy-MM-dd");
             expenseMasterDTO.IsActive = expenseMaster.IsActive;
+            expenseMasterDTO.Amount = expenseMaster.Amount;
             expenseMasterDTO.IsDeleted = expenseMaster.IsDeleted;
             return expenseMasterDTO;
         }

@@ -14,7 +14,7 @@ namespace Trippy.Domain.DTO
         public int ExpenseTypeId { get; set; } // Primary key
 
         public String ExpenseTypeName { get; set; } = "";
-
+        public decimal Amount { get; set; }
         public String Remark { get; set; } = "";
 
 
@@ -22,9 +22,9 @@ namespace Trippy.Domain.DTO
 
         public string CreatedOnString { get; set; } = "";
         public bool IsActive { get; set; } = true;
-
+        public string CreatedBy { get; set; } = "";
         public bool IsDeleted { get; set; } = false;
 
-        public List<AuditLogDTO> AuditLgs { get; set; } = new List<AuditLogDTO>();
+        public List<AuditLogDTO> AauditLgs { get; set; } = new List<AuditLogDTO>();
     }
 }

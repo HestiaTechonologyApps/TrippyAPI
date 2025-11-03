@@ -10,6 +10,7 @@ namespace Trippy.Domain.DTO
     {
         public int VehicleMaintenanceRecordId { get; set; }
         public int VehicleId { get; set; }
+        public string VehicleName { get; set; } = "";
         public DateTime MaintenanceDate { get; set; }
         public string MaintenanceDateString { get; set; } = "";
         public string MaintenanceType { get; set; } = string.Empty; // Preventive / Corrective / Accident Repair
