@@ -251,7 +251,7 @@ namespace Trippy.Bussiness.Services
             Title = "Scheduled",
             Value = scheduled,
             Change = changeScheduled,
-            Color = "#B8B8FF",
+            Color = "#FACC15",
             Route = "scheduled"
         }
     };
