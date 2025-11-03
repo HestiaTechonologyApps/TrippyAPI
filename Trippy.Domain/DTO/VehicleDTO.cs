@@ -27,5 +27,7 @@ namespace Trippy.Domain.DTO
         public DateTime? UpdatedDate { get; set; }
         public string UpdatedDateString = "";
         public string? UpdatedBy { get; set; }
+
+        public List<AuditLogDTO> AuuditLgs { get; set; } = new List<AuditLogDTO>();
     }
 }

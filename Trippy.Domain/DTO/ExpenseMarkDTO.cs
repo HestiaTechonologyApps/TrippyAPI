@@ -20,7 +20,7 @@ namespace Trippy.Domain.DTO
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
-
+        public string CreatedOnString { get; set; } = "";
         public bool IsActive { get; set; } = true;
 
         public bool IsDeleted { get; set; } = false;

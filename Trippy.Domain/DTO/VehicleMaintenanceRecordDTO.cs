@@ -22,5 +22,7 @@ namespace Trippy.Domain.DTO
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public string CreatedDateString { get; set; } = "";
         public string CreatedBy { get; set; } = string.Empty;
+
+        public List<AuditLogDTO> AudiitLgs { get; set; } = new List<AuditLogDTO>();
     }
 }

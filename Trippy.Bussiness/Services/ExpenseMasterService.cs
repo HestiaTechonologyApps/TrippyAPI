@@ -67,6 +67,7 @@ namespace Trippy.Bussiness.Services
             expenseMasterDTO.Remark = expenseMaster.Remark;
             expenseMasterDTO.ExpenseMasterId = expenseMaster.ExpenseMasterId;
             expenseMasterDTO.CreatedOn = expenseMaster.CreatedOn;
+            expenseMasterDTO.CreatedOnString = expenseMaster.CreatedOn.ToString("yyyy-MM-dd");
             expenseMasterDTO.IsActive = expenseMaster.IsActive;
             expenseMasterDTO.IsDeleted = expenseMaster.IsDeleted;
             return expenseMasterDTO;
