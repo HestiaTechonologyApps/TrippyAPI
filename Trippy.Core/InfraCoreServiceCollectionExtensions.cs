@@ -45,6 +45,7 @@ namespace Trippy.InfraCore
             services.AddScoped<IInvoiceMasterRepository, InvoiceMasterRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IVehicleMaintanenceRepository, VehicleMainteanceRepository>();
+            services.AddScoped<ITripKiloMeterRepository, TripKiloMeterRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<ICompanyBranchRepository, CompanyBranchRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();

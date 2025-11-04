@@ -23,12 +23,13 @@ namespace Trippy.Core.Repositories
         public List<VehicleMaintenanceRecordDTO> GetAllExpenses()
         {
             var result = (from vm in _context.VehicleMaintenanceRecords
-                          join veh in _context.Vehicles on vm.VehicleId equals veh.VehicleId
+                          join veh in _context.Vehicles on vm.VehicleId equals veh.VehicleId into vehGroup
+                          from veh in vehGroup.DefaultIfEmpty()
                           select new VehicleMaintenanceRecordDTO
                           {
                               VehicleMaintenanceRecordId = vm.VehicleMaintenanceRecordId,
                               VehicleId = vm.VehicleId,
-                              VehicleName = veh.VehicleType + " - " + veh.RegistrationNumber,
+                              VehicleName = veh != null ? veh.VehicleType + " - " + veh.RegistrationNumber : "N/A",
                               WorkshopName = vm.WorkshopName,
                               Description = vm.Description,
                               Cost = vm.Cost,
@@ -38,6 +39,7 @@ namespace Trippy.Core.Repositories
                               CreatedDate = vm.CreatedDate,
                               CreatedDateString = vm.CreatedDate.ToString("dd MMMM yyyy hh:mm tt"),
                               MaintenanceDate = vm.MaintenanceDate,
+                              MaintenanceType = vm.MaintenanceType,
                               MaintenanceDateString = vm.MaintenanceDate.ToString("dd MMMM yyyy hh:mm tt"),
                               Remarks = vm.Remarks
                           }).ToList();

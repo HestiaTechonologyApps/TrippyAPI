@@ -239,11 +239,23 @@ namespace Trippy.Core.Repositories
 
         public  Task <List<TripOrderDTO>> GetAllTripsDetailAsync()
         {
-            return (from trp in _context.TripOrders
-                    join cust in _context.Customers on trp.CustomerId equals cust.CustomerId
-                    join drv in _context.Drivers on trp.DriverId equals drv.DriverId
-                   // join trpmod in _context.TripBookingModes on trp.TripBookingModeId equals trpmod.TripBookingModeId
-                    select new TripOrderDTO
+            var result = (from trp in _context.TripOrders
+
+                              
+                          join cust in _context.Customers
+                              on trp.CustomerId equals cust.CustomerId into custGroup
+                          from cust in custGroup.DefaultIfEmpty()
+
+                              
+                          join drv in _context.Drivers
+                              on trp.DriverId equals drv.DriverId into drvGroup
+                          from drv in drvGroup.DefaultIfEmpty()
+
+                            
+                          join trpmod in _context.TripBookingModes
+                              on trp.TripBookingModeId equals trpmod.TripBookingModeId into trpmodGroup
+                          from trpmod in trpmodGroup.DefaultIfEmpty()
+                          select new TripOrderDTO
                     {
                         TripOrderId = trp.TripOrderId,
                         TripBookingModeId = trp.TripBookingModeId,
@@ -275,11 +287,12 @@ namespace Trippy.Core.Repositories
                         ToDateString = trp.ToDate.HasValue
                             ? trp.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
                             : string.Empty,
-                       // TripBookingModeName = trpmod.TripBookingModeName,
+                        TripBookingModeName = trpmod.TripBookingModeName,
                         
                         CustomerName = cust.CustomerName,
                         DriverName = drv.DriverName
                     }).ToListAsync();
+            return result;
         }
 
        
