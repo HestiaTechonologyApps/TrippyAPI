@@ -242,7 +242,7 @@ namespace Trippy.Core.Repositories
             return (from trp in _context.TripOrders
                     join cust in _context.Customers on trp.CustomerId equals cust.CustomerId
                     join drv in _context.Drivers on trp.DriverId equals drv.DriverId
-                    join trpmod in _context.TripBookingModes on trp.TripBookingModeId equals trpmod.TripBookingModeId
+                   // join trpmod in _context.TripBookingModes on trp.TripBookingModeId equals trpmod.TripBookingModeId
                     select new TripOrderDTO
                     {
                         TripOrderId = trp.TripOrderId,
@@ -258,8 +258,8 @@ namespace Trippy.Core.Repositories
                         ToLocation4 = trp.ToLocation4,
                         PaymentMode = trp.PaymentMode,
                         PaymentDetails = trp.PaymentDetails,
-                        BookedBy = trp.BookedBy,
-                        TripDetails = trp.TripDetails,
+                         BookedBy = trp.BookedBy,
+                         TripDetails = trp.TripDetails,
                         TripStatus = trp.TripStatus,
                         TripAmount = trp.TripAmount,
                         AdvanceAmount = trp.AdvanceAmount,
@@ -275,7 +275,7 @@ namespace Trippy.Core.Repositories
                         ToDateString = trp.ToDate.HasValue
                             ? trp.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
                             : string.Empty,
-                        TripBookingModeName = trpmod.TripBookingModeName,
+                       // TripBookingModeName = trpmod.TripBookingModeName,
                         
                         CustomerName = cust.CustomerName,
                         DriverName = drv.DriverName
