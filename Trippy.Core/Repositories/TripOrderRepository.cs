@@ -85,6 +85,7 @@ namespace Trippy.Core.Repositories
                     TripCode = "T-" + tripOrder.TripOrderId.ToString(),
                     FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                     IsActive = tripOrder.IsActive,
+                    
                     CustomerName = cust.CustomerName,
                     DriverName = drv.DriverName,
                     PickUpFrom = tripOrder.FromLocation,
@@ -92,6 +93,7 @@ namespace Trippy.Core.Repositories
                                  tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
                                  tripOrder.TripBookingModeId == 3 ? "Website" :
                                  "Unknown",
+                    
                     Status = tripOrder.TripStatus
                 }
             ).ToListAsync();
@@ -240,10 +242,12 @@ namespace Trippy.Core.Repositories
             return (from trp in _context.TripOrders
                     join cust in _context.Customers on trp.CustomerId equals cust.CustomerId
                     join drv in _context.Drivers on trp.DriverId equals drv.DriverId
+                    join trpmod in _context.TripBookingModes on trp.TripBookingModeId equals trpmod.TripBookingModeId
                     select new TripOrderDTO
                     {
                         TripOrderId = trp.TripOrderId,
                         TripBookingModeId = trp.TripBookingModeId,
+                        
                         CustomerId = trp.CustomerId,
                         DriverId = trp.DriverId,
 
@@ -252,10 +256,18 @@ namespace Trippy.Core.Repositories
                         ToLocation2 = trp.ToLocation2,
                         ToLocation3 = trp.ToLocation3,
                         ToLocation4 = trp.ToLocation4,
-
+                        PaymentMode = trp.PaymentMode,
+                        PaymentDetails = trp.PaymentDetails,
+                        BookedBy = trp.BookedBy,
+                        TripDetails = trp.TripDetails,
+                        TripStatus = trp.TripStatus,
+                        TripAmount = trp.TripAmount,
+                        AdvanceAmount = trp.AdvanceAmount,
+                        BalanceAmount = trp.BalanceAmount,
+                        IsActive = trp.IsActive,
                         FromDate = trp.FromDate,
                         ToDate = trp.ToDate,
-
+                        
                         FromDateString = trp.FromDate.HasValue
                             ? trp.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
                             : string.Empty,
@@ -263,7 +275,8 @@ namespace Trippy.Core.Repositories
                         ToDateString = trp.ToDate.HasValue
                             ? trp.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
                             : string.Empty,
-
+                        TripBookingModeName = trpmod.TripBookingModeName,
+                        
                         CustomerName = cust.CustomerName,
                         DriverName = drv.DriverName
                     }).ToListAsync();

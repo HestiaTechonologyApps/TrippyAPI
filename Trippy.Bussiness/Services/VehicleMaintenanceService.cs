@@ -45,7 +45,7 @@ namespace Trippy.Bussiness.Services
             vehicleMaintenanceRecordDTO.VehicleMaintenanceRecordId = vehicleMaintenanceRecord.VehicleMaintenanceRecordId;
             vehicleMaintenanceRecordDTO.VehicleId = vehicleMaintenanceRecord.VehicleId;
             vehicleMaintenanceRecordDTO.MaintenanceDate = vehicleMaintenanceRecord.MaintenanceDate;
-            vehicleMaintenanceRecordDTO.MaintenanceDateString = vehicleMaintenanceRecord.MaintenanceDate.ToString("yyyy-MM-dd");
+            vehicleMaintenanceRecordDTO.MaintenanceDateString = vehicleMaintenanceRecord.MaintenanceDate.ToString("dd MMMM yyyy hh:mm tt");
             vehicleMaintenanceRecordDTO.MaintenanceType = vehicleMaintenanceRecord.MaintenanceType;
             vehicleMaintenanceRecordDTO.WorkshopName = vehicleMaintenanceRecord.WorkshopName;
             vehicleMaintenanceRecordDTO.Description = vehicleMaintenanceRecord.Description;
@@ -54,7 +54,7 @@ namespace Trippy.Bussiness.Services
             vehicleMaintenanceRecordDTO.PerformedBy = vehicleMaintenanceRecord.PerformedBy;
             vehicleMaintenanceRecordDTO.Remarks = vehicleMaintenanceRecord.Remarks;
             vehicleMaintenanceRecordDTO.CreatedDate = vehicleMaintenanceRecord.CreatedDate;
-            vehicleMaintenanceRecordDTO.CreatedDateString = vehicleMaintenanceRecord.CreatedDate.ToString("yyyy-MM-dd");
+            vehicleMaintenanceRecordDTO.CreatedDateString = vehicleMaintenanceRecord.CreatedDate.ToString("dd MMMM yyyy hh:mm tt");
             vehicleMaintenanceRecordDTO.CreatedBy = vehicleMaintenanceRecord.CreatedBy;
             return vehicleMaintenanceRecordDTO;
         }
