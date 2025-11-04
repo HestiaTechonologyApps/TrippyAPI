@@ -24,5 +24,8 @@ namespace Trippy.Domain.DTO
         public DateTime CreatedOn { get; set; }
         public string CreatedOnString { get; set; } = "";
 
+        public List<AuditLogDTO> AaudditLogs { get; set; } = new List<AuditLogDTO>();
+
+
     }
 }
