@@ -23,7 +23,7 @@ namespace Trippy.Domain.DTO
         public int TripEndReading { get; set; }
         public DateTime CreatedOn { get; set; }
         public string CreatedOnString { get; set; } = "";
-
+        public Double TotalKM { get; set; }
         public List<AuditLogDTO> AaudditLogs { get; set; } = new List<AuditLogDTO>();
 
 

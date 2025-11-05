@@ -45,7 +45,7 @@ namespace Trippy.Core.Repositories
 
                             TripStartReading = km.TripStartReading,
                             TripEndReading = km.TripEndReading,
-
+                            TotalKM = (km.TripStartReading ) + (km.TripEndReading ),
                             CreatedOn = km.CreatedOn,
                             CreatedOnString = km.CreatedOn.ToString("dd MMM yyyy hh:mm tt"),
 
