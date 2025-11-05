@@ -11,6 +11,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
     public interface ITripKiloMeterRepository : IGenericRepository<TripKiloMeter>
     {
         List<TripKiloMeterDTO> GetAllTripKilometers();
+        TripKiloMeterDTO GetTripKilometerById(int id);
 
     }
 }

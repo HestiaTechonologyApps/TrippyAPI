@@ -40,12 +40,10 @@ namespace Trippy.Bussiness.Services
 
         public async Task<TripKiloMeterDTO?> GetByIdAsync(int id)
         {
-            var q = await _repo.GetByIdAsync(id);
+            var q = _repo.GetTripKilometerById(id); // already a DTO
             if (q == null) return null;
-            var tripkiloMeterdto = await ConvertTripKiloMeterToDTO(q);
-            
 
-            return tripkiloMeterdto;
+            return q;
         }
 
         public async Task<TripKiloMeterDTO> CreateAsync(TripKiloMeter tripKiloMeter)
