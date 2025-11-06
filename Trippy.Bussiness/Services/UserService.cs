@@ -103,18 +103,50 @@ namespace Trippy.Bussiness.Services
 
         public async Task<bool> UpdateAsync(User user)
         {
-            var oldentity = await _repo.GetByIdAsync(user.UserId);
-            _repo.Detach(oldentity);
-            _repo.Update(user);
+            var oldEntity = await _repo.GetByIdAsync(user.UserId);
+            if (oldEntity == null)
+                return false;
+
+            // 🔹 Keep old values if new input is empty or “string”
+            oldEntity.UserName = string.IsNullOrEmpty(user.UserName) || user.UserName == "string"
+                ? oldEntity.UserName
+                : user.UserName;
+
+            oldEntity.UserEmail = string.IsNullOrEmpty(user.UserEmail) || user.UserEmail == "string"
+                ? oldEntity.UserEmail
+                : user.UserEmail;
+
+            oldEntity.PhoneNumber = string.IsNullOrEmpty(user.PhoneNumber) || user.PhoneNumber == "string"
+                ? oldEntity.PhoneNumber
+                : user.PhoneNumber;
+
+            oldEntity.Address = string.IsNullOrEmpty(user.Address) || user.Address == "string"
+                ? oldEntity.Address
+                : user.Address;
+
+            // 🔹 Only update password if a real new one is provided
+            if (!string.IsNullOrEmpty(user.PasswordHash) && user.PasswordHash != "string")
+                oldEntity.PasswordHash = user.PasswordHash;
+
+            oldEntity.IsActive = user.IsActive;
+            oldEntity.Islocked = user.Islocked;
+            oldEntity.Lastlogin = DateTime.UtcNow; // optional, update login time
+            oldEntity.CreateAt = DateTime.UtcNow;
+
+            // ✅ Save changes to database
+            _repo.Update(oldEntity);
             await _repo.SaveChangesAsync();
+
+            // ✅ Log the change
             await _auditRepository.LogAuditAsync<User>(
-               tableName: "Users",
-               action: "update",
-               recordId: user.UserId,
-               oldEntity: oldentity,
-               newEntity: user,
-               changedBy: "System" // Replace with actual user info
-           );
+                tableName: "Users",
+                action: "update",
+                recordId: user.UserId,
+                oldEntity: oldEntity,
+                newEntity: user,
+                changedBy: "System"
+            );
+
             return true;
         }
     }

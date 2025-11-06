@@ -79,6 +79,7 @@ namespace Trippy.Api.Controllers
         public async Task<CustomApiResponse> Update(int id, [FromBody] User user)
         {
             var response = new CustomApiResponse();
+
             if (id != user.UserId)
             {
                 response.IsSucess = false;
@@ -86,6 +87,7 @@ namespace Trippy.Api.Controllers
                 response.StatusCode = 400;
                 return response;
             }
+
             var updated = await _service.UpdateAsync(user);
             if (!updated)
             {
@@ -95,10 +97,14 @@ namespace Trippy.Api.Controllers
             }
             else
             {
+                // ✅ Hide password before sending response
+                user.PasswordHash = "";
+
                 response.IsSucess = true;
                 response.Value = user;
                 response.StatusCode = 200;
             }
+
             return response;
         }
         [HttpDelete("{id}")]
