@@ -61,12 +61,12 @@ namespace Trippy.Bussiness.Services
 
         public async Task<VehicleMaintenanceRecordDTO?> GetByIdAsync(int id)
         {
-            var q = await _repo.GetByIdAsync(id);
-            if (q == null) return null;
-            var vehicleMaintenanceRecorddto = await ConvertVehicleMaintenanceRecordToDTO(q);
+            var q = await _repo.GetExpenseByIdAsync(id);
+           // if (q == null) return null;
+           // var vehicleMaintenanceRecorddto = await ConvertVehicleMaintenanceRecordToDTO(q);
 
 
-            return vehicleMaintenanceRecorddto;
+            return q;
         }
 
         public async Task<VehicleMaintenanceRecordDTO> CreateAsync(VehicleMaintenanceRecord vehicleMaintenanceRecord)
