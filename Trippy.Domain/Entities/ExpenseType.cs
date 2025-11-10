@@ -9,7 +9,7 @@ namespace Trippy.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ExpenseTypeId { get; set; } // Primary key
-
+        public String ExpenseTypeCode { get; set; } = "";
         public String ExpenseTypeName { get; set; } = "";
         public String Description { get; set; } = "";
 

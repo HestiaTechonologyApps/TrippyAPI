@@ -9,14 +9,17 @@ namespace Trippy.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ExpenseMasterId { get; set; } // Primary key
 
+       
         public int ExpenseTypeId { get; set; } // Primary key
         public decimal Amount { get; set; } // Primary key
-       
-        
+
+        public String ExpenseVoucher { get; set; } = "";
         public String Remark { get; set; } = "";
 
+        public int RelatedEntityId { get; set; } = 0;
+        public String RelatedEntityType { get; set; } = "";
 
-         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
         public string CreatedBy { get; set; } = "";
         public bool IsActive { get; set; } = true;
