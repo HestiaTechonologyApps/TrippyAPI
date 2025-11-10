@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -113,6 +114,27 @@ namespace Trippy.Core.Repositories
             return q;
         }
 
+        public async Task<List<ExpenseMasterAuditDTO>> GetExpenseLogsForEntityAsync(string tableName, int recordId)
+        { 
+           var q= from exp in _context.ExpenseMasters
+                   where exp.RelatedEntityType == tableName && exp.RelatedEntityId == recordId
+                   orderby exp.CreatedOn descending
+                   select new ExpenseMasterAuditDTO
+                   {
+                          ExpenseMasterId = exp.ExpenseMasterId,  
+                            ExpenseTypeName = _context.ExpenseTypes
+                                                    .Where(et => et.ExpenseTypeId == exp.ExpenseTypeId)
+                                                    .Select(et => et.ExpenseTypeName)
+                                                    .FirstOrDefault() ?? "",
+                            ExpenseVoucher = exp.ExpenseVoucher,
+                            Amount = exp.Amount,
+                            CreatedBy = exp.CreatedBy,
+
+                       CreatedOn = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt")
+                   };
+            return  await q.ToListAsync ();
+        }
+
 
 
 
@@ -168,5 +190,7 @@ namespace Trippy.Core.Repositories
 
             return det;
         }
+
+     
     }
 }

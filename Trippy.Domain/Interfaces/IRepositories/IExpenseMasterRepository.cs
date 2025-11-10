@@ -13,5 +13,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
         ExpenseMarkDTO GetExpenseDetails(int expenseId);
         List<ExpenseMarkDTO> GetAllExpenses();
         Task<string?> GenerateExpenseVoucherNumberAsync(ExpenseMaster expenseMaster);
+        Task<List<ExpenseMasterAuditDTO>> GetExpenseLogsForEntityAsync(string tableName, int recordId);
+
     }
 }

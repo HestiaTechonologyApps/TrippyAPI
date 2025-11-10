@@ -15,5 +15,6 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<ExpenseMarkDTO> CreateAsync(ExpenseMaster coupon);
         Task<bool> UpdateAsync(ExpenseMaster coupon);
         Task<bool> DeleteAsync(int id);
+        Task <List<ExpenseMasterAuditDTO>>GetExpenseMasterForEntityAsync(string tableName, int recordId);
     }
 }

@@ -115,5 +115,10 @@ namespace Trippy.Bussiness.Services
             );
             return true;
         }
+
+        public async Task<List<ExpenseMasterAuditDTO>> GetExpenseMasterForEntityAsync(string tableName, int recordId)
+        {
+            return await _repo.GetExpenseLogsForEntityAsync(tableName, recordId);
+        }
     }
 }

@@ -3,7 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Trippy.Domain.Entities
 {
-    public class ExpenseMaster
+
+  
+        public class ExpenseMaster
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

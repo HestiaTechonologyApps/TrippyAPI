@@ -31,4 +31,18 @@ namespace Trippy.Domain.DTO
         public decimal TripAmount { get; set; } = 0;
         public List<AuditLogDTO> AauditLgs { get; set; } = new List<AuditLogDTO>();
     }
+
+    public class ExpenseMasterAuditDTO
+    {
+        public int ExpenseMasterId { get; set; } // Primary key
+        public String ExpenseTypeName { get; set; } = "";
+
+        public String ExpenseVoucher { get; set; } = "";
+
+        public decimal Amount { get; set; } // Primary key
+
+        public String CreatedOn { get; set; } = "";
+
+        public string CreatedBy { get; set; } = "";
+    }
 }
