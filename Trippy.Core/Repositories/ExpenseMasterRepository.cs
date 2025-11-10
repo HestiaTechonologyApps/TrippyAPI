@@ -68,6 +68,8 @@ namespace Trippy.Core.Repositories
                         RelatedEntityId= exp.RelatedEntityId,
                         RelatedTo = "",
                         RelatedEntityType = exp.RelatedEntityType,
+                        ExpenseVoucher= exp.ExpenseVoucher,
+                        PaymentMode= exp.PaymentMode,
                         CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
                         Remark = exp.Remark,
                         IsActive = exp.IsActive
@@ -116,16 +118,14 @@ namespace Trippy.Core.Repositories
 
         public async Task<List<ExpenseMasterAuditDTO>> GetExpenseLogsForEntityAsync(string tableName, int recordId)
         { 
-           var q= from exp in _context.ExpenseMasters
-                   where exp.RelatedEntityType == tableName && exp.RelatedEntityId == recordId
+           var q= from exp in _context.ExpenseMasters join  expty in _context.ExpenseTypes
+                  on exp.ExpenseTypeId equals expty.ExpenseTypeId
+                  where exp.RelatedEntityType == tableName && exp.RelatedEntityId == recordId
                    orderby exp.CreatedOn descending
                    select new ExpenseMasterAuditDTO
                    {
                           ExpenseMasterId = exp.ExpenseMasterId,  
-                            ExpenseTypeName = _context.ExpenseTypes
-                                                    .Where(et => et.ExpenseTypeId == exp.ExpenseTypeId)
-                                                    .Select(et => et.ExpenseTypeName)
-                                                    .FirstOrDefault() ?? "",
+                            ExpenseTypeName = expty.ExpenseTypeName ,
                             ExpenseVoucher = exp.ExpenseVoucher,
                             Amount = exp.Amount,
                             CreatedBy = exp.CreatedBy,

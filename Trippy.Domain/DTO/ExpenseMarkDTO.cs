@@ -10,7 +10,8 @@ namespace Trippy.Domain.DTO
     {
         public int ExpenseMasterId { get; set; } // Primary key
 
-
+        public String ExpenseVoucher { get; set; } = "";
+        public String PaymentMode { get; set; } = "";
         public int ExpenseTypeId { get; set; } // Primary key
 
         public String ExpenseTypeName { get; set; } = "";
@@ -40,7 +41,7 @@ namespace Trippy.Domain.DTO
         public String ExpenseVoucher { get; set; } = "";
 
         public decimal Amount { get; set; } // Primary key
-
+        public String PaymentMode { get; set; } = "";
         public String CreatedOn { get; set; } = "";
 
         public string CreatedBy { get; set; } = "";
