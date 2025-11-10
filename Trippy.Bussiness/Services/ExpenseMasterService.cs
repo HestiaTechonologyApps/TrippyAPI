@@ -47,6 +47,10 @@ namespace Trippy.Bussiness.Services
 
         public async Task<ExpenseMarkDTO> CreateAsync(ExpenseMaster expenseMaster)
         {
+            if(expenseMaster.ExpenseVoucher == null || expenseMaster.ExpenseVoucher == "")
+            {
+                expenseMaster.ExpenseVoucher = await _repo.GenerateExpenseVoucherNumberAsync(expenseMaster);
+            }
             await _repo.AddAsync(expenseMaster);
             await _repo.SaveChangesAsync();
             await this.auditRepository.LogAuditAsync<ExpenseMaster>(

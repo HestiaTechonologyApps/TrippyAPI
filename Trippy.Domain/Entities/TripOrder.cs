@@ -12,6 +12,7 @@ namespace Trippy.Domain.Entities
         public int TripOrderId { get; set; } // Primary key
         public int TripBookingModeId { get; set; }
 
+        public string TripCode { get; set; } = "";
 
 
         public int CustomerId { get; set; }

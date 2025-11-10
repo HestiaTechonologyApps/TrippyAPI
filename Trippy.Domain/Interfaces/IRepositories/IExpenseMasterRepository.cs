@@ -12,5 +12,6 @@ namespace Trippy.Domain.Interfaces.IRepositories
     {
         ExpenseMarkDTO GetExpenseDetails(int expenseId);
         List<ExpenseMarkDTO> GetAllExpenses();
+        Task<string?> GenerateExpenseVoucherNumberAsync(ExpenseMaster expenseMaster);
     }
 }

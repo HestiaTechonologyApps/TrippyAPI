@@ -486,11 +486,22 @@ namespace Trippy.CORE.Migrations
                     b.Property<int>("ExpenseTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ExpenseVoucher")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("RelatedEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RelatedEntityType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remark")
                         .IsRequired()
@@ -510,6 +521,10 @@ namespace Trippy.CORE.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseTypeId"));
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpenseTypeCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -790,6 +805,10 @@ namespace Trippy.CORE.Migrations
 
                     b.Property<int>("TripBookingModeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TripCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TripDetails")
                         .IsRequired()
