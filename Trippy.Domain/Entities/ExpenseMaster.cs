@@ -18,6 +18,7 @@ namespace Trippy.Domain.Entities
 
         public int RelatedEntityId { get; set; } = 0;
         public String RelatedEntityType { get; set; } = "";
+        public String PaymentMode { get; set; } = "";
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
