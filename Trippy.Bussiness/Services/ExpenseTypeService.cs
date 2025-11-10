@@ -25,6 +25,7 @@ namespace Trippy.Bussiness.Services
 
         public async Task<ExpenseTypeDTO> CreateAsync(ExpenseType expenseType)
         {
+
             await _repo.AddAsync(expenseType);
             await _repo.SaveChangesAsync();
             await this.auditRepository.LogAuditAsync<ExpenseType>(

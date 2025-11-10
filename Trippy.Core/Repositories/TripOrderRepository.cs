@@ -82,7 +82,7 @@ namespace Trippy.Core.Repositories
                 select new TripListDataDTO
                 {
                     TripOrderId = tripOrder.TripOrderId,
-                    TripCode = "T-" + tripOrder.TripOrderId.ToString(),
+                    TripCode =tripOrder.TripCode,
                     FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                     IsActive = tripOrder.IsActive,
                     

@@ -28,6 +28,10 @@ namespace Trippy.Bussiness.Services
         {
             await _repo.AddAsync(tripOrder);
             await _repo.SaveChangesAsync();
+
+            tripOrder.TripCode = "T-" + tripOrder.TripOrderId.ToString();
+             _repo.Update(tripOrder);
+            await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<TripOrder>(
                tableName: AuditTableName,
                action: "create",

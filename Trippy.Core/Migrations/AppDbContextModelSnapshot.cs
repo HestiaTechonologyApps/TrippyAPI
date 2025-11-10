@@ -496,10 +496,6 @@ namespace Trippy.CORE.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PaymentMode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RelatedEntityId")
                         .HasColumnType("int");
 
@@ -809,6 +805,10 @@ namespace Trippy.CORE.Migrations
 
                     b.Property<int>("TripBookingModeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TripCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TripDetails")
                         .IsRequired()
