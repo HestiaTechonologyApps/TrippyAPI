@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
@@ -40,12 +41,12 @@ namespace Trippy.Api.Controllers
         }
 
         [HttpGet("GetAllTripList")]
-        public CustomApiResponse GetAll()
+        public async Task<CustomApiResponse> GetAll()
         {
             var response = new CustomApiResponse();
             try
             {
-                var tripOrders = _service.GetAll();
+                var tripOrders = await _service.GetAll();
                 response.IsSucess = true;
                 response.Value = tripOrders;
                 response.StatusCode = 200;

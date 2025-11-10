@@ -75,28 +75,52 @@ namespace Trippy.Core.Repositories
 
         public async Task<List<TripListDataDTO>> GetTripListAsync()
         {
-            return await (
-                from tripOrder in _context.TripOrders
-                join cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
-                join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
-                select new TripListDataDTO
-                {
-                    TripOrderId = tripOrder.TripOrderId,
-                    TripCode =tripOrder.TripCode,
-                    FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
-                    IsActive = tripOrder.IsActive,
+
+
+            var q = from tripOrder in _context.TripOrders
+                    join cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
+                    join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+                    select new TripListDataDTO
+                    {
+                        TripOrderId = tripOrder.TripOrderId,
+                      TripCode = tripOrder.TripCode,
+                        FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
+                        IsActive = tripOrder.IsActive,
+
+                        CustomerName = cust.CustomerName,
+                        DriverName = drv.DriverName,
+                        PickUpFrom = tripOrder.FromLocation,
+                        RecivedVia = tripOrder.TripBookingModeId == 1 ? "Phone" :
+                                     tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
+                                     tripOrder.TripBookingModeId == 3 ? "Website" :
+                                     "Unknown",
+
+                        Status = tripOrder.TripStatus
+                    };
+
+            return await q.ToListAsync();
+            //return await (
+            //    from tripOrder in _context.TripOrders
+            //    join cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
+            //    join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+            //    select new TripListDataDTO
+            //    {
+            //        TripOrderId = tripOrder.TripOrderId,
+            //        TripCode =tripOrder.TripCode,
+            //        FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
+            //        IsActive = tripOrder.IsActive,
                     
-                    CustomerName = cust.CustomerName,
-                    DriverName = drv.DriverName,
-                    PickUpFrom = tripOrder.FromLocation,
-                    RecivedVia = tripOrder.TripBookingModeId == 1 ? "Phone" :
-                                 tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
-                                 tripOrder.TripBookingModeId == 3 ? "Website" :
-                                 "Unknown",
+            //        CustomerName = cust.CustomerName,
+            //        DriverName = drv.DriverName,
+            //        PickUpFrom = tripOrder.FromLocation,
+            //        RecivedVia = tripOrder.TripBookingModeId == 1 ? "Phone" :
+            //                     tripOrder.TripBookingModeId == 2 ? "Direct Booking" :
+            //                     tripOrder.TripBookingModeId == 3 ? "Website" :
+            //                     "Unknown",
                     
-                    Status = tripOrder.TripStatus
-                }
-            ).ToListAsync();
+            //        Status = tripOrder.TripStatus
+            //    }
+            //).ToListAsync();
         }
 
 

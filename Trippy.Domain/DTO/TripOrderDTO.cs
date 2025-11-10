@@ -7,7 +7,7 @@ namespace Trippy.Domain.DTO
 
         public int TripOrderId { get; set; } // Primary key
         public int TripBookingModeId { get; set; }
-
+        public string TripCode { get; set; } = "";
         public string TripBookingModeName { get; set; } = "";
 
         public int CustomerId { get; set; }
@@ -54,7 +54,7 @@ namespace Trippy.Domain.DTO
     {
         public int TripOrderId { get; set; }
 
-        public string TripCode { get; set; }
+        public string TripCode { get; set; } = "";
         public string FromDate { get; set; }
         public string CustomerName { get; set; }
         public string RecivedVia { get; set; }
