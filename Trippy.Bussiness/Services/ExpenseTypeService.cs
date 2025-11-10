@@ -44,6 +44,7 @@ namespace Trippy.Bussiness.Services
             ExpenseTypeDTO expenseTypeDTO = new ExpenseTypeDTO();
             expenseTypeDTO.ExpenseTypeId = expenseType.ExpenseTypeId;
             expenseTypeDTO.ExpenseTypeName = expenseType.ExpenseTypeName;
+            expenseTypeDTO.ExpenseTypeCode = expenseType.ExpenseTypeCode;
             expenseTypeDTO.Description = expenseType.Description;
             expenseTypeDTO.IsActive = expenseType.IsActive;
             expenseTypeDTO.IsDeleted = expenseType.IsDeleted;
