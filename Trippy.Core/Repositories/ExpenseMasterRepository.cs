@@ -129,7 +129,7 @@ namespace Trippy.Core.Repositories
                             ExpenseVoucher = exp.ExpenseVoucher,
                             Amount = exp.Amount,
                             CreatedBy = exp.CreatedBy,
-
+                            PaymentMode = exp.PaymentMode,
                        CreatedOn = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt")
                    };
             return  await q.ToListAsync ();
