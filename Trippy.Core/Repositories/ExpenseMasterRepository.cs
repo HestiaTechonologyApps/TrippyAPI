@@ -56,7 +56,8 @@ namespace Trippy.Core.Repositories
         {
             var q= (from exp in _context.ExpenseMasters
                     join expType in _context.ExpenseTypes
-                        on exp.ExpenseTypeId equals expType.ExpenseTypeId
+                        on exp.ExpenseTypeId equals expType.ExpenseTypeId into expTypeGroup
+                    from expType in expTypeGroup.DefaultIfEmpty()
                     select new ExpenseMarkDTO
                     {
                         ExpenseMasterId = exp.ExpenseMasterId,
@@ -172,27 +173,31 @@ namespace Trippy.Core.Repositories
 
         public ExpenseMarkDTO GetExpenseDetails(int expenseId)
         {
-            var det = (from exp in _context.ExpenseMasters
-                       join expType in _context.ExpenseTypes
-                           on exp.ExpenseTypeId equals expType.ExpenseTypeId
-                       where exp.ExpenseTypeId == expenseId
-                       select new ExpenseMarkDTO
-                       {
-                           ExpenseMasterId = exp.ExpenseMasterId,
-                           ExpenseTypeId = exp.ExpenseTypeId,
-                           ExpenseTypeName = expType.ExpenseTypeName,
-                           Amount = exp.Amount,
-                           CreatedOn = exp.CreatedOn,
-                           IsDeleted = exp.IsDeleted,
-                           RelatedEntityId = exp.RelatedEntityId,
-                           RelatedTo = "",
-                           RelatedEntityType = exp.RelatedEntityType,
-                           ExpenseVoucher = exp.ExpenseVoucher,
-                           PaymentMode = exp.PaymentMode,
-                           CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
-                           Remark = exp.Remark,
-                           IsActive = exp.IsActive
-                       }).FirstOrDefault();
+            var det = (
+     from exp in _context.ExpenseMasters.IgnoreQueryFilters()
+     join expType in _context.ExpenseTypes.IgnoreQueryFilters()
+         on exp.ExpenseTypeId equals expType.ExpenseTypeId into expTypeGroup
+     from expType in expTypeGroup.DefaultIfEmpty()
+     where exp.ExpenseMasterId == expenseId  // ✅ FIXED — use primary key
+     select new ExpenseMarkDTO
+     {
+         ExpenseMasterId = exp.ExpenseMasterId,
+         ExpenseTypeId = exp.ExpenseTypeId,
+         ExpenseTypeName = expType != null ? expType.ExpenseTypeName : "N/A",
+         Amount = exp.Amount,
+         CreatedOn = exp.CreatedOn,
+         IsDeleted = exp.IsDeleted,
+         RelatedEntityId = exp.RelatedEntityId,
+         RelatedTo = "",
+         RelatedEntityType = exp.RelatedEntityType,
+         ExpenseVoucher = exp.ExpenseVoucher,
+         PaymentMode = exp.PaymentMode,
+         CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
+         Remark = exp.Remark,
+         IsActive = exp.IsActive
+     }
+ ).FirstOrDefault();
+
             return det;
         }
         
