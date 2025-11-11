@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,7 @@ namespace Trippy.Core.Repositories
     public class ExpenseMasterRepository : GenericRepository<ExpenseMaster>, IExpenseMasterRepository
     {
         private readonly AppDbContext _context;
-            public ExpenseMasterRepository(AppDbContext context) : base(context)
+        public ExpenseMasterRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }
@@ -54,40 +56,40 @@ namespace Trippy.Core.Repositories
 
         public List<ExpenseMarkDTO> GetAllExpenses()
         {
-            var q= (from exp in _context.ExpenseMasters
-                    join expType in _context.ExpenseTypes
-                        on exp.ExpenseTypeId equals expType.ExpenseTypeId into expTypeGroup
-                    from expType in expTypeGroup.DefaultIfEmpty()
-                    select new ExpenseMarkDTO
-                    {
-                        ExpenseMasterId = exp.ExpenseMasterId,
-                        ExpenseTypeId = exp.ExpenseTypeId,
-                        ExpenseTypeName = expType.ExpenseTypeName,
-                        Amount = exp.Amount,
-                        CreatedOn = exp.CreatedOn,
-                        IsDeleted = exp.IsDeleted,
-                        RelatedEntityId= exp.RelatedEntityId,
-                        RelatedTo = "",
-                        RelatedEntityType = exp.RelatedEntityType,
-                        ExpenseVoucher= exp.ExpenseVoucher,
-                        PaymentMode= exp.PaymentMode,
-                        CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
-                        Remark = exp.Remark,
-                        IsActive = exp.IsActive
-                    }).ToList();
+            var q = (from exp in _context.ExpenseMasters
+                     join expType in _context.ExpenseTypes
+                         on exp.ExpenseTypeId equals expType.ExpenseTypeId into expTypeGroup
+                     from expType in expTypeGroup.DefaultIfEmpty()
+                     select new ExpenseMarkDTO
+                     {
+                         ExpenseMasterId = exp.ExpenseMasterId,
+                         ExpenseTypeId = exp.ExpenseTypeId,
+                         ExpenseTypeName = expType.ExpenseTypeName,
+                         Amount = exp.Amount,
+                         CreatedOn = exp.CreatedOn,
+                         IsDeleted = exp.IsDeleted,
+                         RelatedEntityId = exp.RelatedEntityId,
+                         RelatedTo = "",
+                         RelatedEntityType = exp.RelatedEntityType,
+                         ExpenseVoucher = exp.ExpenseVoucher,
+                         PaymentMode = exp.PaymentMode,
+                         CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
+                         Remark = exp.Remark,
+                         IsActive = exp.IsActive
+                     }).ToList();
 
             foreach (var expense in q)
             {
                 if (expense.RelatedEntityType != null)
                 {
-                    if(expense.RelatedEntityType.ToLower() == "TripOrders".ToLower())
+                    if (expense.RelatedEntityType.ToLower() == "TripOrders".ToLower())
                     {
-                        var trp= _context.TripOrders.Find(expense.RelatedEntityId);
-                        if(trp != null)
+                        var trp = _context.TripOrders.Find(expense.RelatedEntityId);
+                        if (trp != null)
                         {
                             expense.RelatedTo = trp.TripCode;
-                        }   
-                        
+                        }
+
 
                     }
                     else if (expense.RelatedEntityType.ToLower() == "Driver".ToLower())
@@ -118,22 +120,41 @@ namespace Trippy.Core.Repositories
         }
 
         public async Task<List<ExpenseMasterAuditDTO>> GetExpenseLogsForEntityAsync(string tableName, int recordId)
-        { 
-           var q= from exp in _context.ExpenseMasters join  expty in _context.ExpenseTypes
-                  on exp.ExpenseTypeId equals expty.ExpenseTypeId
-                  where exp.RelatedEntityType == tableName && exp.RelatedEntityId == recordId
-                   orderby exp.CreatedOn descending
-                   select new ExpenseMasterAuditDTO
-                   {
-                          ExpenseMasterId = exp.ExpenseMasterId,  
-                            ExpenseTypeName = expty.ExpenseTypeName ,
-                            ExpenseVoucher = exp.ExpenseVoucher,
-                            Amount = exp.Amount,
-                            CreatedBy = exp.CreatedBy,
-                            PaymentMode = exp.PaymentMode,
-                       CreatedOn = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt")
-                   };
-            return  await q.ToListAsync ();
+        {
+            var q = from exp in _context.ExpenseMasters
+                    join expty in _context.ExpenseTypes
+                   on exp.ExpenseTypeId equals expty.ExpenseTypeId
+                    where exp.RelatedEntityType == tableName && exp.RelatedEntityId == recordId
+                    orderby exp.CreatedOn descending
+                    select new ExpenseMasterAuditDTO
+                    {
+                        ExpenseMasterId = exp.ExpenseMasterId,
+                        ExpenseTypeName = expty.ExpenseTypeName,
+                        ExpenseVoucher = exp.ExpenseVoucher,
+                        CreditDebitType = expty.CreditDebitType,
+                        Amount = exp.Amount,
+                        CreatedBy = exp.CreatedBy,
+                        PaymentMode = exp.PaymentMode,
+                        CreatedOn = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt")
+                    };
+            var result = await q.ToListAsync();
+
+            Decimal sumofexpense = 0;
+            foreach (var expense in result)
+            {
+                sumofexpense = sumofexpense + expense.Amount;
+            }
+            ExpenseMasterAuditDTO expenseMasterAuditDTO = new ExpenseMasterAuditDTO();
+            expenseMasterAuditDTO.ExpenseMasterId = 0;
+            expenseMasterAuditDTO.ExpenseTypeName = "Total :";
+            expenseMasterAuditDTO.ExpenseVoucher = "";
+            expenseMasterAuditDTO.Amount = sumofexpense;
+            expenseMasterAuditDTO.CreatedBy = "";
+            expenseMasterAuditDTO.PaymentMode = "";
+
+            result.Add(expenseMasterAuditDTO);
+
+            return result;
         }
 
 
@@ -200,7 +221,7 @@ namespace Trippy.Core.Repositories
 
             return det;
         }
-        
-     
+
+
     }
 }
