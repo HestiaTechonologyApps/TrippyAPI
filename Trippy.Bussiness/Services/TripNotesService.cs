@@ -88,6 +88,8 @@ namespace Trippy.Bussiness.Services
             return true;
         }
 
+       
+
         public async Task<List<TripNotesDTO>> GetTripNotesOfTrip(int id)
         {
             

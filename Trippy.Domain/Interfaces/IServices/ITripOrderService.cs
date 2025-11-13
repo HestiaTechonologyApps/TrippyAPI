@@ -29,6 +29,7 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<TripOrderDTO?> GetByIdAsync(int id);
         Task<TripOrderDTO> CreateAsync(TripOrder coupon);
         Task<bool> UpdateAsync(TripOrder coupon);
+        Task<bool> UpdateStatus(TripStatusUpdateDTO tripstatus);
         Task<bool> DeleteAsync(int id);
     }
 }

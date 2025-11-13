@@ -106,18 +106,28 @@ namespace Trippy.Api.Controllers
         public async Task<CustomApiResponse> GetById(int id)
         {
             var response = new CustomApiResponse();
-            var tripOrder = await _service.GetByIdAsync(id);
-            if (tripOrder == null)
+            try
             {
+                var tripOrder = await _service.GetByIdAsync(id);
+                if (tripOrder == null)
+                {
+                    response.IsSucess = false;
+                    response.Error = "Not found";
+                    response.StatusCode = 404;
+                }
+                else
+                {
+                    response.IsSucess = true;
+                    response.Value = tripOrder;
+                    response.StatusCode = 200;
+                }
+            }
+            catch (Exception exp)
+            {
+
                 response.IsSucess = false;
                 response.Error = "Not found";
                 response.StatusCode = 404;
-            }
-            else
-            {
-                response.IsSucess = true;
-                response.Value = tripOrder;
-                response.StatusCode = 200;
             }
             return response;
         }
@@ -167,6 +177,11 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
+
+
+    
+
+
 
         [HttpDelete("{id}")]
         public async Task<CustomApiResponse> Delete(int id)
@@ -266,6 +281,27 @@ namespace Trippy.Api.Controllers
                 response.IsSucess = false;
                 response.Error = ex.Message;
                 response.StatusCode = 500;
+            }
+            return response;
+        }
+
+        [HttpPut("UpdateTripStatus")]
+        public async Task<CustomApiResponse> UpdateTripStatus([FromBody] TripStatusUpdateDTO tripOrder)
+        {
+            var response = new CustomApiResponse();
+           
+            var updated = await _service.UpdateStatus(tripOrder);
+            if (!updated)
+            {
+                response.IsSucess = false;
+                response.Error = "Not found";
+                response.StatusCode = 404;
+            }
+            else
+            {
+                response.IsSucess = true;
+                response.Value = tripOrder;
+                response.StatusCode = 200;
             }
             return response;
         }

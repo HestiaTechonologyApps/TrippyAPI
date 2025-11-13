@@ -2,7 +2,16 @@
 
 namespace Trippy.Domain.DTO
 {
-    public class TripOrderDTO
+
+    public class TripStatusUpdateDTO
+    {
+        public int TripOrderId { get; set; } // Primary key
+        public string TripStatus { get; set; } = "";
+        public string Remark { get; set; } = "";
+
+
+    }
+        public class TripOrderDTO
     {
 
         public int TripOrderId { get; set; } // Primary key

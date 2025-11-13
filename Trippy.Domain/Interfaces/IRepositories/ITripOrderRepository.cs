@@ -10,7 +10,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
 {
     public interface ITripOrderRepository:IGenericRepository<TripOrder>
     {
-        TripOrderDTO GetTripDetails(int tripid);
+       Task< TripOrderDTO> GetTripDetails(int tripid);
         Task<List<TripListDataDTO>> GetTripListAsync();
        
         Task<List<TripListDataDTO>> GetAllByStatusAndYearAsync(string status, int year);

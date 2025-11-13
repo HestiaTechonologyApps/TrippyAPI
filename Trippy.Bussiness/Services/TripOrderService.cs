@@ -131,7 +131,7 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<TripOrderDTO?> GetByIdAsync(int id)
         {
-            var q =  _repo.GetTripDetails(id);
+            var q =  await _repo.GetTripDetails(id);
             
             //var tripOrderdto = await ConvertTripOrderToDTO(q);
           //  tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync(AuditTableName, tripOrderdto.TripOrderId);
@@ -157,6 +157,29 @@ namespace Trippy.Bussiness.Services
             return true;
         }
 
+        public async Task<bool> UpdateStatus(TripStatusUpdateDTO tripstatus)
+        {
+            var oldentity = await _repo.GetByIdAsync(tripstatus.TripOrderId);
+            _repo.Detach(oldentity);
+
+
+            var tripOrder = await _repo.GetByIdAsync(tripstatus.TripOrderId);
+
+            tripOrder.TripStatus = tripstatus.TripStatus;
+            tripOrder.TripDetails = tripOrder.TripDetails + " " + tripstatus.Remark;
+
+            _repo.Update(tripOrder);
+            await _repo.SaveChangesAsync();
+            await _auditRepository.LogAuditAsync<TripOrder>(
+               tableName: AuditTableName,
+               action: "update",
+               recordId: tripOrder.TripOrderId,
+               oldEntity: oldentity,
+               newEntity: tripOrder,
+               changedBy: "System" // Replace with actual user info
+           );
+            return true;
+        }
         public async Task<List<TripListDataDTO>> GetAllTripListbyStatusAsync(string Status)
         {
             if (string.IsNullOrWhiteSpace(Status))
