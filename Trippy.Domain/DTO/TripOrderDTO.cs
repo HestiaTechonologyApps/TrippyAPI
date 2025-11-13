@@ -56,12 +56,14 @@ namespace Trippy.Domain.DTO
 
         public string TripCode { get; set; } = "";
         public string FromDate { get; set; }
+        public string ToDate { get; set; }
         public string CustomerName { get; set; }
         public string RecivedVia { get; set; }
         public string DriverName { get; set; }
         public string PickUpFrom { get; set; }
         public string Status { get; set; }
         public string AddedBy { get; set; }
+        public string PaymentMode { get; set; }
         
         public bool IsActive { get; set; } = true;
     }

@@ -12,11 +12,14 @@ namespace Trippy.Domain.Interfaces.IRepositories
     {
         TripOrderDTO GetTripDetails(int tripid);
         Task<List<TripListDataDTO>> GetTripListAsync();
+       
+        Task<List<TripListDataDTO>> GetAllByStatusAndYearAsync(string status, int year);
+
+
 
         Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync();
-        Task<List<TripOrder>> GetAllByStatusAsync(string status);
-        Task<List<TripOrder>> GetAllByStatusAndYearAsync(string status, int year);
-        Task<List<TripOrder>> GetAllByYearAsync(int year);
+     
+      
         Task<int> GetTotalTripsAsync();
         Task<int> GetTripCountByStatusAsync(string ststus);
         Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate);

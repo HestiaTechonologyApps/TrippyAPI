@@ -18,6 +18,28 @@ namespace Trippy.Api.Controllers
             _service = service;
             _tripNotesService = tripNotesService;
         }
+
+
+        [HttpGet("GetAll")]
+        public async Task<CustomApiResponse> GetAllListAsync()
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var tripOrders = await _service.GetAllTripListByStatusAndYearAsync (status:"",year:0);
+                response.IsSucess = true;
+                response.Value = tripOrders;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+        }
+
         [HttpGet("GetAllTripLists")]
         public async Task<CustomApiResponse> GetAllTripList([FromQuery] string? status = null, [FromQuery] int? year = null, [FromQuery] int userId = 0)
         {
@@ -25,7 +47,7 @@ namespace Trippy.Api.Controllers
 
             try
             {
-                var tripOrders = await _service.GetAllTripListAsync(status, year);
+                var tripOrders = await _service.GetAllTripListByStatusAndYearAsync(status:status,year:year.Value);
                 response.IsSucess = true;
                 response.Value = tripOrders;
                 response.StatusCode = 200;
@@ -79,25 +101,7 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
-        [HttpGet]
-        public async Task<CustomApiResponse> GetAllAsync()
-        {
-            var response = new CustomApiResponse();
-            try
-            {
-                var tripOrders = await _service.GetAllAsync();
-                response.IsSucess = true;
-                response.Value = tripOrders;
-                response.StatusCode = 200;
-            }
-            catch (Exception ex)
-            {
-                response.IsSucess = false;
-                response.Error = ex.Message;
-                response.StatusCode = 500;
-            }
-            return response;
-        }
+
         [HttpGet("{id}")]
         public async Task<CustomApiResponse> GetById(int id)
         {

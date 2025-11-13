@@ -30,7 +30,7 @@ namespace Trippy.Bussiness.Services
             await _repo.SaveChangesAsync();
 
             tripOrder.TripCode = "T-" + tripOrder.TripOrderId.ToString();
-             _repo.Update(tripOrder);
+            _repo.Update(tripOrder);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<TripOrder>(
                tableName: AuditTableName,
@@ -50,7 +50,7 @@ namespace Trippy.Bussiness.Services
             tripOrderDTO.TripOrderId = tripOrder.TripOrderId;
             tripOrderDTO.TripBookingModeId = tripOrder.TripBookingModeId;
             tripOrderDTO.CustomerId = tripOrder.CustomerId;
-            
+
             tripOrderDTO.DriverId = tripOrder.DriverId;
             tripOrderDTO.FromDate = tripOrder.FromDate;
             tripOrderDTO.FromDateString = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
@@ -101,8 +101,8 @@ namespace Trippy.Bussiness.Services
         public async Task<List<TripOrderDTO>> GetAllAsync()
         {
 
-           
-            var tripOrders =  await _repo.GetAllTripsDetailAsync(); // this must return List<TripOrderDTO>
+
+            var tripOrders = await _repo.GetAllTripsDetailAsync(); // this must return List<TripOrderDTO>
 
             // If you need transformation later, keep this loop
             // List<TripOrderDTO> tripOrderDtos = new List<TripOrderDTO>();
@@ -157,22 +157,22 @@ namespace Trippy.Bussiness.Services
             return true;
         }
 
-        public async Task<List<TripOrderDTO>> GetAllTripListbyStatusAsync(string Status)
+        public async Task<List<TripListDataDTO>> GetAllTripListbyStatusAsync(string Status)
         {
             if (string.IsNullOrWhiteSpace(Status))
-                return new List<TripOrderDTO>();
+                return new List<TripListDataDTO>();
 
 
-            var tripOrders = await _repo.GetAllByStatusAsync(Status);
+            var tripOrderDtos = await _repo.GetAllByStatusAndYearAsync(status: Status, year: 0);
 
 
-            var tripOrderDtos = new List<TripOrderDTO>();
+            //var tripOrderDtos = new List<TripOrderDTO>();
 
-            foreach (var tripOrder in tripOrders)
-            {
-                var dto = await ConvertTripOrderToDTO(tripOrder);
-                tripOrderDtos.Add(dto);
-            }
+            //foreach (var tripOrder in tripOrders)
+            //{
+            //    var dto = await ConvertTripOrderToDTO(tripOrder);
+            //    tripOrderDtos.Add(dto);
+            //}
 
             return tripOrderDtos;
         }
@@ -196,28 +196,28 @@ namespace Trippy.Bussiness.Services
             DateTime prevWeekStart = today.AddDays(-14);
             DateTime prevWeekEnd = today.AddDays(-7);
 
-          
+
             int totalTrips = await _repo.GetTotalTripsAsync();
             int todaysTrips = await _repo.GetTodaysTripsCountAsync(today);
             int cancelled = await _repo.GetTripCountByStatusAsync("Canceled");
             int completed = await _repo.GetTripCountByStatusAsync("Completed");
             int scheduled = await _repo.GetTripCountByStatusAsync("Scheduled");
 
-         
+
             int prevCancelled = await _repo.GetTripCountByStatusAndDateRangeAsync("Canceled", prevWeekStart, prevWeekEnd);
             int prevCompleted = await _repo.GetTripCountByStatusAndDateRangeAsync("Completed", prevWeekStart, prevWeekEnd);
             int prevTodaysTrip = await _repo.GetTripCountByStatusAndDateRangeAsync("Todays Trip", prevWeekStart, prevWeekEnd);
             int prevScheduled = await _repo.GetTripCountByStatusAndDateRangeAsync("Scheduled", prevWeekStart, prevWeekEnd);
-            int prevTotal = totalTrips - 20; 
+            int prevTotal = totalTrips - 20;
 
-           
+
             int changeTotal = totalTrips - prevTotal;
             int changeTodayTrip = todaysTrips - prevTodaysTrip;
             int changeCancelled = cancelled - prevCancelled;
             int changeCompleted = completed - prevCompleted;
             int changeScheduled = scheduled - prevScheduled;
 
-           
+
             var dashboard = new List<TripDashboardDTO>
     {
         new TripDashboardDTO
@@ -330,112 +330,42 @@ namespace Trippy.Bussiness.Services
             }).ToList();
         }
 
-        public async Task<List<TripOrderDTO>> GetAllTripListByYearAsync(int year)
+        public async Task<List<TripListDataDTO>> GetAllTripListByYearAsync(int year)
         {
-            var tripOrders = await _repo.GetAllByYearAsync(year);
+            var tripOrders = await _repo.GetAllByStatusAndYearAsync(status: null, year: year);
 
-            return tripOrders.Select(t => new TripOrderDTO
-            {
-                TripOrderId = t.TripOrderId,
-                TripBookingModeId = t.TripBookingModeId,
-                CustomerId = t.CustomerId,
-                DriverId = t.DriverId,
-                FromDate = t.FromDate,
-                FromDateString = t.FromDateString,
-                ToDate = t.ToDate,
-                ToDateString = t.ToDateString,
-                FromLocation = t.FromLocation,
-                ToLocation1 = t.ToLocation1,
-                ToLocation2 = t.ToLocation2,
-                ToLocation3 = t.ToLocation3,
-                ToLocation4 = t.ToLocation4,
-                PaymentDetails = t.PaymentDetails,
-                PaymentMode = t.PaymentMode,
-                BookedBy = t.BookedBy,
-                TripDetails = t.TripDetails,
-                TripStatus = t.TripStatus,
-                TripAmount = t.TripAmount
-            }).ToList();
-        } 
+            return tripOrders.ToList();
 
-        public async Task<List<TripOrderDTO>> GetAllTripListByStatusAndYearAsync(string status, int year)
+
+
+        }
+
+        public async Task<List<TripListDataDTO>> GetAllTripListByStatusAndYearAsync(string status, int year)
         {
-            if (string.IsNullOrWhiteSpace(status))
-                return new List<TripOrderDTO>();
+            
 
             var tripOrders = await _repo.GetAllByStatusAndYearAsync(status, year);
 
-            return tripOrders.Select(t => new TripOrderDTO
-            {
-                TripOrderId = t.TripOrderId,
-                TripBookingModeId = t.TripBookingModeId,
-                CustomerId = t.CustomerId,
-                DriverId = t.DriverId,
-                FromDate = t.FromDate,
-                FromDateString = t.FromDateString,
-                ToDate = t.ToDate,
-                ToDateString = t.ToDateString,
-                FromLocation = t.FromLocation,
-                ToLocation1 = t.ToLocation1,
-                ToLocation2 = t.ToLocation2,
-                ToLocation3 = t.ToLocation3,
-                ToLocation4 = t.ToLocation4,
-                PaymentDetails = t.PaymentDetails,
-                PaymentMode = t.PaymentMode,
-                BookedBy = t.BookedBy,
-                TripDetails = t.TripDetails,
-                TripStatus = t.TripStatus,
-                TripAmount = t.TripAmount
-            }).ToList();
+            return tripOrders.ToList();
         }
 
-        public async Task<List<TripOrderDTO>> GetAllTripListAsync(string? status = null, int? year = null)
+        public async Task<List<TripListDataDTO>> GetAllTripListAsync(string? status = null, int? year = null)
         {
-            List<TripOrder> tripOrders;
+            List<TripListDataDTO> tripOrders = new List<TripListDataDTO>();
 
             // 🧠 Decide which repo method to call based on filters
             if (!string.IsNullOrWhiteSpace(status) && year.HasValue)
             {
                 tripOrders = await _repo.GetAllByStatusAndYearAsync(status, year.Value);
             }
-            else if (!string.IsNullOrWhiteSpace(status))
-            {
-                tripOrders = await _repo.GetAllByStatusAsync(status);
-            }
-            else if (year.HasValue)
-            {
-                tripOrders = await _repo.GetAllByYearAsync(year.Value);
-            }
-            else
-            {
-                tripOrders = await _repo.GetAllTripsAsync();
-            }
 
-            // 🔄 Convert to DTO
-            return tripOrders.Select(t => new TripOrderDTO
-            {
-                TripOrderId = t.TripOrderId,
-                TripBookingModeId = t.TripBookingModeId,
-                CustomerId = t.CustomerId,
-                DriverId = t.DriverId,
-                FromDate = t.FromDate,
-                FromDateString = t.FromDateString,
-                ToDate = t.ToDate,
-                ToDateString = t.ToDateString,
-                FromLocation = t.FromLocation,
-                ToLocation1 = t.ToLocation1,
-                ToLocation2 = t.ToLocation2,
-                ToLocation3 = t.ToLocation3,
-                ToLocation4 = t.ToLocation4,
-                PaymentDetails = t.PaymentDetails,
-                PaymentMode = t.PaymentMode,
-                BookedBy = t.BookedBy,
-                TripDetails = t.TripDetails,
-                TripStatus = t.TripStatus,
-                TripAmount = t.TripAmount
-            }).ToList();
+
+            return tripOrders.ToList();
+
         }
+
+
     }
-        }
+}
 
-    
+
