@@ -265,37 +265,37 @@ namespace Trippy.Bussiness.Services
             return dashboard;
         }
 
-        public async Task<List<TripOrderDTO>> GetTodaysTripListAsync()
+        public async Task<List<TripListDataDTO>> GetTodaysTripListAsync()
         {
             var today = DateTime.Today;
             var trips = await _repo.GetTodaysTripsAsync(today);
+            return trips;
+            //return trips.Select(t => new TripOrderDTO
+            //{
+            //    TripOrderId = t.TripOrderId,
+            //    TripBookingModeId = t.TripBookingModeId,
+            //    CustomerId = t.CustomerId,
+            //    DriverId = t.DriverId,
+            //    FromDate = t.FromDate,
+            //    FromDateString = t.FromDateString,
+            //    ToDate = t.ToDate,
+            //    ToDateString = t.ToDateString,
+            //    FromLocation = t.FromLocation,
+            //    ToLocation1 = t.ToLocation1,
+            //    ToLocation2 = t.ToLocation2,
+            //    ToLocation3 = t.ToLocation3,
+            //    ToLocation4 = t.ToLocation4,
+            //    PaymentDetails = t.PaymentDetails,
+            //    PaymentMode = t.PaymentMode,
+            //    BookedBy = t.BookedBy,
+            //    TripDetails = t.TripDetails,
+            //    TripStatus = t.TripStatus,
+            //    TripAmount = t.TripAmount,
+            //    AdvanceAmount = t.AdvanceAmount,
+            //    BalanceAmount = t.BalanceAmount,
+            //    IsActive = t.IsActive
 
-            return trips.Select(t => new TripOrderDTO
-            {
-                TripOrderId = t.TripOrderId,
-                TripBookingModeId = t.TripBookingModeId,
-                CustomerId = t.CustomerId,
-                DriverId = t.DriverId,
-                FromDate = t.FromDate,
-                FromDateString = t.FromDateString,
-                ToDate = t.ToDate,
-                ToDateString = t.ToDateString,
-                FromLocation = t.FromLocation,
-                ToLocation1 = t.ToLocation1,
-                ToLocation2 = t.ToLocation2,
-                ToLocation3 = t.ToLocation3,
-                ToLocation4 = t.ToLocation4,
-                PaymentDetails = t.PaymentDetails,
-                PaymentMode = t.PaymentMode,
-                BookedBy = t.BookedBy,
-                TripDetails = t.TripDetails,
-                TripStatus = t.TripStatus,
-                TripAmount = t.TripAmount,
-                AdvanceAmount = t.AdvanceAmount,
-                BalanceAmount = t.BalanceAmount,
-                IsActive = t.IsActive
-
-            }).ToList();
+            //}).ToList();
         }
 
         public async Task<List<TripOrderDTO>> GetTripsByDateAsync(DateTime date)

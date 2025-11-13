@@ -32,7 +32,7 @@ namespace Trippy.Api.Controllers
         }
 
         [HttpGet("today")]
-        public async Task<ActionResult<List<TripOrderDTO>>> GetTodaysTrips()
+        public async Task<ActionResult<List<TripListDataDTO>>> GetTodaysTrips()
         {
             var trips = await _service.GetTodaysTripListAsync();
             return Ok(trips);

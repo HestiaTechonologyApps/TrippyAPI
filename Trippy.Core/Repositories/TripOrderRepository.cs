@@ -32,18 +32,18 @@ namespace Trippy.Core.Repositories
                    {
                        TripOrderId = tripOrder.TripOrderId,
                        TripCode = tripOrder.TripCode,
-                       FromDate = tripOrder.FromDate.ToString (),
+                       FromDate = tripOrder.FromDate.ToString(),
                        FromDateString = tripOrder.FromDate.HasValue
                             ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
                             : string.Empty,
-                       ToDate = tripOrder.ToDate.ToString (),
+                       ToDate = tripOrder.ToDate.ToString(),
                        ToDateString = tripOrder.ToDate.HasValue
                             ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
                             : string.Empty,
                        //FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        //ToDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        IsActive = tripOrder.IsActive,
-                       
+
                        CustomerName = cust.CustomerName,
                        DriverName = drv.DriverName,
                        PickUpFrom = tripOrder.FromLocation,
@@ -122,7 +122,7 @@ namespace Trippy.Core.Repositories
             IQueryable<TripListDataDTO> q = QuerableTripListAsyc();
 
             return await q.ToListAsync();
-           
+
         }
 
 
@@ -207,16 +207,21 @@ namespace Trippy.Core.Repositories
                                  t.FromDate.Value < endOfDay);
         }
 
-        public async Task<List<TripOrder>> GetTodaysTripsAsync(DateTime today)
+        public async Task<List<TripListDataDTO>> GetTodaysTripsAsync(DateTime today)
         {
             var startOfDay = today.Date;
             var endOfDay = startOfDay.AddDays(1);
 
-            return await _context.TripOrders
-                .Where(t => t.ToDate.HasValue &&
-                            t.ToDate.Value >= startOfDay &&
-                            t.FromDate.Value < endOfDay)
-                .ToListAsync();
+            var q = QuerableTripListAsyc();
+            q = q.Where(t =>
+                   t.FromDate != null &&
+                   t.ToDate != null &&
+                   DateTime.Parse(t.ToDate) >= startOfDay &&
+                   DateTime.Parse(t.FromDate) <= endOfDay
+               );
+
+
+            return await  q.ToListAsync();
         }
 
         public async Task<List<TripOrder>> GetTripsByDateAsync(DateTime date)
@@ -273,7 +278,7 @@ namespace Trippy.Core.Repositories
                           join drv in _context.Drivers
                               on trp.DriverId equals drv.DriverId
                           join trpmod in _context.TripBookingModes
-                              on trp.TripBookingModeId equals trpmod.TripBookingModeId 
+                              on trp.TripBookingModeId equals trpmod.TripBookingModeId
                           select new TripOrderDTO
                           {
                               TripOrderId = trp.TripOrderId,
