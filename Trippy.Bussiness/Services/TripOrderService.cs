@@ -131,12 +131,12 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<TripOrderDTO?> GetByIdAsync(int id)
         {
-            var q = await _repo.GetByIdAsync(id);
-            if (q == null) return null;
-            var tripOrderdto = await ConvertTripOrderToDTO(q);
-            tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync(AuditTableName, tripOrderdto.TripOrderId);
+            var q =  _repo.GetTripDetails(id);
+            
+            //var tripOrderdto = await ConvertTripOrderToDTO(q);
+          //  tripOrderdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync(AuditTableName, tripOrderdto.TripOrderId);
 
-            return tripOrderdto;
+            return q;
         }
 
 

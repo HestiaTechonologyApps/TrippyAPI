@@ -33,11 +33,17 @@ namespace Trippy.Core.Repositories
                        TripOrderId = tripOrder.TripOrderId,
                        TripCode = tripOrder.TripCode,
                        FromDate = tripOrder.FromDate.ToString (),
-                       ToDate= tripOrder.ToDate.ToString (),
+                       FromDateString = tripOrder.FromDate.HasValue
+                            ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                            : string.Empty,
+                       ToDate = tripOrder.ToDate.ToString (),
+                       ToDateString = tripOrder.ToDate.HasValue
+                            ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                            : string.Empty,
                        //FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        //ToDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        IsActive = tripOrder.IsActive,
-
+                       
                        CustomerName = cust.CustomerName,
                        DriverName = drv.DriverName,
                        PickUpFrom = tripOrder.FromLocation,
@@ -81,7 +87,13 @@ namespace Trippy.Core.Repositories
                         CustomerId = tripOrder.CustomerId,
                         DriverId = tripOrder.DriverId,
                         FromDate = tripOrder.FromDate,
+                        FromDateString = tripOrder.FromDate.HasValue
+                            ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                            : string.Empty,
                         ToDate = tripOrder.ToDate,
+                        ToDateString = tripOrder.ToDate.HasValue
+                            ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                            : string.Empty,
                         FromLocation = tripOrder.FromLocation,
                         ToLocation1 = tripOrder.ToLocation1,
                         ToLocation2 = tripOrder.ToLocation2,
