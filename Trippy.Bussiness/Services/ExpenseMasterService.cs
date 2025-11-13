@@ -56,7 +56,7 @@ namespace Trippy.Bussiness.Services
             await this.auditRepository.LogAuditAsync<ExpenseMaster>(
                 tableName: AuditTableName,
                 action: "create",
-                recordId: expenseMaster.ExpenseTypeId,
+                recordId: expenseMaster.ExpenseMasterId,
                 oldEntity: null,
                 newEntity: expenseMaster,
                 changedBy: "System" // Replace with actual user info

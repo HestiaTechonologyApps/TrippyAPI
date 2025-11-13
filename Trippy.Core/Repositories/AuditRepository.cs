@@ -399,12 +399,23 @@ namespace Trippy.Core.Repositories
         /// </summary>
         private List<AuditLogChangeDetailsDTO> ParseUpdateOperation(JsonElement root)
         {
+
+            var ExceptionProperties = new List<string>()
+            {
+                "ModifiedAt",
+                "ModifiedBy",
+                "UpdatedAt",
+                "UpdatedBy",
+                "PasswordHash",
+            };
             var changes = new List<AuditLogChangeDetailsDTO>();
 
             if (root.TryGetProperty("Changes", out JsonElement changesArray))
             {
                 foreach (JsonElement change in changesArray.EnumerateArray())
                 {
+
+
                     string propertyName = "";
                     string oldValue = "";
                     string newValue = "";
@@ -423,13 +434,15 @@ namespace Trippy.Core.Repositories
                     {
                         newValue = newVal.GetString() ?? "";
                     }
-
-                    changes.Add(new AuditLogChangeDetailsDTO
+                    if (!ExceptionProperties.Contains(propertyName))
                     {
-                        Item = propertyName.ToUpper(),
-                        From = oldValue,
-                        TO = newValue
-                    });
+                        changes.Add(new AuditLogChangeDetailsDTO
+                        {
+                            Item = propertyName.ToUpper(),
+                            From = oldValue,
+                            TO = newValue
+                        });
+                    }
                 }
             }
 
