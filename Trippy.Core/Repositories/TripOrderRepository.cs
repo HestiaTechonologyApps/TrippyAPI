@@ -32,14 +32,13 @@ namespace Trippy.Core.Repositories
                    {
                        TripOrderId = tripOrder.TripOrderId,
                        TripCode = tripOrder.TripCode,
-                       FromDate = tripOrder.FromDate.ToString(),
-                       FromDateString = tripOrder.FromDate.HasValue
-                            ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                            : string.Empty,
-                       ToDate = tripOrder.ToDate.ToString(),
-                       ToDateString = tripOrder.ToDate.HasValue
-                            ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                            : string.Empty,
+                       FromDateString = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+                       ToDateString = tripOrder.ToDate.HasValue ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+
+                       FromDate = tripOrder.FromDate,
+                      
+                       ToDate = tripOrder.ToDate,
+                       
                        //FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        //ToDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        IsActive = tripOrder.IsActive,
@@ -213,12 +212,18 @@ namespace Trippy.Core.Repositories
             var endOfDay = startOfDay.AddDays(1);
 
             var q = QuerableTripListAsyc();
-            q = q.Where(t =>
-                   t.FromDate != null &&
-                   t.ToDate != null &&
-                   DateTime.Parse(t.ToDate) >= startOfDay &&
-                   DateTime.Parse(t.FromDate) <= endOfDay
-               );
+
+            q = q.Where(t => t.FromDate.HasValue &&
+                    t.ToDate.HasValue &&
+                    t.ToDate.Value >= startOfDay &&
+                    t.FromDate.Value <= endOfDay);
+
+            //q = q.Where(t =>
+            //       t.FromDate != null &&
+            //       t.ToDate != null &&
+            //       DateTime.Parse(t.ToDate) >= startOfDay &&
+            //       DateTime.Parse(t.FromDate) <= endOfDay
+            //   );
 
 
             return await  q.ToListAsync();
@@ -246,7 +251,7 @@ namespace Trippy.Core.Repositories
             if (year > 0)
             {
                 q = q.Where(t => t.FromDate != null &&
-                                DateTime.Parse(t.FromDate).Year == year);
+                                DateTime.Parse(t.FromDate.Value.ToString ()).Year == year);
             }
 
             return await q.ToListAsync();

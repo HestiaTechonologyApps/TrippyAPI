@@ -55,9 +55,9 @@ namespace Trippy.Domain.DTO
         public int TripOrderId { get; set; }
 
         public string TripCode { get; set; } = "";
-        public string FromDate { get; set; }
+        public DateTime? FromDate { get; set; }
         public string FromDateString { get; set; }
-        public string ToDate { get; set; }
+        public DateTime? ToDate { get; set; }
         public string ToDateString { get; set; }
         public string CustomerName { get; set; }
         public string RecivedVia { get; set; }
