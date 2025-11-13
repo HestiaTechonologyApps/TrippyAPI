@@ -39,10 +39,10 @@ namespace Trippy.Bussiness.Services
 
         public async Task<ExpenseMarkDTO?> GetByIdAsync(int id)
         {
-            var q = await _repo.GetByIdAsync(id);
-            if (q == null) return null;
-            var expenseTypeDTO = await ConvertExpenseMasterToDTO(q);
-            return expenseTypeDTO;
+            var q =  _repo.GetExpenseDetails(id);
+            //if (q == null) return null;
+            //var expenseTypeDTO = await ConvertExpenseMasterToDTO(q);
+            return q;
         }
 
         public async Task<ExpenseMarkDTO> CreateAsync(ExpenseMaster expenseMaster)
@@ -77,7 +77,7 @@ namespace Trippy.Bussiness.Services
             expenseMasterDTO.Amount = expenseMaster.Amount;
             expenseMasterDTO.RelatedEntityId = expenseMaster.RelatedEntityId;
             expenseMaster.RelatedEntityType = expenseMaster.RelatedEntityType;
-
+            expenseMasterDTO.PaymentMode = expenseMaster.PaymentMode;
             expenseMasterDTO.IsDeleted = expenseMaster.IsDeleted;
             return expenseMasterDTO;
         }

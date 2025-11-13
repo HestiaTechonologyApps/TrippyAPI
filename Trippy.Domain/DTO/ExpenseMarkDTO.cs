@@ -22,7 +22,7 @@ namespace Trippy.Domain.DTO
         public String RelatedTo { get; set; } = "";
         public String RelatedEntityType { get; set; } = "";
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
-
+        public String CreditDebitType { get; set; } = "";
         public string CreatedOnString { get; set; } = "";
         public bool IsActive { get; set; } = true;
         public string CreatedBy { get; set; } = "";
@@ -37,6 +37,7 @@ namespace Trippy.Domain.DTO
     {
         public int ExpenseMasterId { get; set; } // Primary key
         public String ExpenseTypeName { get; set; } = "";
+        public String CreditDebitType { get; set; } = "";
 
         public String ExpenseVoucher { get; set; } = "";
 

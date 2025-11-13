@@ -13,6 +13,7 @@ namespace Trippy.Domain.Entities
         public String AttachmentPath { get; set; }
         public string Description { get; set; } = "";
         public String FilePath { get; set; } = "";
+        public string FileSize { get; set; } = "";
         public String FileName { get; set; } = "";
         public String FileType { get; set; } = "";
         public string TableName { get; set; } = "";

@@ -83,6 +83,7 @@ public class AttachmentService : IAttachmentService
         {
             await file.CopyToAsync(stream);
         }
+        var fileSizeInKb = Math.Round((double)file.Length / 1024, 2);
 
         var attachment = new Attachment
         {
@@ -91,9 +92,10 @@ public class AttachmentService : IAttachmentService
             Description = description,
             FileName = file.FileName,
             FileType = Path.GetExtension(file.FileName),
-            AttachmentType= Path.GetExtension(file.FileName),
+            AttachmentType = Path.GetExtension(file.FileName),
+            FileSize = fileSizeInKb.ToString(),
             FilePath = filePath,
-            AttachmentPath=filePath ,
+            AttachmentPath = filePath,
             UploaddedOn = DateTime.UtcNow,
             UploadedBy = "System" // replace with actual user
         };
