@@ -4,8 +4,7 @@ using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.Domain.Interfaces.IServices;
-
-public class AttachmentService : IAttachmentService
+    public class AttachmentService : IAttachmentService
 {
     private readonly IAttachmentRepository _repo;
     public AttachmentService(IAttachmentRepository repo)

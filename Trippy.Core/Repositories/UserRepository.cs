@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Trippy.Domain.Entities;
-using Trippy.Domain.Interfaces.IRepositories;
-using Trippy.InfraCore.Data;
 using Trippy.Domain.Entities;
+using Trippy.Domain.Interfaces.IRepositories;
+using Trippy.Domain.Interfaces.IServices;
+using Trippy.InfraCore.Data;
 
 namespace Trippy.Core.Repositories
 {

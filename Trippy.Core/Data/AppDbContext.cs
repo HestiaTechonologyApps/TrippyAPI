@@ -45,8 +45,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<InvoiceDetailTax> InvoiceDetailTaxes { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
-    
-     
+        public IEnumerable<object> TripOrder { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

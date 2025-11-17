@@ -48,6 +48,7 @@ namespace Trippy.Bussiness
             services.AddScoped<IVehicleMaintenanceRecordService, VehicleMaintenanceService>();
             services.AddScoped<ITripKiloMeterService, TripKiloMeterService>();
             services.AddScoped<ITripBookingModeService, TripBookingModeService>();
+            services.AddScoped<IDashboardService, DashboardService>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));
 
