@@ -207,9 +207,10 @@ namespace Trippy.Core.Repositories
             var endOfDay = startOfDay.AddDays(1);
 
             return await _context.TripOrders
-                .CountAsync(t => t.ToDate.HasValue &&
-                                 t.ToDate.Value >= startOfDay &&
-                                 t.FromDate.Value < endOfDay);
+                .CountAsync(t => t.FromDate.HasValue &&
+                    t.ToDate.HasValue &&
+                    t.ToDate.Value >= startOfDay &&
+                    t.FromDate.Value <= endOfDay);
         }
 
         public async Task<List<TripListDataDTO>> GetTodaysTripsAsync(DateTime today)
