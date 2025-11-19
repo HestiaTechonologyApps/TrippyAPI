@@ -5,25 +5,25 @@
 namespace Trippy.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class addedsomething : Migration
+    public partial class usercompanyadded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "CreditDebitType",
-                table: "ExpenseTypes",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<int>(
+                name: "CompanyId",
+                table: "Users",
+                type: "int",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "CreditDebitType",
-                table: "ExpenseTypes");
+                name: "CompanyId",
+                table: "Users");
         }
     }
 }

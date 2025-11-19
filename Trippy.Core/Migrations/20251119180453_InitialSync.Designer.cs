@@ -12,8 +12,8 @@ using Trippy.InfraCore.Data;
 namespace Trippy.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251110055818_added expensse")]
-    partial class addedexpensse
+    [Migration("20251119180453_InitialSync")]
+    partial class InitialSync
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,10 @@ namespace Trippy.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileSize")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -527,6 +531,10 @@ namespace Trippy.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpenseTypeId"));
 
+                    b.Property<string>("CreditDebitType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -729,6 +737,9 @@ namespace Trippy.Core.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("TripNote")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -776,6 +787,9 @@ namespace Trippy.Core.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PaymentDetails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -812,6 +826,10 @@ namespace Trippy.Core.Migrations
 
                     b.Property<int>("TripBookingModeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TripCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TripDetails")
                         .IsRequired()
@@ -898,6 +916,9 @@ namespace Trippy.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -956,6 +977,9 @@ namespace Trippy.Core.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("MaintenanceDate")
                         .HasColumnType("datetime2");
