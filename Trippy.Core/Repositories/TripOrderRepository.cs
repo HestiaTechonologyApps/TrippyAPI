@@ -166,7 +166,8 @@ namespace Trippy.Core.Repositories
 
         public async Task<int> GetTotalTripsAsync()
         {
-            return await _context.TripOrders.CountAsync();
+            return await QuerableTripListAsyc().CountAsync();
+          //  return await _context.TripOrders.CountAsync();
         }
 
 
@@ -218,7 +219,9 @@ namespace Trippy.Core.Repositories
         public async Task<int> GetTripCountByStatusAsync(string ststus)
         {
 
-            return await _context.TripOrders.CountAsync(t => t.TripStatus.ToLower() == ststus.ToLower());
+            return await QuerableTripListAsyc().CountAsync(t => t.Status.ToLower() == ststus.ToLower());
+
+            //return await _context.TripOrders.CountAsync(t => t.TripStatus.ToLower() == ststus.ToLower());
         }
 
         public async Task<int> GetTripCountByStatusAndDateRangeAsync(string status, DateTime startDate, DateTime endDate)

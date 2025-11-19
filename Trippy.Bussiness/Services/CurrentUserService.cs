@@ -19,6 +19,6 @@ namespace Trippy.Business.Services
             _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
 
         public string? Email =>
-            _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.MobilePhone)?.Value;
+            _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
     }
 }

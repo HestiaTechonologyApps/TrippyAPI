@@ -14,10 +14,11 @@ namespace Trippy.Api.Controllers
         private readonly ITripOrderService _service;
         private readonly IDashboardService _dashboardService;
         private readonly IExpenseTypeService _reportService;
-        public TripDashboardController(ITripOrderService service, IExpenseTypeService reportService)
+        public TripDashboardController(ITripOrderService service, IExpenseTypeService reportService,IDashboardService dashboardService )
         {
             _service = service;
             _reportService = reportService;
+            _dashboardService = dashboardService;
         }
         [HttpGet("GetTripDashboard")]
         public async Task<IActionResult> GetTripDashboard()
