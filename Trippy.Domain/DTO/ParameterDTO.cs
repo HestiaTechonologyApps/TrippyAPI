@@ -14,4 +14,10 @@ namespace Trippy.Domain.DTO
         public string Code { get; set; } = "";
         public bool IsSelected { get; set; } = false;
     }
+
+    public class PaginatedResult<T>
+    {
+        public int Total { get; set; }
+        public IEnumerable<T> Data { get; set; }
+    }
 }

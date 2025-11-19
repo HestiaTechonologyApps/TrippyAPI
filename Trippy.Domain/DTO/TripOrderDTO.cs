@@ -53,7 +53,7 @@ namespace Trippy.Domain.DTO
         public string CustomerName { get; set; } = "";
 
         public string DriverName { get; set; } = "";
-
+        public bool IsDeleted { get; set; } = false;
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
 
 
@@ -75,7 +75,7 @@ namespace Trippy.Domain.DTO
         public string Status { get; set; }
         public string AddedBy { get; set; }
         public string PaymentMode { get; set; }
-        
+        public bool IsDeleted { get; set; } = false;
         public bool IsActive { get; set; } = true;
     }
 }

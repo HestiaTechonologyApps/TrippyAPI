@@ -41,7 +41,7 @@ namespace Trippy.Api.Controllers
 
         // ✅ 3. Get trips for a specific date
         [HttpGet("by-date")]
-        public async Task<ActionResult<List<TripOrderDTO>>> GetTripsByDate([FromQuery] DateTime date)
+        public async Task<ActionResult<List<TripListDataDTO>>> GetTripsByDate([FromQuery] DateTime date)
         {
             var trips = await _service.GetTripsByDateAsync(date);
             return Ok(trips);

@@ -21,101 +21,130 @@ namespace Trippy.Core.Repositories
         }
 
 
-        private IQueryable<TripListDataDTO> QuerableTripListAsyc()
+
+        public IQueryable<TripListDataDTO> QuerableTripListAsyc()
         {
-            return from tripOrder in _context.TripOrders
-                   join cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
-                   join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
-                   join trpmod in _context.TripBookingModes on tripOrder.TripBookingModeId
-                   equals trpmod.TripBookingModeId
+            return from tripOrder in _context.TripOrders.AsNoTracking()
+                   join cust in _context.Customers.AsNoTracking() on tripOrder.CustomerId equals cust.CustomerId
+                   join drv in _context.Drivers.AsNoTracking() on tripOrder.DriverId equals drv.DriverId
+                   join trpmod in _context.TripBookingModes.AsNoTracking()
+                        on tripOrder.TripBookingModeId equals trpmod.TripBookingModeId
+                   where tripOrder.IsDeleted == false
                    select new TripListDataDTO
                    {
                        TripOrderId = tripOrder.TripOrderId,
                        TripCode = tripOrder.TripCode,
-                       FromDateString = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
-                       ToDateString = tripOrder.ToDate.HasValue ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
-
+                       FromDateString = tripOrder.FromDate.HasValue
+                                        ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                                        : "",
+                       ToDateString = tripOrder.ToDate.HasValue
+                                      ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                                      : "",
                        FromDate = tripOrder.FromDate,
-                      
                        ToDate = tripOrder.ToDate,
-                       
-                       //FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
-                       //ToDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
                        IsActive = tripOrder.IsActive,
-
                        CustomerName = cust.CustomerName,
                        DriverName = drv.DriverName,
                        PickUpFrom = tripOrder.FromLocation,
                        RecivedVia = trpmod.TripBookingModeName,
                        PaymentMode = tripOrder.PaymentMode,
-
                        Status = tripOrder.TripStatus
                    };
         }
 
+        //public IQueryable<TripListDataDTO> QuerableTripListAsyc()
+        //{
+        //    return from tripOrder in _context.TripOrders
+        //           join cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
+        //           join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+        //           join trpmod in _context.TripBookingModes on tripOrder.TripBookingModeId
+        //           equals trpmod.TripBookingModeId
+        //           select new TripListDataDTO
+        //           {
+        //               TripOrderId = tripOrder.TripOrderId,
+        //               TripCode = tripOrder.TripCode,
+        //               FromDateString = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+        //               ToDateString = tripOrder.ToDate.HasValue ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+
+        //               FromDate = tripOrder.FromDate,
+
+        //               ToDate = tripOrder.ToDate,
+
+        //               //FromDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
+        //               //ToDate = CustomDateHelper.ConvertToLocalTimeFormat(tripOrder.FromDate, ""),
+        //               IsActive = tripOrder.IsActive,
+
+        //               CustomerName = cust.CustomerName,
+        //               DriverName = drv.DriverName,
+        //               PickUpFrom = tripOrder.FromLocation,
+        //               RecivedVia = trpmod.TripBookingModeName,
+        //               PaymentMode = tripOrder.PaymentMode,
+
+        //               Status = tripOrder.TripStatus
+        //           };
+        //}
 
 
 
 
-        public async Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync()
+
+        public async Task<IEnumerable<TripListDataDTO>> GetCanceledTripsAsync()
         {
 
-            return await _context.TripOrders
-                .Where(t => t.TripStatus == "Canceled").Select(t => new TripOrderDTO
-                {
-                    TripOrderId = t.TripOrderId,
-                    FromLocation = t.FromLocation,
-                    FromDate = t.FromDate,
-                    TripStatus = t.TripStatus
-                }).ToListAsync();
+
+
+            var q = await QuerableTripListAsyc().Where(t => t.Status == "Canceled").ToListAsync();
+
+            return q;
 
         }
 
-        public async Task< TripOrderDTO> GetTripDetails(int tripid)
+        public async Task<TripOrderDTO> GetTripDetails(int tripid)
         {
 
 
-            var q= (from tripOrder in _context.TripOrders
-                          join
-                          cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
-                          join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+            var q = (from tripOrder in _context.TripOrders
+                     join
+                     cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
+                     join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
 
-                          where tripOrder.TripOrderId == tripid
-                          select new TripOrderDTO
-                          {
-                              TripOrderId = tripOrder.TripOrderId,
-                              TripBookingModeId = tripOrder.TripBookingModeId,
-                              CustomerId = tripOrder.CustomerId,
-                              DriverId = tripOrder.DriverId,
-                              FromDate = tripOrder.FromDate,
-                              ToDate = tripOrder.ToDate,
-                              FromLocation = tripOrder.FromLocation,
-                              ToLocation1 = tripOrder.ToLocation1,
-                              ToLocation2 = tripOrder.ToLocation2,
-                              ToLocation3 = tripOrder.ToLocation3,
-                              ToLocation4 = tripOrder.ToLocation4,
+                     where tripOrder.TripOrderId == tripid
+                     select new TripOrderDTO
+                     {
+                         TripOrderId = tripOrder.TripOrderId,
+                         TripBookingModeId = tripOrder.TripBookingModeId,
+                         CustomerId = tripOrder.CustomerId,
+                         DriverId = tripOrder.DriverId,
+                         FromDate = tripOrder.FromDate,
+                         ToDate = tripOrder.ToDate,
+                         FromLocation = tripOrder.FromLocation,
+                         ToLocation1 = tripOrder.ToLocation1,
+                         ToLocation2 = tripOrder.ToLocation2,
+                         ToLocation3 = tripOrder.ToLocation3,
+                         ToLocation4 = tripOrder.ToLocation4,
 
-                              FromDateString = tripOrder.FromDate.HasValue
-                                  ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                                  : string.Empty,
-                             
-                              ToDateString = tripOrder.ToDate.HasValue
-                                  ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                                  : string.Empty,
-                              
-                              PaymentMode = tripOrder.PaymentMode,
-                              PaymentDetails = tripOrder.PaymentDetails,
-                              BookedBy = tripOrder.BookedBy,
-                              TripDetails = tripOrder.TripDetails,
-                              TripStatus = tripOrder.TripStatus,
-                              TripAmount = tripOrder.TripAmount,
-                              AdvanceAmount = tripOrder.AdvanceAmount,
-                              BalanceAmount = tripOrder.BalanceAmount,
-                              IsActive = tripOrder.IsActive,
-                              CustomerName = cust.CustomerName,
-                              DriverName = drv.DriverName,
+                         FromDateString = tripOrder.FromDate.HasValue
+                             ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                             : string.Empty,
 
-                          }).FirstAsync();
+                         ToDateString = tripOrder.ToDate.HasValue
+                             ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
+                             : string.Empty,
+
+                         PaymentMode = tripOrder.PaymentMode,
+                         PaymentDetails = tripOrder.PaymentDetails,
+                         BookedBy = tripOrder.BookedBy,
+                         TripDetails = tripOrder.TripDetails,
+                         TripStatus = tripOrder.TripStatus,
+                         TripAmount = tripOrder.TripAmount,
+                         AdvanceAmount = tripOrder.AdvanceAmount,
+                         BalanceAmount = tripOrder.BalanceAmount,
+                         IsActive = tripOrder.IsActive,
+                         CustomerName = cust.CustomerName,
+                         DriverName = drv.DriverName,
+                         IsDeleted = tripOrder.IsDeleted
+
+                     }).FirstAsync();
             return await q;
 
         }
@@ -205,9 +234,9 @@ namespace Trippy.Core.Repositories
         {
             var startOfDay = today.Date;
             var endOfDay = startOfDay.AddDays(1);
+            var q = QuerableTripListAsyc();
 
-            return await _context.TripOrders
-                .CountAsync(t => t.FromDate.HasValue &&
+            return await q.CountAsync(t => t.FromDate.HasValue &&
                     t.ToDate.HasValue &&
                     t.ToDate.Value >= startOfDay &&
                     t.FromDate.Value <= endOfDay);
@@ -225,27 +254,21 @@ namespace Trippy.Core.Repositories
                     t.ToDate.Value >= startOfDay &&
                     t.FromDate.Value <= endOfDay);
 
-            //q = q.Where(t =>
-            //       t.FromDate != null &&
-            //       t.ToDate != null &&
-            //       DateTime.Parse(t.ToDate) >= startOfDay &&
-            //       DateTime.Parse(t.FromDate) <= endOfDay
-            //   );
 
-
-            return await  q.ToListAsync();
+            return await q.ToListAsync();
         }
 
-        public async Task<List<TripOrder>> GetTripsByDateAsync(DateTime date)
+        public async Task<List<TripListDataDTO>> GetTripsByDateAsync(DateTime date)
         {
             var startOfDay = date.Date;
             var endOfDay = startOfDay.AddDays(1);
+            var q = QuerableTripListAsyc();
 
-            return await _context.TripOrders
-                .Where(t => t.ToDate.HasValue &&
+            q = q.Where(t => t.ToDate.HasValue &&
                             t.ToDate.Value >= startOfDay &&
-                            t.FromDate.Value < endOfDay)
-                .ToListAsync();
+                            t.FromDate.Value < endOfDay);
+            return await q.ToListAsync();
+
         }
 
         public async Task<List<TripListDataDTO>> GetAllByStatusAndYearAsync(string status, int year)
@@ -258,7 +281,7 @@ namespace Trippy.Core.Repositories
             if (year > 0)
             {
                 q = q.Where(t => t.FromDate != null &&
-                                DateTime.Parse(t.FromDate.Value.ToString ()).Year == year);
+                                DateTime.Parse(t.FromDate.Value.ToString()).Year == year);
             }
 
             return await q.ToListAsync();
@@ -270,66 +293,14 @@ namespace Trippy.Core.Repositories
 
 
 
-        public async Task<List<TripOrder>> GetAllTripsAsync()
+        public async Task<List<TripListDataDTO>> GetAllTripsAsync()
         {
-            return await _context.TripOrders
-        .Include(t => t.CustomerId)
-        .Include(t => t.DriverId)
-        .ToListAsync();
+            return await QuerableTripListAsyc().ToListAsync();
 
 
         }
 
-        public Task<List<TripOrderDTO>> GetAllTripsDetailAsync()
-        {
-            var result = (from trp in _context.TripOrders
-
-
-                          join cust in _context.Customers
-                              on trp.CustomerId equals cust.CustomerId
-                          join drv in _context.Drivers
-                              on trp.DriverId equals drv.DriverId
-                          join trpmod in _context.TripBookingModes
-                              on trp.TripBookingModeId equals trpmod.TripBookingModeId
-                          select new TripOrderDTO
-                          {
-                              TripOrderId = trp.TripOrderId,
-                              TripBookingModeId = trp.TripBookingModeId,
-
-                              CustomerId = trp.CustomerId,
-                              DriverId = trp.DriverId,
-
-                              FromLocation = trp.FromLocation,
-                              ToLocation1 = trp.ToLocation1,
-                              ToLocation2 = trp.ToLocation2,
-                              ToLocation3 = trp.ToLocation3,
-                              ToLocation4 = trp.ToLocation4,
-                              PaymentMode = trp.PaymentMode,
-                              PaymentDetails = trp.PaymentDetails,
-                              BookedBy = trp.BookedBy,
-                              TripDetails = trp.TripDetails,
-                              TripStatus = trp.TripStatus,
-                              TripAmount = trp.TripAmount,
-                              AdvanceAmount = trp.AdvanceAmount,
-                              BalanceAmount = trp.BalanceAmount,
-                              IsActive = trp.IsActive,
-                              FromDate = trp.FromDate,
-                              ToDate = trp.ToDate,
-
-                              FromDateString = trp.FromDate.HasValue
-                            ? trp.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                            : string.Empty,
-
-                              ToDateString = trp.ToDate.HasValue
-                            ? trp.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                            : string.Empty,
-                              TripBookingModeName = trpmod.TripBookingModeName,
-
-                              CustomerName = cust.CustomerName,
-                              DriverName = drv.DriverName
-                          }).ToListAsync();
-            return result;
-        }
+      
 
 
     }

@@ -98,23 +98,23 @@ namespace Trippy.Bussiness.Services
 
 
 
-        public async Task<List<TripOrderDTO>> GetAllAsync()
-        {
+        //public async Task<List<TripOrderDTO>> GetAllAsync()
+        //{
 
 
-            var tripOrders = await _repo.GetAllTripsDetailAsync(); // this must return List<TripOrderDTO>
+        //    var tripOrders = await _repo.GetAllTripsDetailAsync(); // this must return List<TripOrderDTO>
 
-            // If you need transformation later, keep this loop
-            // List<TripOrderDTO> tripOrderDtos = new List<TripOrderDTO>();
-            // foreach (var trip in tripOrders)
-            // {
-            //     TripOrderDTO dto = await ConvertTripOrderToDTO(trip);
-            //     tripOrderDtos.Add(dto);
-            // }
-            // return tripOrderDtos;
+        //    // If you need transformation later, keep this loop
+        //    // List<TripOrderDTO> tripOrderDtos = new List<TripOrderDTO>();
+        //    // foreach (var trip in tripOrders)
+        //    // {
+        //    //     TripOrderDTO dto = await ConvertTripOrderToDTO(trip);
+        //    //     tripOrderDtos.Add(dto);
+        //    // }
+        //    // return tripOrderDtos;
 
-            return tripOrders;
-        }
+        //    return tripOrders;
+        //}
 
 
         public async Task<List<TripListDataDTO>> GetAll()
@@ -200,7 +200,7 @@ namespace Trippy.Bussiness.Services
             return tripOrderDtos;
         }
 
-        public async Task<IEnumerable<TripOrderDTO>> GetCanceledTripsAsync()
+        public async Task<IEnumerable<TripListDataDTO>> GetCanceledTripsAsync()
         {
             return await _repo.GetCanceledTripsAsync();
         }
@@ -321,36 +321,11 @@ namespace Trippy.Bussiness.Services
             //}).ToList();
         }
 
-        public async Task<List<TripOrderDTO>> GetTripsByDateAsync(DateTime date)
+        public async Task<List<TripListDataDTO>> GetTripsByDateAsync(DateTime date)
         {
             var trips = await _repo.GetTripsByDateAsync(date);
 
-            return trips.Select(t => new TripOrderDTO
-            {
-                TripOrderId = t.TripOrderId,
-                TripBookingModeId = t.TripBookingModeId,
-                CustomerId = t.CustomerId,
-                DriverId = t.DriverId,
-                FromDate = t.FromDate,
-                FromDateString = t.FromDateString,
-                ToDate = t.ToDate,
-                ToDateString = t.ToDateString,
-                FromLocation = t.FromLocation,
-                ToLocation1 = t.ToLocation1,
-                ToLocation2 = t.ToLocation2,
-                ToLocation3 = t.ToLocation3,
-                ToLocation4 = t.ToLocation4,
-                PaymentDetails = t.PaymentDetails,
-                PaymentMode = t.PaymentMode,
-                BookedBy = t.BookedBy,
-                TripDetails = t.TripDetails,
-                TripStatus = t.TripStatus,
-                TripAmount = t.TripAmount,
-                AdvanceAmount = t.AdvanceAmount,
-                BalanceAmount = t.BalanceAmount,
-                IsActive = t.IsActive
-
-            }).ToList();
+            return trips;
         }
 
         public async Task<List<TripListDataDTO>> GetAllTripListByYearAsync(int year)

@@ -19,6 +19,7 @@ namespace Trippy.Domain.Entities
         public string Remarks { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public string CreatedBy { get; set; } = string.Empty;
+        public bool IsDeleted { get; set; } = false;
     }
 
 
