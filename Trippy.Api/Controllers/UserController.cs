@@ -4,12 +4,13 @@ using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
+using TrippyAPI.Controllers;
 
 namespace Trippy.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : Api_BaseController
     {
         private readonly IUserService _service;
         public UserController(IUserService service)

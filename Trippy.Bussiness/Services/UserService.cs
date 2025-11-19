@@ -83,6 +83,7 @@ namespace Trippy.Bussiness.Services
             userDTO.Islocked = user.Islocked;
             userDTO.CreateAt = user.CreateAt;
             userDTO.Lastlogin = user.Lastlogin;
+            userDTO.CompanyId = user.CompanyId;
             userDTO.LastloginString = user.Lastlogin.HasValue ? user.Lastlogin.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             userDTO.CreateAtSyring = user.CreateAt.ToString("dd MMMM yyyy hh:mm tt");
 

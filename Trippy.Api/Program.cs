@@ -20,6 +20,7 @@ Log.Logger = new LoggerConfiguration()
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 
 // JWT Authentication configuration
 builder.Services.AddAuthentication(options =>
@@ -41,7 +42,7 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
-
+builder.Services.AddHttpContextAccessor();
 CleanOldStdoutLogs();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

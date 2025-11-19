@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using Trippy.Domain.Entities;
-using Trippy.Domain.DTO; // For CustomApiResponse
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Trippy.Domain.Interfaces.IServices;
-using Trippy.Core.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Trippy.Core.Helpers;
+using Trippy.Domain.DTO; // For CustomApiResponse
+using Trippy.Domain.Entities;
+using Trippy.Domain.Interfaces.IServices;
+using TrippyAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class CategoryController : ControllerBase
+public class CategoryController : Api_BaseController
 {
     private readonly ICategoryService _service;
     public CategoryController(ICategoryService service)

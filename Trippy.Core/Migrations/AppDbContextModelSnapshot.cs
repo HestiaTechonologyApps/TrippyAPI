@@ -853,6 +853,9 @@ namespace Trippy.CORE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 

@@ -5,12 +5,13 @@ using Trippy.Core.Helpers;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
+using TrippyAPI.Controllers;
 
 namespace Trippy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AttachmentController : ControllerBase
+    public class AttachmentController : Api_BaseController
     {
         private readonly IAttachmentService _attachmentService;
         private readonly IWebHostEnvironment _env;

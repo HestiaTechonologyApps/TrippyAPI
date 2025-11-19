@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
-using Trippy.Domain.Entities;
-using Trippy.Domain.DTO; // For CustomApiResponse
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Trippy.Domain.DTO; // For CustomApiResponse
+using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
+using TrippyAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class FinancialYearController : ControllerBase
+public class FinancialYearController : Api_BaseController
 {
     private readonly IFinancialYearService _service;
     public FinancialYearController(IFinancialYearService service)

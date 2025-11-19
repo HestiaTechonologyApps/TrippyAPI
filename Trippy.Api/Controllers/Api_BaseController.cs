@@ -18,30 +18,7 @@ namespace TrippyAPI.Controllers
         {
         }
 
-        public Boolean IsUserAuthorized(String ModuleName, String ActionName, ref CustomApiResponse response)
-        {
-            Boolean isPermitted = false;
-
-            try
-            {
-                isPermitted = true;
-
-            }
-            catch (Exception ex)
-            {
-                response.Error = "You are not authorized for this action";
-                isPermitted = false;
-            }
-
-
-            return isPermitted;
-
-        }
-        public void AddLogER(string ActionType, String PrimaryKry, Object obj)
-        {
-            // unitOfWork.AppAuditRepository.AddLogs(EntityName, PrimaryKry, ActionType, CurrentUserID, obj);
-            // unitOfWork.SaveAllChanges();
-        }
+       
 
     }
 

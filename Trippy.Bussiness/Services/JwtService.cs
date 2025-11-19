@@ -14,9 +14,10 @@ public class JwtService : IJwtService
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.UserId .ToString()),
-            new Claim(ClaimTypes.MobilePhone, user.UserEmail),
-            new Claim(ClaimTypes.Name , user.UserName)
+            new Claim(ClaimTypes.NameIdentifier, user.UserName  .ToString()),
+            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+            new Claim(ClaimTypes.Email, user.UserEmail),
+            new Claim(ClaimTypes.GroupSid, user.CompanyId.ToString ())
         };
 
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

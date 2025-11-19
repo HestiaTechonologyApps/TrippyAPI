@@ -6,10 +6,11 @@ using Microsoft.EntityFrameworkCore.Query;
 using System.Security.Claims;
 using Trippy.Core.Helpers;
 using Trippy.Domain.DTO;
+using TrippyAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController : Api_BaseController
 {
     private readonly IAuthService _authService;
     private readonly ILogger<AuthController> _logger;

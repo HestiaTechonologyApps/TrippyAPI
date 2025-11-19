@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Trippy.Bussiness.Services;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Interfaces.IServices;
+using TrippyAPI.Controllers;
 
 namespace Trippy.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TripDashboardController : ControllerBase
+    public class TripDashboardController : Api_BaseController
     {
         private readonly ITripOrderService _service;
         private readonly IDashboardService _dashboardService;

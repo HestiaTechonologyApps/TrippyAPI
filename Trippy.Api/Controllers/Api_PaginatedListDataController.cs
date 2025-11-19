@@ -8,7 +8,7 @@ namespace TrippyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Api_PaginatedListDataController : ControllerBase
+    public class Api_PaginatedListDataController : Api_BaseController
     {
 
 

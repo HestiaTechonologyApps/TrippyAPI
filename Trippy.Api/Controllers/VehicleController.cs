@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IServices;
+using TrippyAPI.Controllers;
 
 namespace Trippy.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehicleController : ControllerBase
+    public class VehicleController : Api_BaseController
     {
         private readonly IVehicleService _service;
         public VehicleController(IVehicleService service)

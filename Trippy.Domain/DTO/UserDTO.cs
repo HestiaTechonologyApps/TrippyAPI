@@ -18,6 +18,7 @@ namespace Trippy.Domain.DTO
         public string PasswordHash { get; set; } = "";
         public bool IsActive { get; set; } = true;
         public bool Islocked { get; set; } = false;
+        public int CompanyId { get; set; } =0;
         public DateTime? CreateAt { get; set; } = DateTime.UtcNow;
         public string CreateAtString { get; set; } = "";
         public DateTime? Lastlogin { get; set; }

@@ -10,9 +10,11 @@ namespace Trippy.Core.Repositories
     {
         private readonly AppDbContext _context; // Replace with your DbContext name
 
-        public DashboardRepository(AppDbContext context)
+        private readonly ITripOrderRepository _tripOrderRepository;
+        public DashboardRepository(AppDbContext context, ITripOrderRepository tripOrderRepository   )
         {
             _context = context;
+            _tripOrderRepository = tripOrderRepository;
         }
 
         public async Task<List<MonthlyFinancialDto>> GetMonthlyFinancialAsync(int year)
@@ -53,12 +55,15 @@ namespace Trippy.Core.Repositories
 
         public async Task<List<MonthlyTripCountDto>> GetMonthlyTripCountAsync(int year)
         {
-            // Get monthly trip counts
-            var monthlyTrips = await _context.TripOrders
-                .Where(t => t.IsActive && t.FromDate.HasValue && t.FromDate.Value.Year == year)
+
+            var q= _tripOrderRepository.QuerableTripListAsyc();
+            var monthlyTrips = await q
+                .Where(t => t.IsActive && t.FromDate.HasValue && t.FromDate.Value.Year == year && t.IsDeleted==false )
                 .GroupBy(t => t.FromDate.Value.Month)
                 .Select(g => new { Month = g.Key, TripCount = g.Count() })
                 .ToListAsync();
+
+          
 
             // Create result for all 12 months
             var result = new List<MonthlyTripCountDto>();
