@@ -17,15 +17,17 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ITripOrderRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        private readonly ICurrentUserService _currentUser;
 
         public String AuditTableName { get; set; } = "TRIPORDER"; // THIS name eill be added everywhere to avoid spelling mistake
-        public TripOrderService(ITripOrderRepository repo, IAuditRepository auditRepository)
+        public TripOrderService(ITripOrderRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUser)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
+            _currentUser = currentUser;
         }
         public async Task<TripOrderDTO> CreateAsync(TripOrder tripOrder)
-        {
+        {  
             await _repo.AddAsync(tripOrder);
             await _repo.SaveChangesAsync();
 
@@ -38,7 +40,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripOrder.TripOrderId,
                oldEntity: null,
                newEntity: tripOrder,
-               changedBy: "System" // Replace with actual user info
+               changedBy:_currentUser.Email.ToString () // Replace with actual user info    
            );
             return await ConvertTripOrderToDTO(tripOrder);
         }
@@ -91,7 +93,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripOrder.TripOrderId,
                oldEntity: tripOrder,
                newEntity: tripOrder,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString()  // Replace with actual user info
            );
             return true;
         }
@@ -152,7 +154,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripOrder.TripOrderId,
                oldEntity: oldentity,
                newEntity: tripOrder,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString()  // Replace with actual user info
            );
             return true;
         }
@@ -176,7 +178,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripOrder.TripOrderId,
                oldEntity: oldentity,
                newEntity: tripOrder,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString()  // Replace with actual user info
            );
             return true;
         }
