@@ -214,7 +214,7 @@ namespace Trippy.Bussiness.Services
         }
 
 
-        public async Task<List<TripDashboardDTO>> GetAllTripDashboardListbyStatusAsync()
+        public async Task<List<TripDashboardDTO>> GetAllTripDashboardListbyStatusAsync(int year)
         {
             DateTime today = DateTime.Today;
             DateTime lastWeekStart = today.AddDays(-7);
@@ -222,11 +222,12 @@ namespace Trippy.Bussiness.Services
             DateTime prevWeekEnd = today.AddDays(-7);
 
 
-            int totalTrips = await _repo.GetTotalTripsAsync();
+            int totalTrips = await _repo.GetTotalTripsAsync(year);
             int todaysTrips = await _repo.GetTodaysTripsCountAsync(today);
-            int cancelled = await _repo.GetTripCountByStatusAsync("Canceled");
-            int completed = await _repo.GetTripCountByStatusAsync("Completed");
-            int scheduled = await _repo.GetTripCountByStatusAsync("Scheduled");
+            int cancelled = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Canceled");;
+            int completed = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Completed");
+            int scheduled = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Scheduled");
+           
 
 
             int prevCancelled = await _repo.GetTripCountByStatusAndDateRangeAsync("Canceled", prevWeekStart, prevWeekEnd);

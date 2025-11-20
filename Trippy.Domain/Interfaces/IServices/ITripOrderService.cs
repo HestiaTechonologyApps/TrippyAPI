@@ -13,7 +13,7 @@ namespace Trippy.Domain.Interfaces.IServices
         //Task<List<TripOrderDTO>> GetAllAsync();
         Task<List<TripListDataDTO>> GetAllTripListbyStatusAsync(string Status);
 
-        Task<List<TripDashboardDTO>> GetAllTripDashboardListbyStatusAsync();
+        Task<List<TripDashboardDTO>> GetAllTripDashboardListbyStatusAsync(int year);
 
         Task<int> GetTodaysTripCountAsync();
 

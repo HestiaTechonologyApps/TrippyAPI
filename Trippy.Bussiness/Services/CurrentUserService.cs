@@ -20,5 +20,8 @@ namespace Trippy.Business.Services
 
         public string? Email =>
             _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+
+        public string? CompanyId =>
+           _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.GroupSid)?.Value;
     }
 }

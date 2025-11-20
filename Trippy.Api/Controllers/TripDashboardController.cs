@@ -21,9 +21,9 @@ namespace Trippy.Api.Controllers
             _dashboardService = dashboardService;
         }
         [HttpGet("GetTripDashboard")]
-        public async Task<IActionResult> GetTripDashboard()
+        public async Task<IActionResult> GetTripDashboard(int year)
         {
-            var dashboard = await _service.GetAllTripDashboardListbyStatusAsync();
+            var dashboard = await _service.GetAllTripDashboardListbyStatusAsync(year);
 
             return Ok(new
             {

@@ -15,6 +15,7 @@ namespace Trippy.Core.Repositories
     public class TripOrderRepository : GenericRepository<TripOrder>, ITripOrderRepository
     {
         private readonly AppDbContext _context;
+       
         public TripOrderRepository(AppDbContext context) : base(context)
         {
             _context = context;
@@ -164,62 +165,70 @@ namespace Trippy.Core.Repositories
 
 
 
-        public async Task<int> GetTotalTripsAsync()
+        public async Task<int> GetTotalTripsAsync(int year)
         {
-            return await QuerableTripListAsyc().CountAsync();
+            return await QuerableTripListAsyc().Where(t => t.FromDate != null &&
+                                t.FromDate.Value.Year == year).CountAsync();
           //  return await _context.TripOrders.CountAsync();
         }
 
 
 
-        public async Task<TripDashboardDTO> GetDashBoardData(string ststus)
+        //public async Task<TripDashboardDTO> GetDashBoardData(string ststus)
+        //{
+        //    var lst = new List<TripDashboardDTO>();
+
+        //    TripDashboardDTO totaltripdtp = new TripDashboardDTO();
+        //    totaltripdtp.Value = await GetTripCountByStatusAsync("All");
+        //    totaltripdtp.Title = "Total Trips";
+        //    lst.Add(totaltripdtp);
+
+        //    TripDashboardDTO inprogresstripdtp = new TripDashboardDTO();
+        //    totaltripdtp.Value = await GetTripCountByStatusAsync("All");
+        //    totaltripdtp.Title = "Total Trips";
+        //    lst.Add(totaltripdtp);
+
+
+        //    DateTime today = DateTime.Today;
+
+        //    TripDashboardDTO todaytripdtp = new TripDashboardDTO();
+        //    todaytripdtp.Value = await _context.TripOrders
+        //        .CountAsync(t => t.FromDate >= today && t.FromDate < today.AddDays(1));
+        //    todaytripdtp.Title = "Today's Trips";
+        //    todaytripdtp.Date = today;
+        //    lst.Add(todaytripdtp);
+
+
+        //    TripDashboardDTO canceltripdtp = new TripDashboardDTO();
+        //    canceltripdtp.Value = await GetTripCountByStatusAsync("Canceled");
+        //    canceltripdtp.Title = "Canceled Trips";
+        //    lst.Add(canceltripdtp);
+
+        //    TripDashboardDTO completedtripdtp = new TripDashboardDTO();
+        //    completedtripdtp.Value = await GetTripCountByStatusAsync("Completed");
+        //    completedtripdtp.Title = "Completed Trips";
+        //    lst.Add(completedtripdtp);
+
+
+
+
+
+        //    return lst.FirstOrDefault();
+
+        //}
+
+
+        public async Task<int> GetTripCountByStatusAsync(int CompanyId, int year,string ststus)
         {
-            var lst = new List<TripDashboardDTO>();
+            var q = QuerableTripListAsyc();
+            if (CompanyId != 0)
+            {
+                //  q=q.Where (t=>t.CompanyId==CompanyId)
+            }
+            q=q.Where(t => t.FromDate != null &&
+                                t.FromDate.Value.Year == year);
 
-            TripDashboardDTO totaltripdtp = new TripDashboardDTO();
-            totaltripdtp.Value = await GetTripCountByStatusAsync("All");
-            totaltripdtp.Title = "Total Trips";
-            lst.Add(totaltripdtp);
-
-            TripDashboardDTO inprogresstripdtp = new TripDashboardDTO();
-            totaltripdtp.Value = await GetTripCountByStatusAsync("All");
-            totaltripdtp.Title = "Total Trips";
-            lst.Add(totaltripdtp);
-
-
-            DateTime today = DateTime.Today;
-
-            TripDashboardDTO todaytripdtp = new TripDashboardDTO();
-            todaytripdtp.Value = await _context.TripOrders
-                .CountAsync(t => t.FromDate >= today && t.FromDate < today.AddDays(1));
-            todaytripdtp.Title = "Today's Trips";
-            todaytripdtp.Date = today;
-            lst.Add(todaytripdtp);
-
-
-            TripDashboardDTO canceltripdtp = new TripDashboardDTO();
-            canceltripdtp.Value = await GetTripCountByStatusAsync("Canceled");
-            canceltripdtp.Title = "Canceled Trips";
-            lst.Add(canceltripdtp);
-
-            TripDashboardDTO completedtripdtp = new TripDashboardDTO();
-            completedtripdtp.Value = await GetTripCountByStatusAsync("Completed");
-            completedtripdtp.Title = "Completed Trips";
-            lst.Add(completedtripdtp);
-
-
-
-
-
-            return lst.FirstOrDefault();
-
-        }
-
-
-        public async Task<int> GetTripCountByStatusAsync(string ststus)
-        {
-
-            return await QuerableTripListAsyc().CountAsync(t => t.Status.ToLower() == ststus.ToLower());
+            return await q.CountAsync(t => t.Status.ToLower() == ststus.ToLower());
 
             //return await _context.TripOrders.CountAsync(t => t.TripStatus.ToLower() == ststus.ToLower());
         }
@@ -284,7 +293,7 @@ namespace Trippy.Core.Repositories
             if (year > 0)
             {
                 q = q.Where(t => t.FromDate != null &&
-                                DateTime.Parse(t.FromDate.Value.ToString()).Year == year);
+                                t.FromDate.Value.Year == year);
             }
 
             return await q.ToListAsync();
