@@ -78,5 +78,15 @@ namespace Trippy.Domain.DTO
         public bool IsDeleted { get; set; } = false;
         public bool IsActive { get; set; } = true;
     }
+    public class CalendarEventDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } // e.g., "Trip #123 - Customer Name"
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public string Status { get; set; } // To determine color (e.g., Planned, Completed)
+        public string Description { get; set; } // Tooltip info
+        public bool AllDay { get; set; } = false;
+    }
 }
 

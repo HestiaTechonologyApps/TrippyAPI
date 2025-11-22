@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +114,7 @@ namespace Trippy.Core.Repositories
                      select new TripOrderDTO
                      {
                          TripOrderId = tripOrder.TripOrderId,
+                         TripCode = tripOrder.TripCode,
                          TripBookingModeId = tripOrder.TripBookingModeId,
                          CustomerId = tripOrder.CustomerId,
                          DriverId = tripOrder.DriverId,
@@ -311,11 +313,61 @@ namespace Trippy.Core.Repositories
 
 
         }
+       
+        public async Task<List<CalendarEventDto>> GetDriverSchedule(int driverId,  DateTime start,  DateTime end)
+        {
+            // 1. Validate Date Range
+            if (start == default || end == default)
+            {
+                // Default to current month if not provided
+                var now = DateTime.UtcNow;
+                start = new DateTime(now.Year, now.Month, 1);
+                end = start.AddMonths(1).AddDays(-1);
+            }
 
-      
+            // 2. Query Database
+            // We look for trips that overlap with the requested window
+            var trips = await _context.TripOrders 
+                .Where(t =>
+                    t.DriverId == driverId &&
+                    !t.IsDeleted &&
+                    t.IsActive &&
+                    t.TripStatus != "Cancelled" &&
+                    t.FromDate.HasValue &&
+                    t.ToDate.HasValue &&
+                    // Overlap logic: Trip starts before window ends AND Trip ends after window starts
+                    t.FromDate < end &&
+                    t.ToDate > start
+                )
+                .Select(t => new
+                {
+                    t.TripOrderId,
+                    t.TripCode,
+                    t.FromLocation,
+                    t.ToLocation1,
+                    t.FromDate,
+                    t.ToDate,
+                    t.TripStatus
+                   // t.CustomerName // Assuming you joined Customer table or have this field
+                })
+                .ToListAsync();
+
+            // 3. Map to Calendar Event DTO
+            var events = trips.Select(t => new CalendarEventDto
+            {
+                Id = t.TripOrderId,
+                Title = $"{t.TripCode} - {t.FromLocation} to {t.ToLocation1}",
+                Start = t.FromDate.Value,
+                End = t.ToDate.Value,
+                Status = t.TripStatus,
+                Description = $"Status: {t.TripStatus}"
+            });
+
+            return events.ToList();
 
 
-    }
+
+        }
 
 
 }

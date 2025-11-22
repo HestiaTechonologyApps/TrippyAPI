@@ -366,7 +366,10 @@ namespace Trippy.Bussiness.Services
 
         }
 
-
+       public async Task<List<CalendarEventDto>> GetDriverSchedule(int driverId, DateTime start, DateTime end)
+        {
+           return await _repo.GetDriverSchedule(driverId, start, end);
+        }
     }
 }
 

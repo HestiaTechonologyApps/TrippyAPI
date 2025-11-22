@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
@@ -309,6 +310,14 @@ namespace Trippy.Api.Controllers
             return response;
         }
 
+
+        [HttpGet("schedule/{driverId}")]
+        public async Task<IActionResult> GetDriverSchedule(int driverId, [FromQuery] DateTime start, [FromQuery] DateTime end)
+        {
+            var events = await _service.GetDriverSchedule(driverId, start, end);    
+
+            return Ok(new { isSuccess = true, value = events });
+        }
 
     }
 }

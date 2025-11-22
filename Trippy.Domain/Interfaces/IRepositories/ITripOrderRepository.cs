@@ -31,6 +31,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
 
         IQueryable<TripListDataDTO> QuerableTripListAsyc();
 
+         Task<List<CalendarEventDto>> GetDriverSchedule(int driverId, DateTime start, DateTime end);
 
 
 
