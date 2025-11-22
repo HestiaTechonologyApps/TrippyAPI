@@ -50,6 +50,7 @@ namespace Trippy.Bussiness.Services
 
             TripOrderDTO tripOrderDTO = new TripOrderDTO();
             tripOrderDTO.TripOrderId = tripOrder.TripOrderId;
+            tripOrderDTO.TripCode= tripOrder.TripCode;
             tripOrderDTO.TripBookingModeId = tripOrder.TripBookingModeId;
             tripOrderDTO.CustomerId = tripOrder.CustomerId;
 

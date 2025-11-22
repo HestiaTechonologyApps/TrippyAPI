@@ -22,10 +22,12 @@ namespace Trippy.Core.Repositories
     public class AuditRepository : IAuditRepository
     {
         private readonly AppDbContext _dbContext;
+        private readonly ICurrentUserService _currentUser;
 
-        public AuditRepository(AppDbContext dbContext)
+        public AuditRepository(AppDbContext dbContext, ICurrentUserService currentUser)
         {
             _dbContext = dbContext;
+            _currentUser = currentUser;
         }
 
         public async Task LogAuditAsync<T>(
@@ -74,7 +76,7 @@ namespace Trippy.Core.Repositories
                 TableName = tableName.ToUpper(),
                 Action = action.ToUpper (),
                 RecordID = recordId,
-                ChangedBy = changedBy,
+                ChangedBy = _currentUser.Email,
                 ChangedAt = DateTime.UtcNow,
                 ChangeDetails = changeDetails
             };
