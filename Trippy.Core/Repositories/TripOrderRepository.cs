@@ -16,7 +16,7 @@ namespace Trippy.Core.Repositories
     public class TripOrderRepository : GenericRepository<TripOrder>, ITripOrderRepository
     {
         private readonly AppDbContext _context;
-       
+
         public TripOrderRepository(AppDbContext context) : base(context)
         {
             _context = context;
@@ -172,7 +172,7 @@ namespace Trippy.Core.Repositories
         {
             return await QuerableTripListAsyc().Where(t => t.FromDate != null &&
                                 t.FromDate.Value.Year == year).CountAsync();
-          //  return await _context.TripOrders.CountAsync();
+            //  return await _context.TripOrders.CountAsync();
         }
 
 
@@ -221,14 +221,14 @@ namespace Trippy.Core.Repositories
         //}
 
 
-        public async Task<int> GetTripCountByStatusAsync(int CompanyId, int year,string ststus)
+        public async Task<int> GetTripCountByStatusAsync(int CompanyId, int year, string ststus)
         {
             var q = QuerableTripListAsyc();
             if (CompanyId != 0)
             {
                 //  q=q.Where (t=>t.CompanyId==CompanyId)
             }
-            q=q.Where(t => t.FromDate != null &&
+            q = q.Where(t => t.FromDate != null &&
                                 t.FromDate.Value.Year == year);
 
             return await q.CountAsync(t => t.Status.ToLower() == ststus.ToLower());
@@ -314,8 +314,8 @@ namespace Trippy.Core.Repositories
 
 
         }
-       
-        public async Task<List<CalendarEventDto>> GetDriverSchedule(int driverId,  DateTime start,  DateTime end)
+
+        public async Task<List<CalendarEventDto>> GetDriverSchedule(int driverId, DateTime start, DateTime end)
         {
             // 1. Validate Date Range
             if (start == default || end == default)
@@ -328,7 +328,7 @@ namespace Trippy.Core.Repositories
 
             // 2. Query Database
             // We look for trips that overlap with the requested window
-            var trips = await _context.TripOrders 
+            var trips = await _context.TripOrders
                 .Where(t =>
                     t.DriverId == driverId &&
                     !t.IsDeleted &&
@@ -349,7 +349,7 @@ namespace Trippy.Core.Repositories
                     t.FromDate,
                     t.ToDate,
                     t.TripStatus
-                   // t.CustomerName // Assuming you joined Customer table or have this field
+                    // t.CustomerName // Assuming you joined Customer table or have this field
                 })
                 .ToListAsync();
 
@@ -371,8 +371,8 @@ namespace Trippy.Core.Repositories
         }
 
 
+    }
 }
-
 
 
 
