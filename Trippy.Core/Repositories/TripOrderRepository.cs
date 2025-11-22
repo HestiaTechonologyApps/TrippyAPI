@@ -115,6 +115,7 @@ namespace Trippy.Core.Repositories
                      {
                          TripOrderId = tripOrder.TripOrderId,
                          TripCode = tripOrder.TripCode,
+
                          TripBookingModeId = tripOrder.TripBookingModeId,
                          CustomerId = tripOrder.CustomerId,
                          DriverId = tripOrder.DriverId,
