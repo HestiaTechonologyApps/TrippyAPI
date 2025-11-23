@@ -79,6 +79,22 @@ namespace Trippy.Bussiness.Services
             return tripkiloMeterDTO;
         }
 
+
+
+        public async Task<List<TripKiloMeterDTO>> GetTripKilometerOfTrip(int TripOrderId)
+        {
+
+            List<TripKiloMeterDTO> tripkmdto = new List<TripKiloMeterDTO>();
+            var tripkms = await _repo.FindAsync(u => u.TripOrderId  == TripOrderId);
+            foreach (var kms in tripkms)
+            {
+                TripKiloMeterDTO tripkmdtoobj = await ConvertTripKiloMeterToDTO(kms);
+                tripkmdto.Add(tripkmdtoobj);
+
+
+            }
+            return tripkmdto;
+        }
         public async Task<bool> UpdateAsync(TripKiloMeter tripKiloMeter)
         {
             var oldentity = await _repo.GetByIdAsync(tripKiloMeter.TripKiloMeterId);

@@ -50,7 +50,8 @@ namespace Trippy.Core.Repositories
                        PickUpFrom = tripOrder.FromLocation,
                        RecivedVia = trpmod.TripBookingModeName,
                        PaymentMode = tripOrder.PaymentMode,
-                       Status = tripOrder.TripStatus
+                       Status = tripOrder.TripStatus,
+                       IsDeleted=tripOrder.IsDeleted
                    };
         }
 

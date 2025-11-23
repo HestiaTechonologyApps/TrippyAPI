@@ -124,6 +124,28 @@ namespace Trippy.Api.Controllers
             return response;
         }
 
-        
+
+        [HttpGet("GetTripKilometerOfTrip")]
+        public async Task<CustomApiResponse> GetTripKilometerOfTrip(int TripOrderId)
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var tripNotes = await _service.GetTripKilometerOfTrip(TripOrderId);
+                response.IsSucess = true;
+                response.Value = tripNotes;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+        }
+
+
+
     }
 }

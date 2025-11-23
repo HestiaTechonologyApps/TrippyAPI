@@ -16,5 +16,6 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<TripKiloMeterDTO> CreateAsync(TripKiloMeter tripKiloMeter);
         Task<bool> UpdateAsync(TripKiloMeter tripKiloMeter);
         Task<bool> DeleteAsync(int id);
+        Task<List<TripKiloMeterDTO>> GetTripKilometerOfTrip(int TripOrderId);
     }
 }

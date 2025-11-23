@@ -42,20 +42,17 @@ public class DashboardService : IDashboardService
 
     public async Task<DashboardSummaryDto> GetDashboardSummaryAsync(int year)
     {
-        // Get all data in parallel
-        var monthlyFinancialTask = GetMonthlyFinancialAsync(year);
-        var monthlyTripCountTask = GetMonthlyTripCountAsync(year);
-        var vehicleStatusTask = GetVehicleStatusAsync();
-        var expenseCategoriesTask = GetExpenseCategoriesByYearAsync(year);
-
-        await Task.WhenAll(monthlyFinancialTask, monthlyTripCountTask, vehicleStatusTask, expenseCategoriesTask);
+        var monthlyFinancial = await GetMonthlyFinancialAsync(year);
+        var monthlyTripCount = await GetMonthlyTripCountAsync(year);
+        var vehicleStatus = await GetVehicleStatusAsync();
+        var expenseCategories = await GetExpenseCategoriesByYearAsync(year);
 
         return new DashboardSummaryDto
         {
-            MonthlyFinancial = await monthlyFinancialTask,
-            MonthlyTripCount = await monthlyTripCountTask,
-            VehicleStatus = await vehicleStatusTask,
-            ExpenseCategories = await expenseCategoriesTask
+            MonthlyFinancial = monthlyFinancial,
+            MonthlyTripCount = monthlyTripCount,
+            VehicleStatus = vehicleStatus,
+            ExpenseCategories = expenseCategories
         };
     }
 }
