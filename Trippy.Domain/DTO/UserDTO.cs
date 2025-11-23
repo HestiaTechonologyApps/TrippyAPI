@@ -26,4 +26,11 @@ namespace Trippy.Domain.DTO
         public string CreateAtSyring { get; set; } = "";
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
     }
+
+    public class PasswordChangeRequest
+    {
+        public int UserId { get; set; }
+        public string OldPassword { get; set; } = "";
+        public string NewPassword { get; set; } = "";
+    }
 }

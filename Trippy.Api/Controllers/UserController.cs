@@ -127,6 +127,19 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
+
+
+        [HttpPost("ChangePassWord")]
+        public async Task<CustomApiResponse> ChangePassWord([FromBody] PasswordChangeRequest passwordChangeRequest)
+        {
+            return await _service.ChangePassWord(passwordChangeRequest);
+            
+        }
+
+
     }
+
+
+    
 }
 

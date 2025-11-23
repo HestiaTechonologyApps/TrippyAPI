@@ -11,12 +11,12 @@ using Trippy.Domain.Interfaces.IServices;
 
 namespace Trippy.Bussiness.Services
 {
-    public class UserService :IUserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _repo;
         private readonly IAuditRepository _auditRepository;
 
-        public UserService(IUserRepository repo, IAuditRepository auditRepository   )
+        public UserService(IUserRepository repo, IAuditRepository auditRepository)
         {
             _repo = repo;
             _auditRepository = auditRepository;
@@ -72,7 +72,7 @@ namespace Trippy.Bussiness.Services
             return userdtos;
         }
 
-        private async Task <UserDTO> ConvertUserToDTO(User user)
+        private async Task<UserDTO> ConvertUserToDTO(User user)
         {
             UserDTO userDTO = new UserDTO();
             userDTO.UserId = user.UserId;
@@ -97,7 +97,7 @@ namespace Trippy.Bussiness.Services
         {
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
-            var userdto = await  ConvertUserToDTO(q);
+            var userdto = await ConvertUserToDTO(q);
             userdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("Users", userdto.UserId);
             return userdto;
         }
@@ -149,6 +149,46 @@ namespace Trippy.Bussiness.Services
             );
 
             return true;
+        }
+
+        public async Task<CustomApiResponse> ChangePassWord(PasswordChangeRequest passwordChangeRequest)
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var user = await _repo.GetByIdAsync(passwordChangeRequest.UserId);
+                if (user == null)
+                {
+                    response.IsSucess = false;
+                    response.Error = "User not found";
+
+                }
+                else
+                {
+                    if (user.PasswordHash != passwordChangeRequest.OldPassword)
+                    {
+                        response.IsSucess = false;
+                        response.Error = "Old password does not match";
+                    }
+                    else
+                    {
+                        user.PasswordHash = passwordChangeRequest.NewPassword;
+                        _repo.Update(user);
+                        await _repo.SaveChangesAsync();
+                        response.IsSucess = true;
+                        response.Value = "Password changed successfully";
+                    }
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+
         }
     }
 }

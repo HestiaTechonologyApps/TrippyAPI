@@ -16,6 +16,6 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<UserDTO> CreateAsync(User coupon);
         Task<bool> UpdateAsync(User coupon);
         Task<bool> DeleteAsync(int id);
-
+        Task<CustomApiResponse> ChangePassWord(PasswordChangeRequest passwordChangeRequest);
     }
 }
