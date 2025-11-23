@@ -10,6 +10,8 @@ namespace Trippy.Domain.Entities
         public int TripNoteId { get; set; } // Primary key
 
 
+        public int TripOrderId { get; set; }
+
         public string TripNote { get; set; }
         public DateTime CreatedOn { get; set; }
 

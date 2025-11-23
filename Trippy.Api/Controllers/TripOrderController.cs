@@ -248,7 +248,7 @@ namespace Trippy.Api.Controllers
 
 
 
-        [HttpGet("GetTripNotespfTrip")]
+        [HttpGet("GetTripNotesOfTrip")]
         public async Task <CustomApiResponse> GetTripNotesOfTrip(int id)
         {
             var response = new CustomApiResponse();

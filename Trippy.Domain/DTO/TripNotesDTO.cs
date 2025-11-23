@@ -10,7 +10,7 @@ namespace Trippy.Domain.DTO
     {
         public int TripNoteId { get; set; } // Primary key
 
-
+        public int TripOrderId { get; set; }
         public string TripNote { get; set; } = "";
         public DateTime CreatedOn { get; set; }
         public string CtreatedOnString { get; set; } = "";

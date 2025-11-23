@@ -94,7 +94,7 @@ namespace Trippy.Bussiness.Services
         {
             
             List<TripNotesDTO> tripNotesDTOs = new List<TripNotesDTO>();
-            var tripNotes = await _repo.FindAsync(u => u.TripNoteId == id);
+            var tripNotes = await _repo.FindAsync(u => u.TripOrderId  == id);
             foreach (var tripNote in tripNotes)
             {
                 TripNotesDTO tripNotesDTO = await ConvertTripNotesToDTO(tripNote);
