@@ -34,11 +34,26 @@ namespace Trippy.Api.Controllers
             });
         }
 
-        [HttpGet("today")]
-        public async Task<ActionResult<List<TripListDataDTO>>> GetTodaysTrips()
+        [HttpGet("GetTodaysTrips")]
+        public async Task<CustomApiResponse> GetTodaysTrips()
         {
-            var trips = await _service.GetTodaysTripListAsync();
-            return Ok(trips);
+            var response = new CustomApiResponse();
+            try
+            {
+                var result = await _service.GetTodaysTripListAsync();
+                response.IsSucess = true;
+                response.Value = result;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+
+           
         }
 
         // ✅ 3. Get trips for a specific date
