@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
@@ -9,6 +10,7 @@ namespace Trippy.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExpenseTypeController : Api_BaseController
     {
         private readonly IExpenseTypeService _service;

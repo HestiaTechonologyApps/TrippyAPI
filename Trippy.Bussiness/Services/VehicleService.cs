@@ -14,11 +14,13 @@ namespace Trippy.Bussiness.Services
     {
         private readonly IVehicleRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        private readonly ICurrentUserService _currentUser;
         public String AuditTableName { get; set; } = "VEHICLE";
-        public VehicleService(IVehicleRepository repo, IAuditRepository auditRepository)
+        public VehicleService(IVehicleRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUser)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
+            _currentUser = currentUser;
         }
         public async Task<VehicleDTO> CreateAsync(Vehicle vehicle)
         {
@@ -30,7 +32,7 @@ namespace Trippy.Bussiness.Services
                 recordId: vehicle.VehicleId,
                 oldEntity: null,
                 newEntity: vehicle,
-                changedBy: "System" // Replace with actual user info
+                changedBy:_currentUser.Email.ToString() // Replace with actual user info
             );
             return await ConvertVehicleToDTO(vehicle);
         }
@@ -70,7 +72,7 @@ namespace Trippy.Bussiness.Services
                 recordId: vehicle.VehicleId,
                 oldEntity: vehicle,
                 newEntity: vehicle,
-                changedBy: "System" // Replace with actual user info
+                changedBy: _currentUser.Email.ToString() // Replace with actual user info
             );
             return true;
         }
@@ -115,7 +117,7 @@ namespace Trippy.Bussiness.Services
                recordId: vehicle.VehicleId,
                oldEntity: oldentity,
                newEntity: vehicle,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
         }

@@ -14,11 +14,13 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ITripNotesRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        private readonly ICurrentUserService _currentUser;
 
-        public TripNotesService(ITripNotesRepository repo, IAuditRepository auditRepository)
+        public TripNotesService(ITripNotesRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUser)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
+            _currentUser = currentUser;
         }
         public String AuditTableName { get; set; } = "TRIPNOTES";
         public async Task<TripNotesDTO> CreateAsync(TripNotes tripNotes)
@@ -31,7 +33,7 @@ namespace Trippy.Bussiness.Services
                 recordId: tripNotes.TripNoteId,
                 oldEntity: null,
                 newEntity: tripNotes,
-                changedBy: "System"
+                changedBy: _currentUser.Email.ToString()
                 );
             return await ConvertTripNotesToDTO(tripNotes);
         }
