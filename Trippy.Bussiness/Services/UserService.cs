@@ -107,20 +107,19 @@ namespace Trippy.Bussiness.Services
 
         public async Task<bool> UpdateAsync(User user)
         {
-            var oldEntity = await _repo.GetByIdAsync(user.UserId);
-            if (oldEntity == null)
-                return false;
-            _repo.Update(oldEntity);
+
+            var oldentity = await _repo.GetByIdAsync(user.UserId);
+            _repo.Detach(oldentity);
+            _repo.Update(user);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<User>(
-                tableName: AuditTableName,
-                action: "update",
-                recordId: user.UserId,
-                oldEntity: oldEntity,
-                newEntity: user,
-                changedBy: _currentUser.Email.ToString()
-            );
-
+               tableName: AuditTableName,
+               action: "update",
+               recordId: user.UserId,
+               oldEntity: oldentity,
+               newEntity: user,
+               changedBy: _currentUser.Email.ToString()  // Replace with actual user info
+           );
             return true;
         }
 
@@ -163,6 +162,13 @@ namespace Trippy.Bussiness.Services
             return response;
 
         }
+
+       
+
+        //public Task<List<UserLoginLog>> GetUserLogsAsync(int userId)
+        //{
+        //    return _repo.GetLogsByUserAsync(userId);
+        //}
 
         //Task<List<UserDTO>> IUserService.GetAllAsync()
         //{

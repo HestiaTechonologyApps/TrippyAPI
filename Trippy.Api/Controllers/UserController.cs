@@ -58,6 +58,9 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
+        
+
+
 
         [HttpPost]
         public async Task<CustomApiResponse> Create([FromBody] User user)

@@ -82,5 +82,27 @@ namespace Trippy.Core.Repositories
 
             return await q.ToListAsync();
         }
+
+        public async Task AddLoginLogAsync(UserLoginLog log)
+        {
+            await _context.UserLoginLogs.AddAsync(log);
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<List<UserLoginLogDTO>> GetUserLogsAsync(int userId)
+        {
+            return await _context.UserLoginLogs
+       .Where(x => x.UserId == userId)
+       .OrderByDescending(x => x.ActionTime)
+       .Select(x => new UserLoginLogDTO
+       {
+           UserLoginLogId = x.UserLoginLogId,
+           UserId = x.UserId,
+           ActionType = x.ActionType,
+           ActionTimeString = x.ActionTime.ToString("dd MMM yyyy HH:mm:ss")
+       })
+       .ToListAsync();
+        }
     }
 }

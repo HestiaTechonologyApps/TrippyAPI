@@ -14,5 +14,8 @@ namespace Trippy.Domain.Interfaces.IRepositories
         Task<UserDTO> GetUserDetailsAsync(int userId);
         Task<List<UserListDTO>> GetUsersAsync();
         IQueryable<UserListDTO> QueryableUserList();
+
+        Task AddLoginLogAsync(UserLoginLog log);
+        Task<List<UserLoginLogDTO>> GetUserLogsAsync(int userId);
     }
 }
