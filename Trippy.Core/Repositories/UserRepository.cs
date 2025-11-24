@@ -62,7 +62,8 @@ namespace Trippy.Core.Repositories
                          Address = user.Address,
                          IsActive = user.IsActive,
                          Islocked = user.Islocked,
-
+                         Lastlogin = user.Lastlogin,
+                         CreateAt = user.CreateAt,
                          CompanyId = user.CompanyId,
                          CompanyName = comp.ComapanyName,
                          CreateAtString = user.CreateAt.ToString("dd MMMM yyyy hh:mm tt"),
