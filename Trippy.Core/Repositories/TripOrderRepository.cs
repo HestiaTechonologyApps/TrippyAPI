@@ -250,12 +250,15 @@ namespace Trippy.Core.Repositories
         {
             var startOfDay = today.Date;
             var endOfDay = startOfDay.AddDays(1);
+
             var q = QuerableTripListAsyc();
 
-            return await q.CountAsync(t => t.FromDate.HasValue &&
-                    t.ToDate.HasValue &&
-                    t.ToDate.Value >= startOfDay &&
-                    t.FromDate.Value <= endOfDay);
+            return await q.CountAsync(t =>
+        t.FromDate.HasValue &&
+        t.FromDate.Value.Date == today.Date
+    );
+
+
         }
 
         public async Task<List<TripListDataDTO>> GetTodaysTripsAsync(DateTime today)
@@ -266,10 +269,7 @@ namespace Trippy.Core.Repositories
             var q = QuerableTripListAsyc();
 
             q = q.Where(t => t.FromDate.HasValue &&
-                    t.ToDate.HasValue &&
-                    t.ToDate.Value >= startOfDay &&
-                    t.FromDate.Value <= endOfDay);
-
+                 t.FromDate.Value.Date == today.Date);
 
             return await q.ToListAsync();
         }
