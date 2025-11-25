@@ -13,7 +13,7 @@ namespace Trippy.Domain.DTO
         public String ExpenseVoucher { get; set; } = "";
         public String PaymentMode { get; set; } = "";
         public int ExpenseTypeId { get; set; } // Primary key
-
+        public int CompanyId { get; set; } = 0;
         public String ExpenseTypeName { get; set; } = "";
         public decimal Amount { get; set; }
         public String Remark { get; set; } = "";

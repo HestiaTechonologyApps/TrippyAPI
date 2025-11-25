@@ -53,6 +53,7 @@ namespace Trippy.Bussiness.Services
             {
                 expenseMaster.ExpenseVoucher = await _repo.GenerateExpenseVoucherNumberAsync(expenseMaster);
             }
+            expenseMaster.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.AddAsync(expenseMaster);
             await _repo.SaveChangesAsync();
             await this.auditRepository.LogAuditAsync<ExpenseMaster>(
@@ -81,6 +82,7 @@ namespace Trippy.Bussiness.Services
             expenseMaster.RelatedEntityType = expenseMaster.RelatedEntityType;
             expenseMasterDTO.PaymentMode = expenseMaster.PaymentMode;
             expenseMasterDTO.IsDeleted = expenseMaster.IsDeleted;
+            expenseMasterDTO.CompanyId = expenseMaster.CompanyId;
             return expenseMasterDTO;
         }
 
@@ -89,6 +91,7 @@ namespace Trippy.Bussiness.Services
             var oldentity = await _repo.GetByIdAsync(expenseMaster.ExpenseMasterId);
             _repo.Detach(oldentity);
             _repo.Update(expenseMaster);
+            expenseMaster.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.SaveChangesAsync();
             await auditRepository.LogAuditAsync<ExpenseMaster>(
                tableName: AuditTableName,

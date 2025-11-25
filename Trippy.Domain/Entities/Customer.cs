@@ -20,6 +20,7 @@ namespace Trippy.Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public int CompanyId { get; set; } = 0;
     }
 
    

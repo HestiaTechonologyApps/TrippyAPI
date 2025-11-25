@@ -27,6 +27,7 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<CustomerDTO> CreateAsync(Customer customer)
         {
+            customer.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.AddAsync(customer);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<Customer>(
@@ -89,6 +90,7 @@ namespace Trippy.Bussiness.Services
             var oldentity = await _repo.GetByIdAsync(customer.CustomerId);
             _repo.Detach(oldentity);
             _repo.Update(customer);
+            customer.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Customer>(
               tableName: AuditTableName,
@@ -116,7 +118,7 @@ namespace Trippy.Bussiness.Services
             customerDTO.IsActive = customer.IsActive;
             customerDTO.CreatedAt = customer.CreatedAt;
             customerDTO.CreateAtString = customer.CreatedAt.ToString("dd MMMM yyyy hh:mm tt");
-
+            customerDTO.CompanyId = customer.CompanyId;
             //customerDTO.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer",customer.CustomerId );
             return customerDTO;
         }

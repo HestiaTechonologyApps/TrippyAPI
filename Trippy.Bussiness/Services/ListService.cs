@@ -40,7 +40,7 @@ namespace Trippy.Bussiness.Services
             }
             else if (listType.ToLower() == "TODAY".ToLower())
             {
-                q = q.Where(t => t.FromDate.Value.Date= DateTime.Now.Date );
+                q = q.Where(t => t.FromDate.Value.Date== DateTime.Now.Date );
             }
             else if (listType.ToLower() == "ALL".ToLower())
             {

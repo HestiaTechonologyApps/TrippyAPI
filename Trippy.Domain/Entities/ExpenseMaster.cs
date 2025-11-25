@@ -29,7 +29,7 @@ namespace Trippy.Domain.Entities
 
         public bool IsDeleted { get; set; } = false;
 
-
+        public int CompanyId { get; set; } = 0;
 
     }
 

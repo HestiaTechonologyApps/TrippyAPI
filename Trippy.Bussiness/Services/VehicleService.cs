@@ -24,6 +24,7 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<VehicleDTO> CreateAsync(Vehicle vehicle)
         {
+            vehicle.CompanyId = int.Parse (_currentUser.CompanyId);
             await _repo.AddAsync(vehicle);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<Vehicle>(
@@ -49,15 +50,16 @@ namespace Trippy.Bussiness.Services
             vehicleDTO.EngineNumber = vehicle.EngineNumber;
             vehicleDTO.VehicleType = vehicle.VehicleType;
             vehicleDTO.RegistrationExpiry = vehicle.RegistrationExpiry;
-            vehicleDTO.RegistrationExpiryString = vehicle.RegistrationExpiry.ToString("yyyy-MM-dd");
+            vehicleDTO.RegistrationExpiryString = vehicle.RegistrationExpiry.ToString("dd MMMM yyyy hh:mm tt");
             vehicleDTO.CurrentStatus = vehicle.CurrentStatus;
             vehicleDTO.Location = vehicle.Location;
             vehicleDTO.CreatedDate = vehicle.CreatedDate;
-            vehicleDTO.CreatedDateString = vehicle.CreatedDate.ToString("yyyy-MM-dd");
+            vehicleDTO.CreatedDateString = vehicle.CreatedDate.ToString("dd MMMM yyyy hh:mm tt");
             vehicleDTO.CreatedBy = vehicle.CreatedBy;
             vehicleDTO.UpdatedDate = vehicle.UpdatedDate;
-            vehicleDTO.UpdatedDateString = vehicle.UpdatedDate.HasValue ? vehicle.UpdatedDate.Value.ToString("yyyy-MM-dd") : "";
+            vehicleDTO.UpdatedDateString = vehicle.UpdatedDate.HasValue ? vehicle.UpdatedDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             vehicleDTO.UpdatedBy = vehicle.UpdatedBy;
+            vehicleDTO.CompanyId = vehicle.CompanyId;
             return vehicleDTO;
         }
         public async Task<bool> DeleteAsync(int id)
@@ -109,6 +111,8 @@ namespace Trippy.Bussiness.Services
         {
             var oldentity = await _repo.GetByIdAsync(vehicle.VehicleId);
             _repo.Detach(oldentity);
+
+            vehicle.CompanyId = int.Parse(_currentUser.CompanyId);
             _repo.Update(vehicle);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Vehicle>(

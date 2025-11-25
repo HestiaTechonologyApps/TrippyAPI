@@ -38,7 +38,7 @@ namespace Trippy.Domain.DTO
         public string BookedBy { get; set; } = "";
         public string TripDetails { get; set; } = "";
 
-
+        public int CompanyId { get; set; } = 0;
 
         public string TripStatus { get; set; } = "";// Planned, InProgress, Completed, Cancelled
         public decimal TripAmount { get; set; } = 0;

@@ -27,7 +27,8 @@ namespace Trippy.Bussiness.Services
             _currentUser = currentUser;
         }
         public async Task<TripOrderDTO> CreateAsync(TripOrder tripOrder)
-        {  
+        {
+            tripOrder.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.AddAsync(tripOrder);
             await _repo.SaveChangesAsync();
 
@@ -75,7 +76,7 @@ namespace Trippy.Bussiness.Services
             tripOrderDTO.IsActive = tripOrder.IsActive;
             tripOrderDTO.PaymentMode = tripOrder.PaymentMode;
             tripOrderDTO.PaymentDetails = tripOrder.PaymentDetails;
-
+            tripOrderDTO.CompanyId = tripOrder.CompanyId;
 
             //tripOrderDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("TripOrder", tripOrder.TripOrderId);
 
@@ -147,6 +148,7 @@ namespace Trippy.Bussiness.Services
         {
             var oldentity = await _repo.GetByIdAsync(tripOrder.TripOrderId);
             _repo.Detach(oldentity);
+            tripOrder.CompanyId = int.Parse(_currentUser.CompanyId);
             _repo.Update(tripOrder);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<TripOrder>(

@@ -44,7 +44,7 @@ namespace Trippy.Domain.Entities
         public decimal BalanceAmount { get; set; } = 0;
         public bool IsActive { get; set; } = true;
 
-
+        public int CompanyId { get; set; } = 0;
         public bool IsDeleted { get; set; } = false;
 
 

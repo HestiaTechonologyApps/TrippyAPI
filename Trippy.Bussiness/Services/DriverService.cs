@@ -25,6 +25,7 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<DriverDTO> CreateAsync(Driver driver)
         {
+            driver.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.AddAsync(driver);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<Driver>(
@@ -106,7 +107,8 @@ namespace Trippy.Bussiness.Services
             driverDTO.DOB = driver.DOB;
             driverDTO.DOBString = driver.DOB.HasValue ? driver.DOB.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             driverDTO.ContactNumber = driver.ContactNumber;
-           // driverDTO.AuditLog = await _auditRepository.GetAuditLogsForEntityAsync("Driver", driver.DriverId);
+            driverDTO.CompanyId = driver.CompanyId;
+            // driverDTO.AuditLog = await _auditRepository.GetAuditLogsForEntityAsync("Driver", driver.DriverId);
 
 
             return driverDTO;
@@ -127,6 +129,7 @@ namespace Trippy.Bussiness.Services
             var oldentity = await _repo.GetByIdAsync(driver.DriverId);
             _repo.Detach(oldentity);
             _repo.Update(driver);
+            driver.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<Driver>(
                tableName: AuditTableName,

@@ -23,6 +23,7 @@ namespace Trippy.Domain.Entities
         public DateTime? UpdatedDate { get; set; }
         public string? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public int CompanyId { get; set; } = 0;
     }
 
 
