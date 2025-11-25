@@ -22,12 +22,12 @@ namespace TrippyAPI.Controllers
         }
 
         [HttpGet("trips-paginated")]
-        public async Task<CustomApiResponse> GetTripData_Paginated( string filtertext="" ,int pagesize = 25,int pagenumber = 0)
+        public async Task<CustomApiResponse> GetTripData_Paginated(string ListType, string filtertext="" ,int pagesize = 25,int pagenumber = 0)
         {
             var response = new CustomApiResponse();
             try
             {
-                var data = await _service.Get_PaginatedTripList(pagesize: pagesize, pagenumber: pagenumber, filtertext: filtertext);
+                var data = await _service.Get_PaginatedTripList(listType: ListType , pagesize: pagesize, pagenumber: pagenumber, filtertext: filtertext);
                 response.IsSucess = true;
                 response.Value = data;
                 response.StatusCode = 200;

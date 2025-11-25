@@ -15,6 +15,7 @@ namespace Trippy.Bussiness.Services
 
         }
      public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
+         string listType,
      string filtertext,
      int pagesize,
      int pagenumber)
@@ -25,6 +26,26 @@ namespace Trippy.Bussiness.Services
 
             var q = _repo.QuerableTripListAsyc();
 
+            if((listType).ToLower() == "COMPLETED".ToLower ())
+            {
+                q = q.Where(t => t.Status.ToLower () == "Completed".ToLower ());
+            }
+            else if (listType.ToLower () == "PENDING".ToLower())
+            {
+                q = q.Where(t => t.Status.ToLower() != "Completed".ToLower());
+            }
+            else if (listType.ToLower()    == "CANCELLED".ToLower())
+            {
+                q = q.Where(t => t.Status.ToLower() != "Completed".ToLower());
+            }
+            else if (listType.ToLower() == "TODAY".ToLower())
+            {
+                q = q.Where(t => t.FromDate.Value.Date= DateTime.Now.Date );
+            }
+            else if (listType.ToLower() == "ALL".ToLower())
+            {
+               // q = q.Where(t => t.Status.ToLower() != "Completed".ToLower());
+            }
             // filtering
             if (!string.IsNullOrWhiteSpace(filtertext))
             {
