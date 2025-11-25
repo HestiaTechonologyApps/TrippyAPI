@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -85,17 +86,17 @@ namespace Trippy.Bussiness.Services
 
             List<VehicleDTO> vehicledtos = new List<VehicleDTO>();
 
-            var vehicles = await _repo.GetAllAsync();
+            var vehicles = await _repo.GetQuerableVehicleList();
 
-            foreach (var vehicle in vehicles)
-            {
-                VehicleDTO vehicleDTO = await ConvertVehicleToDTO(vehicle);
-                vehicledtos.Add(vehicleDTO);
+            //foreach (var vehicle in vehicles)
+            //{
+            //    VehicleDTO vehicleDTO = await ConvertVehicleToDTO(vehicle);
+            //    vehicledtos.Add(vehicleDTO);
 
 
-            }
+            //}
 
-            return vehicledtos;
+            return await vehicles.ToListAsync ();
         }
         public async Task<VehicleDTO?> GetByIdAsync(int id)
         {
