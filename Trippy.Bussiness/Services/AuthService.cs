@@ -224,7 +224,8 @@ namespace Trippy.Business.Services
                 Address = user.Address,
                 IsActive = user.IsActive,
                 CreateAt = user.CreateAt,
-                Lastlogin = user.Lastlogin
+                Lastlogin = user.Lastlogin,
+                CompanyId=user.CompanyId
             };
         }
     }
