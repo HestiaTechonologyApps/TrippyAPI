@@ -15,11 +15,13 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ITripKiloMeterRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        private readonly ICurrentUserService _currentUser;
         public String AuditTableName { get; set; } = "TRIPKILOMETER";
-        public TripKiloMeterService(ITripKiloMeterRepository repo, IAuditRepository auditRepository)
+        public TripKiloMeterService(ITripKiloMeterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUser)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
+            _currentUser = currentUser;
         }
 
         public async Task<List<TripKiloMeterDTO>> GetAllAsync()
@@ -56,7 +58,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripKiloMeter.TripKiloMeterId,
                oldEntity: null,
                newEntity: tripKiloMeter,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return await ConvertTripKiloMeterToDTO(tripKiloMeter);
         }
@@ -107,7 +109,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripKiloMeter.TripKiloMeterId,
                oldEntity: oldentity,
                newEntity: tripKiloMeter,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
         }
@@ -124,7 +126,7 @@ namespace Trippy.Bussiness.Services
                recordId: tripkiloMeter.TripKiloMeterId,
                oldEntity: tripkiloMeter,
                newEntity: tripkiloMeter,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Trippy.Business.Services;
 using Trippy.Core.Helpers;
@@ -11,6 +12,7 @@ namespace Trippy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AttachmentController : Api_BaseController
     {
         private readonly IAttachmentService _attachmentService;

@@ -15,12 +15,13 @@ namespace Trippy.Bussiness.Services
     {
         private readonly IExpenseTypeRepository _repo;
         private readonly IAuditRepository auditRepository;
-
+        private readonly ICurrentUserService _currentUser;
         public String AuditTableName { get; set; } = "EXPENSETYPE";
-        public ExpenseTypeService(IExpenseTypeRepository repo, IAuditRepository auditRepository)
+        public ExpenseTypeService(IExpenseTypeRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUser)
         {
             _repo = repo;
             this.auditRepository = auditRepository;
+            _currentUser = currentUser;
         }
 
         public async Task<ExpenseTypeDTO> CreateAsync(ExpenseType expenseType)
@@ -34,7 +35,7 @@ namespace Trippy.Bussiness.Services
                 recordId: expenseType.ExpenseTypeId,
                 oldEntity: null,
                 newEntity: expenseType,
-                changedBy: "System" // Replace with actual user info
+                changedBy: _currentUser.Email.ToString() // Replace with actual user info
             );
             return await ConvertExpenseTypeToDTO(expenseType);
         }
@@ -63,7 +64,7 @@ namespace Trippy.Bussiness.Services
                 recordId: expenseType.ExpenseTypeId,
                 oldEntity: expenseType,
                 newEntity: expenseType,
-                changedBy: "System" // Replace with actual user info
+                changedBy: _currentUser.Email.ToString() // Replace with actual user info
             );
             return true;
         }
@@ -104,7 +105,7 @@ namespace Trippy.Bussiness.Services
                recordId: expenseType.ExpenseTypeId,
                oldEntity: oldentity,
                newEntity: expenseType,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
         }

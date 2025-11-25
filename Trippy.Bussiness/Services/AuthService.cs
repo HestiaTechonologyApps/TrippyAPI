@@ -61,6 +61,16 @@ namespace Trippy.Business.Services
                     User = MapToUserDto(user)
                 };
 
+                var log = new UserLoginLog
+                {
+                    UserId = user.UserId,
+                    UserLoginLogId = 0,
+                    ActionType = "Login",
+                    ActionTime = DateTime.UtcNow
+
+                };
+                await _userRepository.AddLoginLogAsync(log);
+
                 return ApiResponseFactory.Success(data, "Login successful");
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Trippy.Bussiness.Services;
 using Trippy.Domain.DTO;
@@ -10,6 +11,7 @@ namespace Trippy.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TripkiloMeterController : Api_BaseController
     {
         private readonly ITripKiloMeterService _service;

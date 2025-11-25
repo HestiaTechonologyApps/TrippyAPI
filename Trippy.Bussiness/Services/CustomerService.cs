@@ -16,13 +16,14 @@ namespace Trippy.Bussiness.Services
     {
         private readonly ICustomerRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        private readonly ICurrentUserService _currentUser;
         public String AuditTableName { get; set; } = "CUSTOMER";
-        public CustomerService(ICustomerRepository repo , IAuditRepository auditRepository)
+        public CustomerService(ICustomerRepository repo , IAuditRepository auditRepository, ICurrentUserService currentUser)
         {
             _repo = repo;
 
             this._auditRepository = auditRepository;
-
+            _currentUser = currentUser;
         }
         public async Task<CustomerDTO> CreateAsync(Customer customer)
         {
@@ -34,7 +35,7 @@ namespace Trippy.Bussiness.Services
                 recordId: customer.CustomerId,
                 oldEntity: null,
                 newEntity: customer,
-                changedBy: "System" // Replace with actual user info
+                changedBy: _currentUser.Email.ToString() // Replace with actual user info
             );
             return await ConvertCustomerToDTO(customer);
         }
@@ -51,7 +52,7 @@ namespace Trippy.Bussiness.Services
                recordId: customer.CustomerId,
                oldEntity: customer,
                newEntity: customer,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
         }
@@ -95,7 +96,7 @@ namespace Trippy.Bussiness.Services
               recordId: customer.CustomerId,
               oldEntity: oldentity,
               newEntity: customer,
-              changedBy: "System" // Replace with actual user info
+              changedBy: _currentUser.Email.ToString() // Replace with actual user info
           );
             return true;
         }

@@ -14,12 +14,14 @@ namespace Trippy.Bussiness.Services
     {
         private readonly IVehicleMaintanenceRepository _repo;
         private readonly IAuditRepository _auditRepository;
+        private readonly ICurrentUserService _currentUser;
         public String AuditTableName { get; set; } = "VEHICLEMAINTENANCERECORD";
 
-        public VehicleMaintenanceService(IVehicleMaintanenceRepository repo, IAuditRepository auditRepository)
+        public VehicleMaintenanceService(IVehicleMaintanenceRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
+            _currentUser = currentUserService;
         }
 
         public async Task<List<VehicleMaintenanceRecordDTO>> GetAllAsync()
@@ -79,7 +81,7 @@ namespace Trippy.Bussiness.Services
                 recordId: vehicleMaintenanceRecord.VehicleMaintenanceRecordId,
                 oldEntity: null,
                 newEntity: vehicleMaintenanceRecord,
-                changedBy: "System" // Replace with actual user info
+                changedBy: _currentUser.Email.ToString() // Replace with actual user info
             );
             return await ConvertVehicleMaintenanceRecordToDTO(vehicleMaintenanceRecord);
         }
@@ -96,7 +98,7 @@ namespace Trippy.Bussiness.Services
                recordId: vehicleMaintenanceRecord.VehicleMaintenanceRecordId,
                oldEntity: oldentity,
                newEntity: vehicleMaintenanceRecord,
-               changedBy: "System" // Replace with actual user info
+               changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
         }
@@ -113,7 +115,7 @@ namespace Trippy.Bussiness.Services
                 recordId: vehicleMaintenanceRecord.VehicleMaintenanceRecordId,
                 oldEntity: vehicleMaintenanceRecord,
                 newEntity: vehicleMaintenanceRecord,
-                changedBy: "System" // Replace with actual user info
+                changedBy: _currentUser.Email.ToString() // Replace with actual user info
             );
             return true;
         }
