@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace Trippy.Bussiness.Services
         {
            // List<VehicleMaintenanceRecordDTO> vehicleMaintenanceRecorddtos = new List<VehicleMaintenanceRecordDTO>();
 
-            var vehicleMaintenanceRecords =  _repo.GetAllExpenses();
+            var vehicleMaintenanceRecords = await _repo.GetQuerableExpenseList();
 
           //  foreach (var vehicleMaintenanceRecord in vehicleMaintenanceRecords)
            // {
@@ -38,7 +39,7 @@ namespace Trippy.Bussiness.Services
 
           //  }
 
-            return vehicleMaintenanceRecords;
+            return await vehicleMaintenanceRecords.ToListAsync();
         }
 
         private async Task<VehicleMaintenanceRecordDTO> ConvertVehicleMaintenanceRecordToDTO(VehicleMaintenanceRecord vehicleMaintenanceRecord)

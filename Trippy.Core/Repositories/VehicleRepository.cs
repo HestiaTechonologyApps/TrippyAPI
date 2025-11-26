@@ -25,7 +25,8 @@ namespace Trippy.Core.Repositories
             var q = (from vech in _context.Vehicles
                      join cmp in _context.Companies
                      on vech.CompanyId equals cmp.CompanyId
-                    // where vech.CompanyId currentUser.CompanyId
+                     where vech.CompanyId == int.Parse(_currentUser.CompanyId)
+                     where vech.IsDeleted == false
                      select new VehicleDTO
                      {
                          VehicleId = vech.VehicleId,
@@ -41,7 +42,9 @@ namespace Trippy.Core.Repositories
                          RegistrationExpiryString = vech.RegistrationExpiry.ToString("dd MMMM yyyy hh:mm tt"),
                          RegistrationNumber = vech.RegistrationNumber,
                          Location = vech.Location,
-                         CurrentStatus = vech.CurrentStatus
+                         CurrentStatus = vech.CurrentStatus,
+                         CompanyId = vech.CompanyId,
+                         IsDeleted = vech.IsDeleted,
                      }).AsQueryable();
 
             return q;

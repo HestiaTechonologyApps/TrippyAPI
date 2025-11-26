@@ -20,6 +20,8 @@ namespace Trippy.Domain.DTO
 
         public bool IsActive { get; set; } = true;
         public int CompanyId { get; set; } = 0;
+        public string ComapanyName = "";
+        public bool IsDeleted { get; set; } = false;
         public  List<AuditLogDTO> AuditTrails { get; set; }
         public ICollection<TripOrder> TripOrders { get; set; } = new List<TripOrder>();
     }

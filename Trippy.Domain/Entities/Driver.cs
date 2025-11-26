@@ -25,6 +25,7 @@ namespace Trippy.Domain.Entities
         public bool IsRented { get; set; } = true;
         public bool IsActive { get; set; } = true;
         public int CompanyId { get; set; } = 0;
+        public bool IsDeleted { get; set; } = false;
 
     }
 

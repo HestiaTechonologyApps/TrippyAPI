@@ -10,7 +10,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
 {
     public interface IVehicleMaintanenceRepository : IGenericRepository<VehicleMaintenanceRecord>
     {
-        List<VehicleMaintenanceRecordDTO> GetAllExpenses();
+        Task<IQueryable<VehicleMaintenanceRecordDTO>> GetQuerableExpenseList();
         Task<VehicleMaintenanceRecordDTO?> GetExpenseByIdAsync(int id);
     }
 }

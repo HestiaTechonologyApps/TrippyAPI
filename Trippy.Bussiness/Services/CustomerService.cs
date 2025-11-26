@@ -9,6 +9,7 @@ using Trippy.Domain.Interfaces.IServices;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.DTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace Trippy.Bussiness.Services
 {
@@ -61,19 +62,19 @@ namespace Trippy.Bussiness.Services
         {
 
 
-            List<CustomerDTO> customerdtos = new List<CustomerDTO>();
+           // List<CustomerDTO> customerdtos = new List<CustomerDTO>();
 
-            var customers = await _repo.GetAllAsync();
+            var customers = await _repo.GetQuerableCustomerList();
 
-            foreach (var driver in customers)
-            {
-                CustomerDTO customerDTO = await ConvertCustomerToDTO(driver);
-                customerdtos.Add(customerDTO);
+            //foreach (var driver in customers)
+            //{
+            //    CustomerDTO customerDTO = await ConvertCustomerToDTO(driver);
+            //    customerdtos.Add(customerDTO);
 
 
-            }
+            //}
 
-            return customerdtos;
+            return await customers.ToListAsync ();
         }
 
         public async Task<CustomerDTO?> GetByIdAsync(int id)

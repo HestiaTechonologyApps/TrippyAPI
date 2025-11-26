@@ -14,39 +14,46 @@ namespace Trippy.Core.Repositories
     public class VehicleMainteanceRepository : GenericRepository<VehicleMaintenanceRecord>, IVehicleMaintanenceRepository
     {
         private readonly AppDbContext _context;
-        public VehicleMainteanceRepository(AppDbContext context) : base(context)
+        private readonly ICurrentUserService _currentUser;
+        public VehicleMainteanceRepository(AppDbContext context, ICurrentUserService currentUserService) : base(context)
         {
             _context = context;
+            _currentUser = currentUserService;
         }
 
 
 
-
-        public List<VehicleMaintenanceRecordDTO> GetAllExpenses()
+        public async Task<IQueryable<VehicleMaintenanceRecordDTO>> GetQuerableExpenseList()
         {
-            var result = (from vm in _context.VehicleMaintenanceRecords
-                          join veh in _context.Vehicles on vm.VehicleId equals veh.VehicleId
-                          select new VehicleMaintenanceRecordDTO
-                          {
-                              VehicleMaintenanceRecordId = vm.VehicleMaintenanceRecordId,
-                              VehicleId = vm.VehicleId,
-                              VehicleName = veh != null ? veh.VehicleType + " - " + veh.RegistrationNumber : "N/A",
-                              WorkshopName = vm.WorkshopName,
-                              Description = vm.Description,
-                              Cost = vm.Cost,
-                              OdometerReading = vm.OdometerReading,
-                              PerformedBy = vm.PerformedBy,
-                              CreatedBy = vm.CreatedBy,
-                              CreatedDate = vm.CreatedDate,
-                              CreatedDateString = vm.CreatedDate.ToString("dd MMMM yyyy hh:mm tt"),
-                              MaintenanceDate = vm.MaintenanceDate,
-                              MaintenanceType = vm.MaintenanceType,
-                              MaintenanceDateString = vm.MaintenanceDate.ToString("dd MMMM yyyy hh:mm tt"),
-                              Remarks = vm.Remarks
-                          }).ToList();
+            var q = (from vm in _context.VehicleMaintenanceRecords
+                     join cmp in _context.Companies on vm.CompanyId equals cmp.CompanyId
+                     where vm.CompanyId == int.Parse(_currentUser.CompanyId)
+                     where vm.IsDeleted == false
+                     select new VehicleMaintenanceRecordDTO
+                     {
+                         VehicleMaintenanceRecordId = vm.VehicleMaintenanceRecordId,
+                         VehicleId = vm.VehicleId,
+                         WorkshopName = vm.WorkshopName,
+                         Description = vm.Description,
+                         Cost = vm.Cost,
+                         OdometerReading = vm.OdometerReading,
+                         CompanyId = vm.CompanyId,
+                         PerformedBy = vm.PerformedBy,
+                         CreatedBy = vm.CreatedBy,
+                         CreatedDate = vm.CreatedDate,
+                         CreatedDateString = vm.CreatedDate.ToString("dd MMMM yyyy hh:mm tt"),
+                         MaintenanceDate = vm.MaintenanceDate,
+                         MaintenanceType = vm.MaintenanceType,
+                         MaintenanceDateString = vm.MaintenanceDate.ToString("dd MMMM yyyy hh:mm tt"),
+                         Remarks = vm.Remarks,
 
-            return result;
+                     }).AsQueryable();
+                     
+
+                     
+            return q;
         }
+
 
 
         public async Task<VehicleMaintenanceRecordDTO?> GetExpenseByIdAsync(int id)

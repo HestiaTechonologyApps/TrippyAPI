@@ -20,6 +20,7 @@ namespace Trippy.Domain.Entities
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public string CreatedBy { get; set; } = string.Empty;
         public bool IsDeleted { get; set; } = false;
+        public int CompanyId { get; set; } = 0;
     }
 
 

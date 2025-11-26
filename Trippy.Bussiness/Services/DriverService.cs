@@ -8,6 +8,7 @@ using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.Domain.Interfaces.IServices;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Interfaces.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Trippy.Bussiness.Services
 {
@@ -60,19 +61,19 @@ namespace Trippy.Bussiness.Services
         {
 
 
-            List<DriverDTO> driverdtos = new List<DriverDTO>();
+           // List<DriverDTO> driverdtos = new List<DriverDTO>();
 
-            var drivers =  await _repo.GetAllAsync();
+            var drivers =  await _repo.GetQuerableDriverList();
             
-            foreach (var driver in drivers)
-            {
-                DriverDTO driverDTO = await ConvertDriverToDTO(driver);
-                driverdtos.Add(driverDTO);
+            //foreach (var driver in drivers)
+            //{
+            //    DriverDTO driverDTO = await ConvertDriverToDTO(driver);
+            //    driverdtos.Add(driverDTO);
 
 
-            }
+            //}
 
-            return driverdtos;
+            return await drivers.ToListAsync ();
         }
 
         //private static DriverDTO ConvertDriverToDTO(Driver driver)

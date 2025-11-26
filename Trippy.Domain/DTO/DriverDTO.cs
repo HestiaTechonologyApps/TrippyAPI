@@ -22,9 +22,12 @@ namespace Trippy.Domain.DTO
         public String NationalId { get; set; } = "";
         public DateTime? DOB { get; set; }
         public String DOBString { get; set; } = "";
+
+        public String CompanyName { get; set; } = "";
         public bool IsRented { get; set; } = true;
         public bool IsActive { get; set; } = true;
         public int CompanyId { get; set; } = 0;
+        public bool IsDeleted { get; set; } = false;
         public List<AuditLogDTO> AuditLog { get; set; } //= new List<AuditLogDTO>();
         public ICollection<TripOrder> TripOrders { get; set; } = new List<TripOrder>();
     }

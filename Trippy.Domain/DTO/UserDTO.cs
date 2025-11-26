@@ -25,6 +25,7 @@ namespace Trippy.Domain.DTO
         public DateTime? Lastlogin { get; set; }
         public string LastloginString { get; set; } = "";
         public string CreateAtSyring { get; set; } = "";
+        public bool IsDeleted { get; set; } = false;
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
     }
 
