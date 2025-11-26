@@ -27,7 +27,7 @@ namespace Trippy.Domain.DTO
         public string CreatedBy { get; set; } = string.Empty;
         public DateTime? UpdatedDate { get; set; }
         public string UpdatedDateString = "";
-        public string CompanyName = "";
+        public string ComapanyName = "";
         public string? UpdatedBy { get; set; }
         public int CompanyId { get; set; } = 0;
         public bool IsDeleted { get; set; } = false;

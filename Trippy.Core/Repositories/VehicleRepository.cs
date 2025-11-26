@@ -15,14 +15,17 @@ namespace Trippy.Core.Repositories
     public class VehicleRepository : GenericRepository<Vehicle>, IVehicleRepository
     {
         private readonly AppDbContext _context;
-        public VehicleRepository(AppDbContext context) : base(context)
+        private readonly ICurrentUserService _currentUser;
+        public VehicleRepository(AppDbContext context, ICurrentUserService currentUser) : base(context)
         {
             _context = context;
+            _currentUser = currentUser;
         }
         public async Task<IQueryable<VehicleDTO>> GetQuerableVehicleList() {
             var q = (from vech in _context.Vehicles
                      join cmp in _context.Companies
                      on vech.CompanyId equals cmp.CompanyId
+                    // where vech.CompanyId currentUser.CompanyId
                      select new VehicleDTO
                      {
                          VehicleId = vech.VehicleId,
@@ -31,11 +34,14 @@ namespace Trippy.Core.Repositories
                          Make = vech.Make,
                          Model = vech.Model,
                          Year = vech.Year,
-                         CompanyName = cmp.ComapanyName,
+                         ComapanyName = cmp.ComapanyName,
                          ChassisNumber = vech.ChassisNumber,
                          EngineNumber = vech.EngineNumber,
-                         RegistrationExpiry = vech.RegistrationExpiry
-
+                         RegistrationExpiry = vech.RegistrationExpiry,
+                         RegistrationExpiryString = vech.RegistrationExpiry.ToString("dd MMMM yyyy hh:mm tt"),
+                         RegistrationNumber = vech.RegistrationNumber,
+                         Location = vech.Location,
+                         CurrentStatus = vech.CurrentStatus
                      }).AsQueryable();
 
             return q;
