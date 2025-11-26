@@ -35,6 +35,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<TripKiloMeter> TripKiloMeters { get; set; }
 
         public DbSet<Attachment> Attachments { get; set; }
+        public DbSet<Comment> comments { get; set; }
         public DbSet<TripBookingMode> TripBookingModes { get; set; }
 
 
