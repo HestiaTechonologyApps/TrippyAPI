@@ -35,6 +35,7 @@ namespace Trippy.Core.Repositories
                    select new TripListDataDTO
                    {
                        TripOrderId = tripOrder.TripOrderId,
+                       CustomerId = tripOrder.CustomerId,
                        TripCode = tripOrder.TripCode,
                        FromDateString = tripOrder.FromDate.HasValue
                                         ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")

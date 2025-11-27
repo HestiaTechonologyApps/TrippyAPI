@@ -43,6 +43,7 @@ namespace Trippy.Domain.Entities
         public decimal AdvanceAmount { get; set; } = 0;
         public decimal BalanceAmount { get; set; } = 0;
         public bool IsActive { get; set; } = true;
+        public bool IsInvoiced { get; set; } = false;
 
         public int CompanyId { get; set; } = 0;
         public bool IsDeleted { get; set; } = false;

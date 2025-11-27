@@ -9,16 +9,17 @@ namespace Trippy.Bussiness.Services
     public class ListService : IListService
     {
         private readonly ITripOrderRepository _repo;
-        public ListService(ITripOrderRepository repo)
+        private readonly ICurrentUserService _currentUser;
+        public ListService(ITripOrderRepository repo, ICurrentUserService currentUser)
         {
             _repo = repo;
-
+            _currentUser = currentUser;
         }
-     public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
+        public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
          string listType,
      string filtertext,
      int pagesize,
-     int pagenumber)
+     int pagenumber, int CustomerId)
         {
             // normalize pages
             pagesize = pagesize <= 0 ? 10 : pagesize;
@@ -30,21 +31,32 @@ namespace Trippy.Bussiness.Services
             {
                 q = q.Where(t => t.Status.ToLower () == "Completed".ToLower ());
             }
-            else if (listType.ToLower () == "PENDING".ToLower())
+            else if (listType.ToLower () == "Scheduled".ToLower())
             {
-                q = q.Where(t => t.Status.ToLower() != "Completed".ToLower());
+                q = q.Where(t => t.Status.ToLower() != "Scheduled".ToLower());
             }
             else if (listType.ToLower()    == "CANCELLED".ToLower())
             {
-                q = q.Where(t => t.Status.ToLower() != "Completed".ToLower());
+                q = q.Where(t => t.Status.ToLower() != "Cancelled".ToLower());
             }
             else if (listType.ToLower() == "TODAY".ToLower())
             {
                 q = q.Where(t => t.FromDate.Value.Date== DateTime.Now.Date );
             }
+            else if (listType.ToLower() == "UnInvoiced".ToLower())
+            {
+                q = q.Where(t => t.Status.ToLower() != "Completed".ToLower() && t.IsInvoiced==false );
+
+                if (CustomerId != 0)
+                {
+                    q = q.Where(t => t.CustomerId != CustomerId);
+                }
+
+            }
+
             else if (listType.ToLower() == "ALL".ToLower())
             {
-               // q = q.Where(t => t.Status.ToLower() != "Completed".ToLower());
+              
             }
             // filtering
             if (!string.IsNullOrWhiteSpace(filtertext))

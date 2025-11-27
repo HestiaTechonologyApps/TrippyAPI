@@ -55,6 +55,7 @@ namespace Trippy.Domain.DTO
 
         public string DriverName { get; set; } = "";
         public bool IsDeleted { get; set; } = false;
+        public bool IsInvoiced { get; set; } = false;
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
 
 
@@ -63,6 +64,7 @@ namespace Trippy.Domain.DTO
     public class TripListDataDTO
     {
         public int TripOrderId { get; set; }
+        public int CustomerId { get; set; }
 
         public string TripCode { get; set; } = "";
         public DateTime? FromDate { get; set; }
@@ -77,6 +79,7 @@ namespace Trippy.Domain.DTO
         public string AddedBy { get; set; }
         public string PaymentMode { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public bool IsInvoiced { get; set; } = false;
         public bool IsActive { get; set; } = true;
     }
     public class CalendarEventDto
