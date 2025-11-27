@@ -110,6 +110,7 @@ namespace Trippy.Core.Repositories
                      join
                      cust in _context.Customers on tripOrder.CustomerId equals cust.CustomerId
                      join drv in _context.Drivers on tripOrder.DriverId equals drv.DriverId
+                     join trmp in _context.TripBookingModes on tripOrder.TripBookingModeId equals trmp.TripBookingModeId
 
                      where tripOrder.TripOrderId == tripid
                      select new TripOrderDTO
@@ -142,6 +143,8 @@ namespace Trippy.Core.Repositories
                          TripDetails = tripOrder.TripDetails,
                          TripStatus = tripOrder.TripStatus,
                          TripAmount = tripOrder.TripAmount,
+                         TripBookingModeName = trmp.TripBookingModeName,
+                         
                          AdvanceAmount = tripOrder.AdvanceAmount,
                          BalanceAmount = tripOrder.BalanceAmount,
                          IsActive = tripOrder.IsActive,
