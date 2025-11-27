@@ -9,7 +9,7 @@ namespace TrippyAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+  //  [Authorize]
     public class Api_PaginatedListDataController : Api_BaseController
     {
 

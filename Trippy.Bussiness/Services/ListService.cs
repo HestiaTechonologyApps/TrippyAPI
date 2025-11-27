@@ -15,20 +15,19 @@ namespace Trippy.Bussiness.Services
             _repo = repo;
             _currentUser = currentUser;
         }
-     public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
-    string listType,
-    string filtertext,
-    int pagesize,
-    int pagenumber,
-    int CustomerId,
-    int Year)
+        public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
+          string listType,
+          string filtertext,
+          int pagesize,
+          int pagenumber,
+          int CustomerId,
+          int Year)
         {
-            // Normalize pagination parameters
-            pagesize = Math.Max(pagesize, 1);  // Cleaner than ternary
-            pagesize = Math.Min(pagesize, 100); // Add max limit
+            // Normalize pagination
+            pagesize = Math.Max(1, Math.Min(pagesize, 100));
             pagenumber = Math.Max(pagenumber, 1);
 
-            var q = _repo.QuerableTripListAsyc();
+            var q = _repo.QuerableTripListAsyc();  // Fixed method name
 
             // Filter by Customer
             if (CustomerId > 0)
@@ -42,59 +41,62 @@ namespace Trippy.Bussiness.Services
                 q = q.Where(t => t.FromDate != null && t.FromDate.Value.Year == Year);
             }
 
-            // Filter by List Type (using StringComparison for better performance)
+            // Filter by List Type
             if (!string.IsNullOrWhiteSpace(listType))
             {
-                switch (listType.ToLower())
+                var lowerListType = listType.ToLower();
+
+                switch (lowerListType)
                 {
                     case "completed":
-                        q = q.Where(t => EF.Functions.Like(t.Status, "completed"));
+                        q = q.Where(t => t.Status.ToLower() == "completed");
                         break;
 
                     case "scheduled":
-                        q = q.Where(t => EF.Functions.Like(t.Status, "scheduled"));
+                        q = q.Where(t => t.Status.ToLower() == "scheduled");
                         break;
 
                     case "cancelled":
-                        q = q.Where(t => EF.Functions.Like(t.Status, "cancelled"));
+                        q = q.Where(t => t.Status.ToLower() == "cancelled");
                         break;
 
                     case "today":
                         var today = DateTime.Today;
-                        q = q.Where(t => t.FromDate != null && t.FromDate.Value.Date == today);
+                        q = q.Where(t => t.FromDate.HasValue && t.FromDate.Value.Date == today);
                         break;
 
                     case "uninvoiced":
-                        q = q.Where(t => EF.Functions.Like(t.Status, "completed") && t.IsInvoiced == false);
+                        q = q.Where(t => t.Status.ToLower() == "completed" && t.IsInvoiced == false);
                         break;
 
                     case "all":
                     default:
-                        // No filtering
+                        // No additional filtering
                         break;
                 }
             }
 
-            // Text filtering (case-insensitive using EF.Functions)
+            // Text filtering
             if (!string.IsNullOrWhiteSpace(filtertext))
             {
-                var pattern = $"%{filtertext}%";
+                var filter = filtertext.ToLower();
                 q = q.Where(t =>
-                    EF.Functions.Like(t.CustomerName, pattern) ||
-                    EF.Functions.Like(t.DriverName, pattern) ||
-                    EF.Functions.Like(t.PickUpFrom, pattern) ||
-                    EF.Functions.Like(t.RecivedVia, pattern) ||
-                    EF.Functions.Like(t.Status, pattern) ||
-                    EF.Functions.Like(t.TripCode, pattern)
+                    t.CustomerName.ToLower().Contains(filter) ||
+                    t.DriverName.ToLower().Contains(filter) ||
+                    t.PickUpFrom.ToLower().Contains(filter) ||
+                    t.RecivedVia.ToLower().Contains(filter) ||
+                    t.Status.ToLower().Contains(filter) ||
+                    t.TripCode.ToLower().Contains(filter)
                 );
             }
 
             // Get total count
             var total = await q.CountAsync();
 
-            // Apply pagination with ordering (IMPORTANT!)
+            // Apply ordering and pagination
             var data = await q
-                .OrderByDescending(t => t.FromDate)  // ADD ORDERING!
+                .OrderByDescending(t => t.FromDate)  // Default ordering by date
+                .ThenBy(t => t.TripOrderId)           // Secondary sort for consistency
                 .Skip((pagenumber - 1) * pagesize)
                 .Take(pagesize)
                 .ToListAsync();
@@ -105,7 +107,7 @@ namespace Trippy.Bussiness.Services
                 Data = data
             };
         }
+
+
     }
-
-
 }

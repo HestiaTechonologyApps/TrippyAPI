@@ -37,22 +37,18 @@ namespace Trippy.Core.Repositories
                        TripOrderId = tripOrder.TripOrderId,
                        CustomerId = tripOrder.CustomerId,
                        TripCode = tripOrder.TripCode,
-                       FromDateString = tripOrder.FromDate.HasValue
-                                        ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                                        : "",
-                       ToDateString = tripOrder.ToDate.HasValue
-                                      ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                                      : "",
                        FromDate = tripOrder.FromDate,
                        ToDate = tripOrder.ToDate,
                        IsActive = tripOrder.IsActive,
-                       CustomerName = cust.CustomerName,
-                       DriverName = drv.DriverName,
-                       PickUpFrom = tripOrder.FromLocation,
-                       RecivedVia = trpmod.TripBookingModeName,
-                       PaymentMode = tripOrder.PaymentMode,
-                       Status = tripOrder.TripStatus
-                      
+                       CustomerName = cust.CustomerName ?? "",
+                       DriverName = drv.DriverName ?? "",
+                       PickUpFrom = tripOrder.FromLocation ?? "",
+                       RecivedVia = trpmod.TripBookingModeName ?? "",
+                       PaymentMode = tripOrder.PaymentMode ?? "",
+                       Status = tripOrder.TripStatus ?? "",
+                       IsInvoiced = tripOrder.IsInvoiced,
+
+
                    };
         }
 
