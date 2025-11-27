@@ -58,7 +58,7 @@ namespace Trippy.Api.Controllers
             return response;
         }
         [HttpPost]
-        public async Task<CustomApiResponse> Create([FromBody] IInvoiceMasterService invoiceMaster)
+        public async Task<CustomApiResponse> Create([FromBody] InvoiceMasterDTO invoiceMaster)
         {
             var response = new CustomApiResponse();
             try

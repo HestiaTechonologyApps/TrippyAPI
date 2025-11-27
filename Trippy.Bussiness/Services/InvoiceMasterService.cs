@@ -22,7 +22,7 @@ namespace Trippy.Bussiness.Services
             this._auditRepository = auditRepository;
             _currentUser = currentUserService;
         }
-        public async Task<invoiceMasterDTO> CreateAsync(invoiceMasterDTO invoiceMasterDTO )
+        public async Task<InvoiceMasterDTO> CreateAsync(InvoiceMasterDTO invoiceMasterDTO )
         {
             InvoiceMaster invoiceMaster = new InvoiceMaster();
             invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
@@ -65,9 +65,9 @@ namespace Trippy.Bussiness.Services
             return await ConvertInvoiceMasterToDTO(invoiceMaster);
         }
 
-        private async Task<invoiceMasterDTO> ConvertInvoiceMasterToDTO(InvoiceMaster invoiceMaster)
+        private async Task<InvoiceMasterDTO> ConvertInvoiceMasterToDTO(InvoiceMaster invoiceMaster)
         {
-            invoiceMasterDTO invoicemasterDTO = new invoiceMasterDTO();
+            InvoiceMasterDTO invoicemasterDTO = new InvoiceMasterDTO();
             invoicemasterDTO.InvoicemasterId = invoiceMaster.InvoicemasterId;
             invoicemasterDTO.InvoiceNum = invoiceMaster.InvoiceNum;
             invoicemasterDTO.FinancialYearId = invoiceMaster.FinancialYearId;
@@ -97,17 +97,17 @@ namespace Trippy.Bussiness.Services
             );
             return true;
         }
-        public async Task<List<invoiceMasterDTO>> GetAllAsync()
+        public async Task<List<InvoiceMasterDTO>> GetAllAsync()
         {
 
 
-            List<invoiceMasterDTO> invoiceMasterdtos = new List<invoiceMasterDTO>();
+            List<InvoiceMasterDTO> invoiceMasterdtos = new List<InvoiceMasterDTO>();
 
             var invoiceMasters = await _repo.GetAllAsync();
 
             foreach (var invoiceMaster in invoiceMasters)
             {
-                invoiceMasterDTO invoiceMasterDTO = await ConvertInvoiceMasterToDTO(invoiceMaster);
+                InvoiceMasterDTO invoiceMasterDTO = await ConvertInvoiceMasterToDTO(invoiceMaster);
                 invoiceMasterdtos.Add(invoiceMasterDTO);
 
 
@@ -115,7 +115,7 @@ namespace Trippy.Bussiness.Services
 
             return invoiceMasterdtos;
         }
-        public async Task<invoiceMasterDTO?> GetByIdAsync(int id)
+        public async Task<InvoiceMasterDTO?> GetByIdAsync(int id)
         {
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;

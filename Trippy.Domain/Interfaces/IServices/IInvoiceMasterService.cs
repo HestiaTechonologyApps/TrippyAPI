@@ -10,9 +10,9 @@ namespace Trippy.Domain.Interfaces.IServices
 {
     public interface IInvoiceMasterService
     {
-        Task<List<invoiceMasterDTO>> GetAllAsync();
-        Task<invoiceMasterDTO?> GetByIdAsync(int id);
-        Task<invoiceMasterDTO> CreateAsync(invoiceMasterDTO  invoiceMaster);
+        Task<List<InvoiceMasterDTO>> GetAllAsync();
+        Task<InvoiceMasterDTO?> GetByIdAsync(int id);
+        Task<InvoiceMasterDTO> CreateAsync(InvoiceMasterDTO  invoiceMaster);
         Task<bool> UpdateAsync(InvoiceMaster invoiceMaster);
         Task<bool> DeleteAsync(int id);
     }
