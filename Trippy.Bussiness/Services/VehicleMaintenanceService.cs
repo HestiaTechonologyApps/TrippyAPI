@@ -74,6 +74,7 @@ namespace Trippy.Bussiness.Services
 
         public async Task<VehicleMaintenanceRecordDTO> CreateAsync(VehicleMaintenanceRecord vehicleMaintenanceRecord)
         {
+            vehicleMaintenanceRecord.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.AddAsync(vehicleMaintenanceRecord);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<VehicleMaintenanceRecord>(
@@ -89,6 +90,7 @@ namespace Trippy.Bussiness.Services
 
         public async Task<bool> UpdateAsync(VehicleMaintenanceRecord vehicleMaintenanceRecord)
         {
+            vehicleMaintenanceRecord.CompanyId = int.Parse(_currentUser.CompanyId);
             var oldentity = await _repo.GetByIdAsync(vehicleMaintenanceRecord.VehicleMaintenanceRecordId);
             _repo.Detach(oldentity);
             _repo.Update(vehicleMaintenanceRecord);

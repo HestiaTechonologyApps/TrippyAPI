@@ -26,6 +26,7 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<UserDTO> CreateAsync(User user)
         {
+            user.CompanyId = int.Parse(_currentUser.CompanyId);
             await _repo.AddAsync(user);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<User>(
@@ -107,7 +108,7 @@ namespace Trippy.Bussiness.Services
 
         public async Task<bool> UpdateAsync(User user)
         {
-
+            user.CompanyId = int.Parse(_currentUser.CompanyId);
             var oldentity = await _repo.GetByIdAsync(user.UserId);
             _repo.Detach(oldentity);
             _repo.Update(user);

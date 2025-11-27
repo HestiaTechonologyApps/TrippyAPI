@@ -53,6 +53,7 @@ namespace Trippy.InfraCore
             services.AddScoped<ITwilioSmsSender, TwilioSmsSender>();
             services.AddScoped<ITripBookingModeRepository, TripBookingModeRepository>();
             services.AddScoped<IDashboardRepository, DashboardRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             //services.AddScoped<ICustomResponseBuilder, CustomResponseBuilder>();
 
             //// Add helpers or utilities

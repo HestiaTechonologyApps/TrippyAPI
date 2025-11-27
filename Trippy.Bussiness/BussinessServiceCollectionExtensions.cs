@@ -51,6 +51,7 @@ namespace Trippy.Bussiness
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IListService, ListService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ICommentService, CommentService>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));
 
