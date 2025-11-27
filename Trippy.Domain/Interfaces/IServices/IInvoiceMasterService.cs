@@ -12,7 +12,7 @@ namespace Trippy.Domain.Interfaces.IServices
     {
         Task<List<invoiceMasterDTO>> GetAllAsync();
         Task<invoiceMasterDTO?> GetByIdAsync(int id);
-        Task<invoiceMasterDTO> CreateAsync(InvoiceMaster invoiceMaster);
+        Task<invoiceMasterDTO> CreateAsync(invoiceMasterDTO  invoiceMaster);
         Task<bool> UpdateAsync(InvoiceMaster invoiceMaster);
         Task<bool> DeleteAsync(int id);
     }

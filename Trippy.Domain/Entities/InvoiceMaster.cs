@@ -19,9 +19,10 @@ namespace Trippy.Domain.Entities
 
         public bool IsDeleted { get; set; } = true;
 
+        public List<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+
     }
 
 
-
-
+   
 }

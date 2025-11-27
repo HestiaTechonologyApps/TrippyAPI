@@ -22,8 +22,36 @@ namespace Trippy.Bussiness.Services
             this._auditRepository = auditRepository;
             _currentUser = currentUserService;
         }
-        public async Task<invoiceMasterDTO> CreateAsync(InvoiceMaster invoiceMaster)
+        public async Task<invoiceMasterDTO> CreateAsync(invoiceMasterDTO invoiceMasterDTO )
         {
+            InvoiceMaster invoiceMaster = new InvoiceMaster();
+            invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
+            invoiceMaster.FinancialYearId = invoiceMasterDTO.FinancialYearId;
+            invoiceMaster.CompanyId = invoiceMasterDTO.CompanyId;
+            invoiceMaster.TotalAmount = invoiceMasterDTO.TotalAmount;
+            invoiceMaster.CreatedOn = DateTime.UtcNow;
+            invoiceMaster.IsDeleted = false;
+            
+            
+            foreach (var detailDto in invoiceMasterDTO.InvoiceDetailDtos)
+            {
+                InvoiceDetail invoiceDetail = new InvoiceDetail();
+                invoiceDetail.TripOrderId = detailDto.TripOrderId;
+                invoiceDetail.CategoryId = detailDto.CategoryId;
+                invoiceDetail.Ammount = detailDto.Ammount;
+                invoiceDetail.TotalTax = detailDto.TotalTax;
+                invoiceDetail.Discount = detailDto.Discount;
+                invoiceMaster.InvoiceDetails.Add(invoiceDetail);
+
+                // Here you can also handle InvoiceDetailTaxDTO if needed
+
+             
+            }
+
+
+
+
+
             await _repo.AddAsync(invoiceMaster);
             await _repo.SaveChangesAsync();
             await this._auditRepository.LogAuditAsync<InvoiceMaster>(
