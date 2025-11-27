@@ -11,6 +11,11 @@ namespace Trippy.Domain.Interfaces.IServices
     public interface ITripBookingModeService
     {
         Task<List<TripBookingModeDTO>> GetAllAsync();
+        Task<TripBookingModeDTO?> GetByIdAsync(int id);
+        Task<TripBookingModeDTO> CreateAsync(TripBookingMode tripBookingMode);
+
        
+        Task<bool> UpdateAsync(TripBookingMode tripBookingMode);
+        Task<bool> DeleteAsync(int id);
     }
 }
