@@ -15,67 +15,86 @@ namespace Trippy.Bussiness.Services
             _repo = repo;
             _currentUser = currentUser;
         }
-        public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
-         string listType,
-     string filtertext,
-     int pagesize,
-     int pagenumber, int CustomerId)
+     public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
+    string listType,
+    string filtertext,
+    int pagesize,
+    int pagenumber,
+    int CustomerId,
+    int Year)
         {
-            // normalize pages
-            pagesize = pagesize <= 0 ? 10 : pagesize;
-            pagenumber = pagenumber <= 0 ? 1 : pagenumber;
+            // Normalize pagination parameters
+            pagesize = Math.Max(pagesize, 1);  // Cleaner than ternary
+            pagesize = Math.Min(pagesize, 100); // Add max limit
+            pagenumber = Math.Max(pagenumber, 1);
 
             var q = _repo.QuerableTripListAsyc();
 
-            if((listType).ToLower() == "COMPLETED".ToLower ())
+            // Filter by Customer
+            if (CustomerId > 0)
             {
-                q = q.Where(t => t.Status.ToLower () == "Completed".ToLower ());
+                q = q.Where(t => t.CustomerId == CustomerId);
             }
-            else if (listType.ToLower () == "Scheduled".ToLower())
-            {
-                q = q.Where(t => t.Status.ToLower() != "Scheduled".ToLower());
-            }
-            else if (listType.ToLower()    == "CANCELLED".ToLower())
-            {
-                q = q.Where(t => t.Status.ToLower() != "Cancelled".ToLower());
-            }
-            else if (listType.ToLower() == "TODAY".ToLower())
-            {
-                q = q.Where(t => t.FromDate.Value.Date== DateTime.Now.Date );
-            }
-            else if (listType.ToLower() == "UnInvoiced".ToLower())
-            {
-                q = q.Where(t => t.Status.ToLower() != "Completed".ToLower() && t.IsInvoiced==false );
 
-                if (CustomerId != 0)
+            // Filter by Year
+            if (Year > 0)
+            {
+                q = q.Where(t => t.FromDate != null && t.FromDate.Value.Year == Year);
+            }
+
+            // Filter by List Type (using StringComparison for better performance)
+            if (!string.IsNullOrWhiteSpace(listType))
+            {
+                switch (listType.ToLower())
                 {
-                    q = q.Where(t => t.CustomerId != CustomerId);
+                    case "completed":
+                        q = q.Where(t => EF.Functions.Like(t.Status, "completed"));
+                        break;
+
+                    case "scheduled":
+                        q = q.Where(t => EF.Functions.Like(t.Status, "scheduled"));
+                        break;
+
+                    case "cancelled":
+                        q = q.Where(t => EF.Functions.Like(t.Status, "cancelled"));
+                        break;
+
+                    case "today":
+                        var today = DateTime.Today;
+                        q = q.Where(t => t.FromDate != null && t.FromDate.Value.Date == today);
+                        break;
+
+                    case "uninvoiced":
+                        q = q.Where(t => EF.Functions.Like(t.Status, "completed") && t.IsInvoiced == false);
+                        break;
+
+                    case "all":
+                    default:
+                        // No filtering
+                        break;
                 }
-
             }
 
-            else if (listType.ToLower() == "ALL".ToLower())
-            {
-              
-            }
-            // filtering
+            // Text filtering (case-insensitive using EF.Functions)
             if (!string.IsNullOrWhiteSpace(filtertext))
             {
+                var pattern = $"%{filtertext}%";
                 q = q.Where(t =>
-                    t.CustomerName.Contains(filtertext) ||
-                    t.DriverName.Contains(filtertext) ||
-                    t.PickUpFrom.Contains(filtertext) ||
-                    t.RecivedVia.Contains(filtertext) ||
-                    t.Status.Contains(filtertext) ||
-                    t.TripCode.Contains(filtertext)
+                    EF.Functions.Like(t.CustomerName, pattern) ||
+                    EF.Functions.Like(t.DriverName, pattern) ||
+                    EF.Functions.Like(t.PickUpFrom, pattern) ||
+                    EF.Functions.Like(t.RecivedVia, pattern) ||
+                    EF.Functions.Like(t.Status, pattern) ||
+                    EF.Functions.Like(t.TripCode, pattern)
                 );
             }
 
-            // total BEFORE pagination
+            // Get total count
             var total = await q.CountAsync();
 
-            // pagination
+            // Apply pagination with ordering (IMPORTANT!)
             var data = await q
+                .OrderByDescending(t => t.FromDate)  // ADD ORDERING!
                 .Skip((pagenumber - 1) * pagesize)
                 .Take(pagesize)
                 .ToListAsync();

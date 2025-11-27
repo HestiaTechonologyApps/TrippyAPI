@@ -33,6 +33,7 @@ namespace TrippyAPI.Controllers
                 var data = await _service.Get_PaginatedTripList(
                     
                     listType: param.ListType  , pagesize: param.pagesize , pagenumber: param.pagenumber, filtertext: param.filtertext, CustomerId: param.CustomerId
+                    ,Year:param.Year
                     );
                 response.IsSucess = true;
                 response.Value = data;

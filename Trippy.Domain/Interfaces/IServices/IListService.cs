@@ -8,7 +8,7 @@ namespace Trippy.Domain.Interfaces.IServices
           string listType,
       string filtertext,
       int pagesize,
-      int pagenumber, int CustomerId);
+      int pagenumber, int CustomerId,int Year);
 
     }
 }
