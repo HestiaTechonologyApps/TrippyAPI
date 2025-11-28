@@ -47,7 +47,7 @@ namespace Trippy.Api.Controllers
 
 
         // Soft delete attachment
-        [HttpDelete("{attachmentId}")]
+        [HttpDelete("{CommentId}")]
         public async Task<CustomApiResponse> Delete(int commentId, [FromQuery] string deletedBy)
         {
             var response = await _commentService.DeleteCommentAsync(commentId, deletedBy);

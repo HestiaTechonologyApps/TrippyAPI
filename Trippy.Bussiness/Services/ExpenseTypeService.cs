@@ -49,6 +49,7 @@ namespace Trippy.Bussiness.Services
             expenseTypeDTO.Description = expenseType.Description;
             expenseTypeDTO.IsActive = expenseType.IsActive;
             expenseTypeDTO.IsDeleted = expenseType.IsDeleted;
+            expenseTypeDTO.CreditDebitType = expenseType.CreditDebitType;
             return expenseTypeDTO;
         }
 

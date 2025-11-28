@@ -16,7 +16,7 @@ namespace Trippy.Domain.DTO
         public bool IsActive { get; set; } = true;
 
         public bool IsDeleted { get; set; } = false;
-
+        public String CreditDebitType { get; set; } = "";
         public List<AuditLogDTO> AuditLoogs { get; set; } = new List<AuditLogDTO>();
     }
 }
