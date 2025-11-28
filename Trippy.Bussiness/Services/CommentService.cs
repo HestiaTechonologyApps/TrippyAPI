@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -82,24 +83,20 @@ namespace Trippy.Bussiness.Services
         public async Task<List<Comment>> GetAllAsync() => (List<Comment>) await _repo.GetAllAsync();
 
 
-        public Task<Comment?> GetByIdAsync(int id)
+        public async Task<Comment?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repo.GetByIdAsync(id);
         }
 
         public async Task<CustomApiResponse> GetCommentAsync(string tableName, int recordId)
         {
             try
             {
-               // int recId = int.Parse(recordId);
-
-                
                 var allComments = await _repo.GetAllAsync();
 
-               
                 var comments = allComments
                     .Where(c => c.TableName == tableName
-                            // && c.RecordID == recId
+                             && c.RecordID == recordId      // ✔ filter by record ID
                              && c.IsDeleted == false)
                     .OrderByDescending(c => c.CreatedOn)
                     .ToList();
@@ -123,6 +120,7 @@ namespace Trippy.Bussiness.Services
                 };
             }
         }
+
 
         public async Task<bool> UpdateAsync(Comment comment)
         {
@@ -148,5 +146,7 @@ namespace Trippy.Bussiness.Services
             return ApiResponseFactory.Success(null, "Comment deleted successfully", System.Net.HttpStatusCode.OK);
 
         }
+      
+
     }
 }

@@ -23,6 +23,29 @@ namespace Trippy.Api.Controllers
             return response;
         }
 
+        [HttpGet("{id}")]
+        public async Task<CustomApiResponse> GetById(int id)
+        {
+            var response = new CustomApiResponse();
+            var driver = await _commentService.GetByIdAsync(id);
+            if (driver == null)
+            {
+                response.IsSucess = false;
+                response.Error = "Not found";
+                response.StatusCode = 404;
+            }
+            else
+            {
+                response.IsSucess = true;
+                response.Value = driver;
+                response.StatusCode = 200;
+            }
+            return response;
+        }
+
+
+
+
         // Soft delete attachment
         [HttpDelete("{attachmentId}")]
         public async Task<CustomApiResponse> Delete(int commentId, [FromQuery] string deletedBy)

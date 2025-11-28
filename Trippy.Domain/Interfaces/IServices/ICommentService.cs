@@ -15,10 +15,11 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<Comment> CreateAsync(Comment comment);
         Task<bool> UpdateAsync(Comment comment);
         Task<bool> DeleteAsync(int id);
+      
 
         Task<CustomApiResponse> DeleteCommentAsync(int commentId, string deletedBy);
 
-        Task<CustomApiResponse> GetCommentAsync(string tableName , int recordId);
+        Task<CustomApiResponse> GetCommentAsync(string tableName, int recordId);
         Task<CustomApiResponse> AddCommentAsync(
        string description,
        string tableName,
