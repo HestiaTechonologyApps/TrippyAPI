@@ -56,14 +56,22 @@ namespace Trippy.Bussiness.Services
                         q = q.Where(t => t.Status.ToLower() == "scheduled");
                         break;
 
-                    case "cancelled":
-                        q = q.Where(t => t.Status.ToLower() == "cancelled");
+                    case "canceled":
+                        q = q.Where(t => t.Status.ToLower() == "canceled");
                         break;
 
                     case "today":
-                        var today = DateTime.Today;
-                        q = q.Where(t => t.FromDate.HasValue && t.FromDate.Value.Date == today);
+                        var today = DateTime.Today;          
+                        var tomorrow = today.AddDays(1);
+
+                        q = q.Where(t =>
+                            t.FromDate.HasValue &&
+                            t.ToDate.HasValue &&
+                            t.FromDate.Value < tomorrow &&
+                            t.ToDate.Value >= today
+                        );
                         break;
+
 
                     case "uninvoiced":
                         q = q.Where(t => t.Status.ToLower() == "completed" && t.IsInvoiced == false);
