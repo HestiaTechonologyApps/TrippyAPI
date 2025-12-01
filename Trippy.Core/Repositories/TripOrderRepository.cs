@@ -48,7 +48,12 @@ namespace Trippy.Core.Repositories
                        Status = tripOrder.TripStatus ?? "",
                        IsInvoiced = tripOrder.IsInvoiced,
                        VehicleTakeOfTime = tripOrder.VehicleTakeOfTime,
-                       
+                       ToLocation1 = tripOrder.ToLocation1,
+                       ToLocation2 = tripOrder.ToLocation2,
+                       ToLocation3 = tripOrder.ToLocation3,
+                       ToLocation4 = tripOrder.ToLocation4
+
+
                    };
         }
 

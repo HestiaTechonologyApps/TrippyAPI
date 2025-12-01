@@ -69,12 +69,29 @@ namespace Trippy.Domain.DTO
         public int CustomerId { get; set; }
 
         public string TripCode { get; set; } = "";
+        public string ToLocation1 { get; set; } = "";
+        public string ToLocation2 { get; set; } = "";
+        public string ToLocation3 { get; set; } = "";
+        public string ToLocation4 { get; set; } = "";
         public DateTime? FromDate { get; set; }
 
         public string FromDateString => FromDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
         public string ToDateString => ToDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
         public string VehicleTakeOfTimeString => VehicleTakeOfTime.ToString("dd MMMM yyyy hh:mm tt") ?? "";
 
+
+        public string CommaSeperatedToLocations
+        {
+            get
+            {
+                List<string> locations = new List<string>();
+                if (!string.IsNullOrWhiteSpace(ToLocation1)) locations.Add(ToLocation1);
+                if (!string.IsNullOrWhiteSpace(ToLocation2)) locations.Add(ToLocation2);
+                if (!string.IsNullOrWhiteSpace(ToLocation3)) locations.Add(ToLocation3);
+                if (!string.IsNullOrWhiteSpace(ToLocation4)) locations.Add(ToLocation4);
+                return string.Join(", ", locations);
+            }
+        }
         public DateTime VehicleTakeOfTime { get; set; }
         public string VehicleTakeofTimeString { get; set; } = "";
         public DateTime? ToDate { get; set; }
