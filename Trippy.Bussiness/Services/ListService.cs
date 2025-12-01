@@ -59,7 +59,21 @@ namespace Trippy.Bussiness.Services
                     case "canceled":
                         q = q.Where(t => t.Status.ToLower() == "canceled");
                         break;
+                    case "ongoing":
+                        q = q.Where(t => t.Status.ToLower() == "started");
+                        break;
 
+
+                    case "upcoming":
+                        var now = DateTime.Now;
+                        var fromTime = now.AddHours(-3);      // 3 hours ago
+                        var toTime = now.AddHours(24);        // 24 hours from now
+
+                        q = q.Where(t =>
+                            t.VehicleTakeOfTime >= fromTime &&
+                            t.VehicleTakeOfTime <= toTime && t.Status.ToLower() != "scheduled"
+                        );
+                        break;
                     case "today":
                         var today = DateTime.Today;          
                         var tomorrow = today.AddDays(1);
