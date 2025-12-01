@@ -17,8 +17,12 @@ namespace Trippy.Domain.Entities
         public DateTime? TripStartTime { get; set; }
         public DateTime? TripEndTime { get; set; }
 
+
         public int TripStartReading { get; set; }
         public int TripEndReading { get; set; }
+
+
+        public string WaitingHours { get; set; }
         public DateTime CreatedOn { get; set; }
 
 
