@@ -77,6 +77,7 @@ namespace Trippy.Bussiness.Services
             tripkiloMeterDTO.TripStartReading = tripKiloMeter.TripStartReading;
             tripkiloMeterDTO.TripEndReading = tripKiloMeter.TripEndReading;
             tripkiloMeterDTO.CreatedOn = tripKiloMeter.CreatedOn;
+            tripkiloMeterDTO.WaitingHours = tripKiloMeter.WaitingHours;
             tripkiloMeterDTO.CreatedOnString = tripKiloMeter.CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
             return tripkiloMeterDTO;
         }

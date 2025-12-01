@@ -22,6 +22,7 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<CustomApiResponse> GetCommentAsync(string tableName, int recordId);
         Task<CustomApiResponse> AddCommentAsync(
        string description,
+       string commentType,
        string tableName,
        int recordId,
        string createdBy,

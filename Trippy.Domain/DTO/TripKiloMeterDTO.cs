@@ -21,6 +21,7 @@ namespace Trippy.Domain.DTO
         public string TripEndingTimeString { get; set; } = "";
         public int TripStartReading { get; set; }
         public int TripEndReading { get; set; }
+        public string WaitingHours { get; set; } = "";
         public DateTime CreatedOn { get; set; }
         public string CreatedOnString { get; set; } = "";
         public Double TotalKM { get; set; }

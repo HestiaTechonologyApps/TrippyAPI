@@ -20,7 +20,7 @@ namespace Trippy.Bussiness.Services
             _repo = repo;
         }
 
-        public async Task<CustomApiResponse> AddCommentAsync(string description, string tableName, int recordId, string createdBy, bool isInternal, int parentCommentId = 0)
+        public async Task<CustomApiResponse> AddCommentAsync(string description, string tableName,string commentType, int recordId, string createdBy, bool isInternal, int parentCommentId = 0)
         {
             {
                 try
@@ -29,6 +29,7 @@ namespace Trippy.Bussiness.Services
                     var newComment = new Comment
                     {
                         Description = description,
+                        CommentType = commentType,
                         TableName = tableName,
                         RecordID = recordId,
                         CreatedBy = createdBy,

@@ -10,7 +10,7 @@ namespace Trippy.Domain.DTO
     {
         public int CommentId { get; set; } // Primary key
 
-
+        public string CommentType { get; set; } = "";
         public string Description { get; set; } = "";
 
         public string TableName { get; set; } = "";

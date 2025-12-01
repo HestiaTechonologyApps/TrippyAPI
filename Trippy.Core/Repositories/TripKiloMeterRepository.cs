@@ -42,7 +42,7 @@ namespace Trippy.Core.Repositories
                             TripEndingTimeString = km.TripEndTime.HasValue
                                 ? km.TripEndTime.Value.ToString("dd MMM yyyy hh:mm tt")
                                 : string.Empty,
-
+                            WaitingHours = km.WaitingHours,
                             TripStartReading = km.TripStartReading,
                             TripEndReading = km.TripEndReading,
                             TotalKM = (km.TripStartReading ) + (km.TripEndReading ),
@@ -75,6 +75,7 @@ namespace Trippy.Core.Repositories
                             VehicleId = km.VehicleId,
                             TripStartTime = km.TripStartTime,
                             TripEndTime = km.TripEndTime,
+                            WaitingHours = km.WaitingHours,
                             TripStartTimeString = km.TripStartTime.HasValue
                                 ? km.TripStartTime.Value.ToString("dd MMM yyyy hh:mm tt")
                                 : string.Empty,
