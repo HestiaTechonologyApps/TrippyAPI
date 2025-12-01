@@ -21,6 +21,7 @@ namespace Trippy.Domain.Entities
 
         public DateTime? FromDate { get; set; }
 
+        public DateTime VehicleTakeOfTime { get; set; }
         public string FromDateString { get; set; } = "";
         public DateTime? ToDate { get; set; }
         public string ToDateString { get; set; } = "";

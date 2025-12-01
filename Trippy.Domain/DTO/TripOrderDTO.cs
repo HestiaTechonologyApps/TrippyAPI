@@ -56,6 +56,8 @@ namespace Trippy.Domain.DTO
         public string DriverName { get; set; } = "";
         public bool IsDeleted { get; set; } = false;
         public bool IsInvoiced { get; set; } = false;
+        public DateTime VehicleTakeOfTime { get; set; }
+        public string VehicleTakeOfTimeString { get; set; } = "";
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
 
 
@@ -71,8 +73,10 @@ namespace Trippy.Domain.DTO
 
         public string FromDateString => FromDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
         public string ToDateString => ToDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
+        public string VehicleTakeOfTimeString => VehicleTakeOfTime.ToString("dd MMMM yyyy hh:mm tt") ?? "";
 
-      
+        public DateTime VehicleTakeOfTime { get; set; }
+        public string VehicleTakeofTimeString { get; set; } = "";
         public DateTime? ToDate { get; set; }
         public string CustomerName { get; set; }
         public string RecivedVia { get; set; }

@@ -47,8 +47,8 @@ namespace Trippy.Core.Repositories
                        PaymentMode = tripOrder.PaymentMode ?? "",
                        Status = tripOrder.TripStatus ?? "",
                        IsInvoiced = tripOrder.IsInvoiced,
-
-
+                       VehicleTakeOfTime = tripOrder.VehicleTakeOfTime,
+                       
                    };
         }
 
@@ -141,13 +141,16 @@ namespace Trippy.Core.Repositories
                          TripStatus = tripOrder.TripStatus,
                          TripAmount = tripOrder.TripAmount,
                          TripBookingModeName = trmp.TripBookingModeName,
-                         
+                         VehicleTakeOfTime = tripOrder.VehicleTakeOfTime,
+
                          AdvanceAmount = tripOrder.AdvanceAmount,
                          BalanceAmount = tripOrder.BalanceAmount,
                          IsActive = tripOrder.IsActive,
                          CustomerName = cust.CustomerName,
                          DriverName = drv.DriverName,
                          IsDeleted = tripOrder.IsDeleted
+                         
+                         
 
                      }).FirstAsync();
             return await q;
