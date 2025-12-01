@@ -126,7 +126,7 @@ namespace Trippy.Bussiness.Services
             return new PaginatedResult<TripListDataDTO>
             {
                 Total = total,
-                Data = data
+                Data = data.OrderBy(u => u.VehicleTakeOfTime)
             };
         }
 
