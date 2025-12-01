@@ -75,6 +75,7 @@ namespace Trippy.Domain.DTO
         public string ToLocation3 { get; set; } = "";
         public string ToLocation4 { get; set; } = "";
         public DateTime? FromDate { get; set; }
+        public DateTime VehicleTakeOfTime { get; set; }
 
         public string FromDateString => FromDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
         public string ToDateString => ToDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
@@ -93,8 +94,7 @@ namespace Trippy.Domain.DTO
                 return string.Join(", ", locations);
             }
         }
-        public DateTime VehicleTakeOfTime { get; set; }
-     
+      
         public DateTime? ToDate { get; set; }
         public string CustomerName { get; set; }
         public string RecivedVia { get; set; }
