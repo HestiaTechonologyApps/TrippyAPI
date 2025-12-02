@@ -33,6 +33,7 @@ namespace Trippy.Domain.Entities
         public string ToLocation4 { get; set; } = "";
 
         public string PaymentMode { get; set; } = "";
+        public string DepartmentName { get; set; } = "";
         public string PaymentDetails { get; set; } = "";
         public string BookedBy { get; set; } = "";
         public string TripDetails { get; set; } = "";
