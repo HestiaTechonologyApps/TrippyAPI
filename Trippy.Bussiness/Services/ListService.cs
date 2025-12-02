@@ -67,7 +67,7 @@ namespace Trippy.Bussiness.Services
                     case "upcoming":
                         var now = DateTime.UtcNow;
 
-                        var fromTime = now.AddHours(-3);   // 3 hours ago
+                        var fromTime = now.AddHours(-18);   // 3 hours ago
                         var toTime = now.AddHours(24);     // 24 hours ahead
 
                         q = q.Where(t =>

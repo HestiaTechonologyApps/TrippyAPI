@@ -347,9 +347,7 @@ namespace Trippy.Core.Repositories
 
             return await _context.TripOrders
                 .Where(t =>
-                    t.TripStatus.ToLower() == "ongoing" &&
-                    t.VehicleTakeOfTime >= past3Hours &&
-                    t.VehicleTakeOfTime <= now)
+                    t.TripStatus.ToLower() == "started")
                 .CountAsync();
         }
 
