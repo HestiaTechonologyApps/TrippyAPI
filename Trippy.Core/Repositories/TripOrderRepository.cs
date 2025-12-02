@@ -378,7 +378,40 @@ namespace Trippy.Core.Repositories
 
 
         }
+        public async Task<int> GetUpcomingTripsUsingTakeOffTimeAsync(int ComanyId, int year, string ststus)
+        {
+            DateTime now = DateTime.Now;
+            DateTime startTime = now.AddHours(-3);   // past 3 hours
+            DateTime endTime = now.AddHours(24);     // next 24 hours
 
+            return await _context.TripOrders
+                .Where(t => t.TripStatus.ToLower() == "scheduled" &&
+                            t.VehicleTakeOfTime >= startTime &&
+                            t.VehicleTakeOfTime <= endTime)
+                .CountAsync();
+        }
+        public async Task<int> GetOngoingTripCountAsync(int companyId, int year)
+        {
+            return await _context.TripOrders
+                .Where(t => t.CompanyId == companyId
+                    && t.FromDate.HasValue
+                    && t.FromDate.Value.Year == year
+                    && (t.TripStatus.ToLower() == "started" || t.TripStatus.ToLower() == "ongoing"))
+                .CountAsync();
+        }
+
+        public async Task<int> GetOngoingTripCountAsync(int CompanyId, int year,string ststus)
+        {
+            var now = DateTime.UtcNow;
+            var past3Hours = now.AddHours(-3);
+
+            return await _context.TripOrders
+                .Where(t =>
+                    t.TripStatus.ToLower() == "ongoing" &&
+                    t.VehicleTakeOfTime >= past3Hours &&
+                    t.VehicleTakeOfTime <= now)
+                .CountAsync();
+        }
 
     }
 }

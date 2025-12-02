@@ -10,7 +10,8 @@ namespace Trippy.Domain.Interfaces.IRepositories
 {
     public interface ITripKiloMeterRepository : IGenericRepository<TripKiloMeter>
     {
-        List<TripKiloMeterDTO> GetAllTripKilometers();
+        IQueryable<TripKiloMeterDTO> QuerableTripKiloMeters();
+        Task<List<TripKiloMeterDTO>> GetAllTripKilometers();
         TripKiloMeterDTO GetTripKilometerById(int id);
 
     }

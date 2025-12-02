@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Trippy.Bussiness.Services
 
         public async Task<List<TripKiloMeterDTO>> GetAllAsync()
         {
-            var tripkiloMeters =  _repo.GetAllTripKilometers();
+            var tripkiloMeters = await _repo.GetAllTripKilometers();
 
             
             // List<TripKiloMeterDTO> tripkiloMeterDtos = new List<TripKiloMeterDTO>();
@@ -87,16 +88,18 @@ namespace Trippy.Bussiness.Services
         public async Task<List<TripKiloMeterDTO>> GetTripKilometerOfTrip(int TripOrderId)
         {
 
-            List<TripKiloMeterDTO> tripkmdto = new List<TripKiloMeterDTO>();
-            var tripkms = await _repo.FindAsync(u => u.TripOrderId  == TripOrderId);
-            foreach (var kms in tripkms)
-            {
-                TripKiloMeterDTO tripkmdtoobj = await ConvertTripKiloMeterToDTO(kms);
-                tripkmdto.Add(tripkmdtoobj);
+           // List<TripKiloMeterDTO> tripkmdto = new List<TripKiloMeterDTO>();
+
+            var tripkms= await _repo.QuerableTripKiloMeters ().Where(u => u.TripOrderId == TripOrderId).ToListAsync();
+           // var tripkms = await _repo.FindAsync(u => u.TripOrderId  == TripOrderId);
+            //foreach (var kms in tripkms)
+            //{
+            //    TripKiloMeterDTO tripkmdtoobj = await ConvertTripKiloMeterToDTO(kms);
+            //    tripkmdto.Add(tripkmdtoobj);
 
 
-            }
-            return tripkmdto;
+            //}
+            return tripkms;
         }
         public async Task<bool> UpdateAsync(TripKiloMeter tripKiloMeter)
         {

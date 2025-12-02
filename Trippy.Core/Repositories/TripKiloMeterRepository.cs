@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,80 +19,56 @@ namespace Trippy.Core.Repositories
             _context = context;
         }
 
-        public List<TripKiloMeterDTO> GetAllTripKilometers()
+        public IQueryable<TripKiloMeterDTO> QuerableTripKiloMeters()
         {
-            var data = (from km in _context.TripKiloMeters
-                        join trip in _context.TripOrders on km.TripOrderId equals trip.TripOrderId into tripGroup
-                        from trip in tripGroup.DefaultIfEmpty()
-                        join drv in _context.Drivers on km.DriverId equals drv.DriverId into drvGroup
-                        from drv in drvGroup.DefaultIfEmpty()
-                        join veh in _context.Vehicles on km.VehicleId equals veh.VehicleId into vehGroup
-                        from veh in vehGroup.DefaultIfEmpty()
-                        select new TripKiloMeterDTO
+            var data =
+                from km in _context.TripKiloMeters.AsNoTracking()
+                join trip in _context.TripOrders.AsNoTracking() on km.TripOrderId equals trip.TripOrderId into tripGroup
+                from trip in tripGroup.DefaultIfEmpty()
+                join drv in _context.Drivers.AsNoTracking() on km.DriverId equals drv.DriverId into drvGroup
+                from drv in drvGroup.DefaultIfEmpty()
+                join veh in _context.Vehicles.AsNoTracking() on km.VehicleId equals veh.VehicleId into vehGroup
+                from veh in vehGroup.DefaultIfEmpty()
+                select new TripKiloMeterDTO
+                {
+                    TripKiloMeterId = km.TripKiloMeterId,
+                    TripOrderId = km.TripOrderId,
+                    DriverId = km.DriverId,
+                    VehicleId = km.VehicleId,
+                    TripStartTime = km.TripStartTime,
+                    TripEndTime = km.TripEndTime,
+                    TripStartTimeString = km.TripStartTime.HasValue
+                        ? km.TripStartTime.Value.ToString("dd MMM yyyy hh:mm tt")
+                        : string.Empty,
+                    TripEndingTimeString = km.TripEndTime.HasValue
+                        ? km.TripEndTime.Value.ToString("dd MMM yyyy hh:mm tt")
+                        : string.Empty,
+                    WaitingHours = km.WaitingHours,
+                    TripStartReading = km.TripStartReading,
+                    TripEndReading = km.TripEndReading,
+                    TotalKM = km.TripEndReading - km.TripStartReading,
+                    CreatedOn = km.CreatedOn,
+                    CreatedOnString = km.CreatedOn.ToString("dd MMM yyyy hh:mm tt"),
+                    DriverName = drv.DriverName,
+                    VehicleName = veh != null
+                        ? veh.VehicleType + " - " + veh.RegistrationNumber
+                        : "N/A"
+                };
 
-                        {
-                            TripKiloMeterId = km.TripKiloMeterId,
-                            TripOrderId = km.TripOrderId,
-                            DriverId = km.DriverId,
-                            VehicleId = km.VehicleId,
-                            TripStartTime = km.TripStartTime,
-                            TripEndTime = km.TripEndTime,
-                            TripStartTimeString = km.TripStartTime.HasValue
-                                ? km.TripStartTime.Value.ToString("dd MMM yyyy hh:mm tt")
-                                : string.Empty,
-                            TripEndingTimeString = km.TripEndTime.HasValue
-                                ? km.TripEndTime.Value.ToString("dd MMM yyyy hh:mm tt")
-                                : string.Empty,
-                            WaitingHours = km.WaitingHours,
-                            TripStartReading = km.TripStartReading,
-                            TripEndReading = km.TripEndReading,
-                            TotalKM = (km.TripStartReading ) + (km.TripEndReading ),
-                            CreatedOn = km.CreatedOn,
-                            CreatedOnString = km.CreatedOn.ToString("dd MMM yyyy hh:mm tt"),
+            return data.AsQueryable();
+        }
 
-                            DriverName = drv.DriverName,
-                            VehicleName = veh != null ? veh.VehicleType + " - " + veh.RegistrationNumber : "N/A",
-
-                        }).ToList();
+        public async Task<List<TripKiloMeterDTO>> GetAllTripKilometers()
+        {
+            var data = await QuerableTripKiloMeters().ToListAsync();
 
             return data;
         }
 
         public TripKiloMeterDTO GetTripKilometerById(int id)
         {
-            var data = (from km in _context.TripKiloMeters
-                        join trip in _context.TripOrders on km.TripOrderId equals trip.TripOrderId into tripGroup
-                        from trip in tripGroup.DefaultIfEmpty()
-                        join drv in _context.Drivers on km.DriverId equals drv.DriverId into drvGroup
-                        from drv in drvGroup.DefaultIfEmpty()
-                        join veh in _context.Vehicles on km.VehicleId equals veh.VehicleId into vehGroup
-                        from veh in vehGroup.DefaultIfEmpty()
-                        where km.TripKiloMeterId == id
-                        select new TripKiloMeterDTO
-                        {
-                            TripKiloMeterId = km.TripKiloMeterId,
-                            TripOrderId = km.TripOrderId,
-                            DriverId = km.DriverId,
-                            VehicleId = km.VehicleId,
-                            TripStartTime = km.TripStartTime,
-                            TripEndTime = km.TripEndTime,
-                            WaitingHours = km.WaitingHours,
-                            TripStartTimeString = km.TripStartTime.HasValue
-                                ? km.TripStartTime.Value.ToString("dd MMM yyyy hh:mm tt")
-                                : string.Empty,
-                            TripEndingTimeString = km.TripEndTime.HasValue
-                                ? km.TripEndTime.Value.ToString("dd MMM yyyy hh:mm tt")
-                                : string.Empty,
-                            TripStartReading = km.TripStartReading,
-                            TripEndReading = km.TripEndReading,
-                            TotalKM = (km.TripEndReading + km.TripStartReading),
-                            CreatedOn = km.CreatedOn,
-                            CreatedOnString = km.CreatedOn.ToString("dd MMM yyyy hh:mm tt"),
-                            DriverName = drv.DriverName,
-                            VehicleName = veh != null
-                                ? veh.VehicleType + " - " + veh.RegistrationNumber
-                                : "N/A",
-                        }).FirstOrDefault();
+            
+            var data=QuerableTripKiloMeters().FirstOrDefault(km => km.TripKiloMeterId == id);
 
             return data;
         }

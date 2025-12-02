@@ -223,20 +223,25 @@ namespace Trippy.Bussiness.Services
             DateTime lastWeekStart = today.AddDays(-7);
             DateTime prevWeekStart = today.AddDays(-14);
             DateTime prevWeekEnd = today.AddDays(-7);
-
+            DateTime now = DateTime.Now;
+            DateTime upcomingStart = now.AddHours(-3);
+            DateTime upcomingEnd = now.AddHours(24);
+           
 
             int totalTrips = await _repo.GetTotalTripsAsync(year);
             int todaysTrips = await _repo.GetTodaysTripsCountAsync(today);
             int cancelled = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Canceled");;
             int completed = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Completed");
             int scheduled = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Scheduled");
-           
-
+            int upcoming = await _repo.GetUpcomingTripsUsingTakeOffTimeAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "upcoming");
+            int ongoing = await _repo.GetOngoingTripCountAsync(CompanyId: Convert.ToInt16(_currentUser.CompanyId), year: year, ststus: "Ongoing");
 
             int prevCancelled = await _repo.GetTripCountByStatusAndDateRangeAsync("Canceled", prevWeekStart, prevWeekEnd);
             int prevCompleted = await _repo.GetTripCountByStatusAndDateRangeAsync("Completed", prevWeekStart, prevWeekEnd);
             int prevTodaysTrip = await _repo.GetTripCountByStatusAndDateRangeAsync("Todays Trip", prevWeekStart, prevWeekEnd);
             int prevScheduled = await _repo.GetTripCountByStatusAndDateRangeAsync("Scheduled", prevWeekStart, prevWeekEnd);
+            int upcomingTrips = await _repo.GetTripCountByStatusAndDateRangeAsync("upcoming", upcomingStart, upcomingEnd);
+            int ongoingTrips = await _repo.GetTripCountByStatusAndDateRangeAsync("Ongoing", lastWeekStart, today);
             int prevTotal = totalTrips - 20;
 
 
@@ -245,7 +250,8 @@ namespace Trippy.Bussiness.Services
             int changeCancelled = cancelled - prevCancelled;
             int changeCompleted = completed - prevCompleted;
             int changeScheduled = scheduled - prevScheduled;
-
+            int changeUpcoming = upcoming - upcomingTrips;
+            int changeOngoing = ongoing - ongoingTrips;
 
             var dashboard = new List<TripDashboardDTO>
     {
@@ -288,6 +294,22 @@ namespace Trippy.Bussiness.Services
             Change = changeScheduled,
             Color = "#FACC15",
             Route = "scheduled"
+        },
+        new TripDashboardDTO
+        {
+            Title = "Upcoming",
+            Value = upcoming,
+            Change = 0,
+            Color = "#4C8BF5",
+            Route = "upcoming"
+        },
+        new TripDashboardDTO
+        {
+            Title = "Ongoing",
+            Value = ongoing,
+            Change = changeOngoing,
+            Color = "#F8A23A",
+            Route = "ongoing"
         }
     };
 
