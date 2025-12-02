@@ -23,7 +23,7 @@ namespace Trippy.Domain.DTO
         public String RelatedEntityType { get; set; } = "";
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public String CreditDebitType { get; set; } = "";
-        public string CreatedOnString { get; set; } = "";
+        public string CreatedOnString => CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
         public bool IsActive { get; set; } = true;
         public string CreatedBy { get; set; } = "";
         public bool IsDeleted { get; set; } = false;

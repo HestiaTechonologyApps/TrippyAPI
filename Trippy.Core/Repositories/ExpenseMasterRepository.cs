@@ -73,7 +73,7 @@ namespace Trippy.Core.Repositories
                          RelatedEntityType = exp.RelatedEntityType,
                          ExpenseVoucher = exp.ExpenseVoucher,
                          PaymentMode = exp.PaymentMode,
-                         CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
+                         
                          Remark = exp.Remark,
                          IsActive = exp.IsActive
                      }).ToList();
@@ -213,7 +213,7 @@ namespace Trippy.Core.Repositories
          RelatedEntityType = exp.RelatedEntityType,
          ExpenseVoucher = exp.ExpenseVoucher,
          PaymentMode = exp.PaymentMode,
-         CreatedOnString = exp.CreatedOn.ToString("dd MMMM yyyy hh:mm tt"),
+         
          Remark = exp.Remark,
          IsActive = exp.IsActive
      }

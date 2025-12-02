@@ -73,14 +73,12 @@ namespace Trippy.Bussiness.Services
             tripkiloMeterDTO.DriverId = tripKiloMeter.DriverId;
             tripkiloMeterDTO.VehicleId = tripKiloMeter.VehicleId;
             tripkiloMeterDTO.TripStartTime = tripKiloMeter.TripStartTime;
-            tripkiloMeterDTO.TripStartTimeString = tripKiloMeter.TripStartTime.HasValue ? tripKiloMeter.TripStartTime.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             tripkiloMeterDTO.TripEndTime = tripKiloMeter.TripEndTime;
-            tripkiloMeterDTO.TripEndingTimeString = tripKiloMeter.TripEndTime.HasValue ? tripKiloMeter.TripEndTime.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             tripkiloMeterDTO.TripStartReading = tripKiloMeter.TripStartReading;
             tripkiloMeterDTO.TripEndReading = tripKiloMeter.TripEndReading;
             tripkiloMeterDTO.CreatedOn = tripKiloMeter.CreatedOn;
             tripkiloMeterDTO.WaitingHours = tripKiloMeter.WaitingHours;
-            tripkiloMeterDTO.CreatedOnString = tripKiloMeter.CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
+            
             return tripkiloMeterDTO;
         }
 

@@ -66,11 +66,9 @@ namespace Trippy.Core.Repositories
                          CreateAt = user.CreateAt,
                          CompanyId = user.CompanyId,
                          CompanyName = comp.ComapanyName,
-                         CreateAtString = user.CreateAt.ToString("dd MMMM yyyy hh:mm tt"),
+                         
 
-                         LastloginString = user.Lastlogin.HasValue
-                             ? user.Lastlogin.Value.ToString("dd MMMM yyyy hh:mm tt")
-                             : ""
+                        
                      }).FirstAsync();
 
             return await q;

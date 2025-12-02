@@ -21,9 +21,9 @@ namespace Trippy.Domain.DTO
         public int CompanyId { get; set; } =0;
         public string CompanyName { get; set; } = "";
         public DateTime? CreateAt { get; set; } = DateTime.UtcNow;
-        public string CreateAtString { get; set; } = "";
+        public string CreateAtString => CreateAt.HasValue ? CreateAt.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
         public DateTime? Lastlogin { get; set; }
-        public string LastloginString { get; set; } = "";
+        public string LastloginString => Lastlogin.HasValue ? Lastlogin.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
         public string CreateAtSyring { get; set; } = "";
         public bool IsDeleted { get; set; } = false;
         public List<AuditLogDTO> AuditLogs { get; set; } = new List<AuditLogDTO>();
