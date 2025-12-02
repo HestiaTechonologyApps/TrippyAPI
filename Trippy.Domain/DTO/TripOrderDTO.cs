@@ -18,6 +18,7 @@ namespace Trippy.Domain.DTO
         public int TripBookingModeId { get; set; }
         public string TripCode { get; set; } = "";
         public string TripBookingModeName { get; set; } = "";
+        public string DepartmentName { get; set; } = "";
 
         public int CustomerId { get; set; }
         
@@ -103,6 +104,8 @@ namespace Trippy.Domain.DTO
         public string Status { get; set; }
         public string AddedBy { get; set; }
         public string PaymentMode { get; set; }
+        public string DepartmentName { get; set; } = "";
+
         public bool IsDeleted { get; set; } = false;
         public bool IsInvoiced { get; set; } = false;
         public bool IsActive { get; set; } = true;

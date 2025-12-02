@@ -246,7 +246,7 @@ namespace Trippy.Api.Controllers
             return response;
         }
 
-
+        
 
         [HttpGet("GetTripNotesOfTrip")]
         public async Task <CustomApiResponse> GetTripNotesOfTrip(int id)

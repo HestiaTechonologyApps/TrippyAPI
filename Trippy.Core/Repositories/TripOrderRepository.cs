@@ -48,6 +48,7 @@ namespace Trippy.Core.Repositories
                        Status = tripOrder.TripStatus ?? "",
                        IsInvoiced = tripOrder.IsInvoiced,
                        VehicleTakeOfTime = tripOrder.VehicleTakeOfTime,
+                       DepartmentName = tripOrder.DepartmentName,
                        ToLocation1 = tripOrder.ToLocation1,
                        ToLocation2 = tripOrder.ToLocation2,
                        ToLocation3 = tripOrder.ToLocation3,
@@ -147,7 +148,7 @@ namespace Trippy.Core.Repositories
                          TripAmount = tripOrder.TripAmount,
                          TripBookingModeName = trmp.TripBookingModeName,
                          VehicleTakeOfTime = tripOrder.VehicleTakeOfTime,
-
+                         DepartmentName = tripOrder.DepartmentName,
                          AdvanceAmount = tripOrder.AdvanceAmount,
                          BalanceAmount = tripOrder.BalanceAmount,
                          IsActive = tripOrder.IsActive,
@@ -181,55 +182,12 @@ namespace Trippy.Core.Repositories
         {
             return await QuerableTripListAsyc().Where(t => t.FromDate != null &&
                                 t.FromDate.Value.Year == year).CountAsync();
-            //  return await _context.TripOrders.CountAsync();
+           
         }
 
 
 
-        //public async Task<TripDashboardDTO> GetDashBoardData(string ststus)
-        //{
-        //    var lst = new List<TripDashboardDTO>();
-
-        //    TripDashboardDTO totaltripdtp = new TripDashboardDTO();
-        //    totaltripdtp.Value = await GetTripCountByStatusAsync("All");
-        //    totaltripdtp.Title = "Total Trips";
-        //    lst.Add(totaltripdtp);
-
-        //    TripDashboardDTO inprogresstripdtp = new TripDashboardDTO();
-        //    totaltripdtp.Value = await GetTripCountByStatusAsync("All");
-        //    totaltripdtp.Title = "Total Trips";
-        //    lst.Add(totaltripdtp);
-
-
-        //    DateTime today = DateTime.Today;
-
-        //    TripDashboardDTO todaytripdtp = new TripDashboardDTO();
-        //    todaytripdtp.Value = await _context.TripOrders
-        //        .CountAsync(t => t.FromDate >= today && t.FromDate < today.AddDays(1));
-        //    todaytripdtp.Title = "Today's Trips";
-        //    todaytripdtp.Date = today;
-        //    lst.Add(todaytripdtp);
-
-
-        //    TripDashboardDTO canceltripdtp = new TripDashboardDTO();
-        //    canceltripdtp.Value = await GetTripCountByStatusAsync("Canceled");
-        //    canceltripdtp.Title = "Canceled Trips";
-        //    lst.Add(canceltripdtp);
-
-        //    TripDashboardDTO completedtripdtp = new TripDashboardDTO();
-        //    completedtripdtp.Value = await GetTripCountByStatusAsync("Completed");
-        //    completedtripdtp.Title = "Completed Trips";
-        //    lst.Add(completedtripdtp);
-
-
-
-
-
-        //    return lst.FirstOrDefault();
-
-        //}
-
-
+    
         public async Task<int> GetTripCountByStatusAsync(int CompanyId, int year, string ststus)
         {
             var q = QuerableTripListAsyc();
