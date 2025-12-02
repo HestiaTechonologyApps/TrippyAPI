@@ -62,6 +62,8 @@ namespace TrippyAPI.Controllers
         public string filtertext { get; set; } = "";
         public int pagesize { get; set; } = 25;
         public int pagenumber { get; set; } = 25;
+
+
     }
 
 
