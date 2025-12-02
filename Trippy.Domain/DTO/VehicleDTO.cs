@@ -19,14 +19,15 @@ namespace Trippy.Domain.DTO
         public string VehicleType { get; set; } = string.Empty; // e.g. Truck, Bus, Pickup
         public DateTime RegistrationExpiry { get; set; }
 
-        public string RegistrationExpiryString { get; set; } = "";
+        public string RegistrationExpiryString => RegistrationExpiry.ToString("yyyy-MM-dd");
         public string CurrentStatus { get; set; } = "Active"; // Active / Inactive / UnderMaintenance
         public string Location { get; set; } = string.Empty; // Base depot / branch
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-        public string CreatedDateString = "";
+        public string CreatedDateString => CreatedDate.ToString("dd MMMM yyyy hh:mm tt") ?? "";
         public string CreatedBy { get; set; } = string.Empty;
         public DateTime? UpdatedDate { get; set; }
-        public string UpdatedDateString = "";
+        
+        public string? UpdatedDateString => UpdatedDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
         public string ComapanyName = "";
         public string? UpdatedBy { get; set; }
         public int CompanyId { get; set; } = 0;

@@ -131,15 +131,6 @@ namespace Trippy.Core.Repositories
                          ToLocation2 = tripOrder.ToLocation2,
                          ToLocation3 = tripOrder.ToLocation3,
                          ToLocation4 = tripOrder.ToLocation4,
-
-                         FromDateString = tripOrder.FromDate.HasValue
-                             ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                             : string.Empty,
-
-                         ToDateString = tripOrder.ToDate.HasValue
-                             ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt")
-                             : string.Empty,
-
                          PaymentMode = tripOrder.PaymentMode,
                          PaymentDetails = tripOrder.PaymentDetails,
                          BookedBy = tripOrder.BookedBy,
@@ -182,7 +173,7 @@ namespace Trippy.Core.Repositories
         {
             return await QuerableTripListAsyc().Where(t => t.FromDate != null &&
                                 t.FromDate.Value.Year == year).CountAsync();
-           
+
         }
 
 

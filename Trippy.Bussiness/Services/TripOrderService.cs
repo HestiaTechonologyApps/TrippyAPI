@@ -57,9 +57,9 @@ namespace Trippy.Bussiness.Services
 
             tripOrderDTO.DriverId = tripOrder.DriverId;
             tripOrderDTO.FromDate = tripOrder.FromDate;
-            tripOrderDTO.FromDateString = tripOrder.FromDate.HasValue ? tripOrder.FromDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
+            
             tripOrderDTO.ToDate = tripOrder.ToDate;
-            tripOrderDTO.ToDateString = tripOrder.ToDate.HasValue ? tripOrder.ToDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
+          
             tripOrderDTO.FromLocation = tripOrder.FromLocation;
             tripOrderDTO.ToLocation1 = tripOrder.ToLocation1;
             tripOrderDTO.ToLocation2 = tripOrder.ToLocation2;

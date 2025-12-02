@@ -41,10 +41,10 @@ namespace Trippy.Core.Repositories
                          PerformedBy = vm.PerformedBy,
                          CreatedBy = vm.CreatedBy,
                          CreatedDate = vm.CreatedDate,
-                         CreatedDateString = vm.CreatedDate.ToString("dd MMMM yyyy hh:mm tt"),
+                       
                          MaintenanceDate = vm.MaintenanceDate,
                          MaintenanceType = vm.MaintenanceType,
-                         MaintenanceDateString = vm.MaintenanceDate.ToString("dd MMMM yyyy hh:mm tt"),
+                         
                          Remarks = vm.Remarks,
 
                      }).AsQueryable();
@@ -73,10 +73,10 @@ namespace Trippy.Core.Repositories
                                     PerformedBy = vm.PerformedBy,
                                     CreatedBy = vm.CreatedBy,
                                     CreatedDate = vm.CreatedDate,
-                                    CreatedDateString = vm.CreatedDate.ToString("dd MMMM yyyy hh:mm tt"),
+                                    
                                     MaintenanceDate = vm.MaintenanceDate,
                                     MaintenanceType = vm.MaintenanceType,
-                                    MaintenanceDateString = vm.MaintenanceDate.ToString("dd MMMM yyyy hh:mm tt"),
+                                    
                                     Remarks = vm.Remarks
                                 }).FirstOrDefaultAsync();
 

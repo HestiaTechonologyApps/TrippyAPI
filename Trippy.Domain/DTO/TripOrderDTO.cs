@@ -25,9 +25,10 @@ namespace Trippy.Domain.DTO
         public int DriverId { get; set; }
        
         public DateTime? FromDate { get; set; }
-        public string FromDateString { get; set; } = "";
+        
         public DateTime? ToDate { get; set; }
-        public string ToDateString { get; set; } = "";
+        public string FromDateString => FromDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
+        public string ToDateString => ToDate?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
 
         public string FromLocation { get; set; } = "";
 

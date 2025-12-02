@@ -39,7 +39,9 @@ namespace Trippy.Core.Repositories
                          ChassisNumber = vech.ChassisNumber,
                          EngineNumber = vech.EngineNumber,
                          RegistrationExpiry = vech.RegistrationExpiry,
-                         RegistrationExpiryString = vech.RegistrationExpiry.ToString("dd MMMM yyyy hh:mm tt"),
+                        CreatedBy = vech.CreatedBy,
+                        CreatedDate = vech.CreatedDate,
+
                          RegistrationNumber = vech.RegistrationNumber,
                          Location = vech.Location,
                          CurrentStatus = vech.CurrentStatus,

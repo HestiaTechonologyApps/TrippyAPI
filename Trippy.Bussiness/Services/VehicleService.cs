@@ -51,14 +51,14 @@ namespace Trippy.Bussiness.Services
             vehicleDTO.EngineNumber = vehicle.EngineNumber;
             vehicleDTO.VehicleType = vehicle.VehicleType;
             vehicleDTO.RegistrationExpiry = vehicle.RegistrationExpiry;
-            vehicleDTO.RegistrationExpiryString = vehicle.RegistrationExpiry.ToString("dd MMMM yyyy hh:mm tt");
+            
             vehicleDTO.CurrentStatus = vehicle.CurrentStatus;
             vehicleDTO.Location = vehicle.Location;
             vehicleDTO.CreatedDate = vehicle.CreatedDate;
-            vehicleDTO.CreatedDateString = vehicle.CreatedDate.ToString("dd MMMM yyyy hh:mm tt");
+            
             vehicleDTO.CreatedBy = vehicle.CreatedBy;
             vehicleDTO.UpdatedDate = vehicle.UpdatedDate;
-            vehicleDTO.UpdatedDateString = vehicle.UpdatedDate.HasValue ? vehicle.UpdatedDate.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
+            
             vehicleDTO.UpdatedBy = vehicle.UpdatedBy;
             vehicleDTO.CompanyId = vehicle.CompanyId;
             return vehicleDTO;
