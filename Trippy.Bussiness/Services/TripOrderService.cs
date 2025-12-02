@@ -271,22 +271,7 @@ namespace Trippy.Bussiness.Services
             Color = "#9F9FF8",
             Route = "today-trips"
         },
-        new TripDashboardDTO
-        {
-            Title = "Cancelled",
-            Value = cancelled,
-            Change = changeCancelled,
-            Color = "#FF2A2A",
-            Route = "Cancelled"
-        },
-        new TripDashboardDTO
-        {
-            Title = "Completed",
-            Value = completed,
-            Change = changeCompleted,
-            Color = "#28A745",
-            Route = "completed"
-        },
+       
         new TripDashboardDTO
         {
             Title = "Scheduled",
@@ -310,7 +295,22 @@ namespace Trippy.Bussiness.Services
             Change = changeOngoing,
             Color = "#F8A23A",
             Route = "ongoing"
-        }
+        }, new TripDashboardDTO
+        {
+           Title = "Completed",
+            Value = completed,
+            Change = changeCompleted,
+            Color = "#28A745",
+            Route = "completed"
+        },
+         new TripDashboardDTO
+        {
+            Title = "Cancelled",
+            Value = cancelled,
+            Change = changeCancelled,
+            Color = "#FF2A2A",
+            Route = "Cancelled"
+        },
     };
 
             return dashboard;
