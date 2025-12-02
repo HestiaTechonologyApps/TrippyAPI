@@ -38,7 +38,7 @@ namespace Trippy.CORE.Repositories
                          IsDeleted = cust.IsDeleted,
                          CustomerAddress = cust.CustomerAddress,
                          DOB = cust.DOB,
-                         DOBString = cust.DOB.ToString("dd MMMM yyyy hh:mm tt"),
+                         
                          Nationality = cust.Nationalilty,
                      }).AsQueryable();
             return q;

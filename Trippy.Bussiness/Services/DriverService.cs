@@ -106,7 +106,6 @@ namespace Trippy.Bussiness.Services
             driverDTO.IsActive = driver.IsActive;
             driverDTO.IsRented = driver.IsRented;
             driverDTO.DOB = driver.DOB;
-            driverDTO.DOBString = driver.DOB.HasValue ? driver.DOB.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
             driverDTO.ContactNumber = driver.ContactNumber;
             driverDTO.CompanyId = driver.CompanyId;
             // driverDTO.AuditLog = await _auditRepository.GetAuditLogsForEntityAsync("Driver", driver.DriverId);

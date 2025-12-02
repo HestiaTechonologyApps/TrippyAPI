@@ -33,7 +33,7 @@ namespace Trippy.InfraCore.Repositories
                          ContactNumber = drv.ContactNumber,
                          NationalId = drv.NationalId,
                           DOB=drv.DOB,
-                         DOBString = drv.DOB.HasValue ? drv.DOB.Value.ToString("dd MMMM yyyy hh:mm tt") : "",
+                         
                          IsRented = drv.IsRented,
                          IsActive = drv.IsActive,
                          CompanyName = cmp.ComapanyName,

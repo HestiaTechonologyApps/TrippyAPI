@@ -12,8 +12,7 @@ namespace Trippy.Domain.DTO
         public string CustomerEmail { get; set; } = "";
         public string CustomerAddress { get; set; }= "";
         public DateTime? DOB { get; set; }
-        public String DOBString { get; set; } = "";
-        
+        public string DOBString => DOB.HasValue ? DOB.Value.ToString("yyyy-MM-dd") : "";
         public string Nationality { get; set; } = "";
         public DateTime CreatedAt { get; set; }
         public string CreateAtString { get; set; } = "";

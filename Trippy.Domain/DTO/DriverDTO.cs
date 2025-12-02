@@ -21,7 +21,7 @@ namespace Trippy.Domain.DTO
         public String ContactNumber { get; set; } = "";
         public String NationalId { get; set; } = "";
         public DateTime? DOB { get; set; }
-        public String DOBString { get; set; } = "";
+        public String DOBString => DOB?.ToString("dd MMMM yyyy hh:mm tt") ?? "";
 
         public String CompanyName { get; set; } = "";
         public bool IsRented { get; set; } = true;

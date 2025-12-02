@@ -62,17 +62,11 @@ namespace Trippy.Bussiness.Services
         {
 
 
-           // List<CustomerDTO> customerdtos = new List<CustomerDTO>();
+           
 
             var customers = await _repo.GetQuerableCustomerList();
 
-            //foreach (var driver in customers)
-            //{
-            //    CustomerDTO customerDTO = await ConvertCustomerToDTO(driver);
-            //    customerdtos.Add(customerDTO);
-
-
-            //}
+            
 
             return await customers.ToListAsync ();
         }
@@ -113,14 +107,14 @@ namespace Trippy.Bussiness.Services
             customerDTO.CustomerEmail = customer.CustomerEmail;
             customerDTO.CustomerAddress = customer.CustomerAddress;
             customerDTO.DOB = customer.DOB;
-            customerDTO.DOBString= customer.DOB.ToString("dd MMMM yyyy hh:mm tt");
+       
             
             customerDTO.Nationality = customer.Nationalilty;
             customerDTO.IsActive = customer.IsActive;
             customerDTO.CreatedAt = customer.CreatedAt;
             customerDTO.CreateAtString = customer.CreatedAt.ToString("dd MMMM yyyy hh:mm tt");
             customerDTO.CompanyId = customer.CompanyId;
-            //customerDTO.AuditTrails = await _auditRepository.GetAuditLogsForEntityAsync("Customer",customer.CustomerId );
+            
             return customerDTO;
         }
 
