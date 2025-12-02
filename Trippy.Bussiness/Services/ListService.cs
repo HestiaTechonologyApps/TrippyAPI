@@ -65,13 +65,15 @@ namespace Trippy.Bussiness.Services
 
 
                     case "upcoming":
-                        var now = DateTime.Now;
-                        var fromTime = now.AddHours(-3);      // 3 hours ago
-                        var toTime = now.AddHours(24);        // 24 hours from now
+                        var now = DateTime.UtcNow;
+
+                        var fromTime = now.AddHours(-3);   // 3 hours ago
+                        var toTime = now.AddHours(24);     // 24 hours ahead
 
                         q = q.Where(t =>
                             t.VehicleTakeOfTime >= fromTime &&
-                            t.VehicleTakeOfTime <= toTime && t.Status.ToLower() != "scheduled"
+                            t.VehicleTakeOfTime <= toTime &&
+                            t.Status.ToLower() == "scheduled"
                         );
                         break;
                     case "today":
