@@ -68,7 +68,8 @@ namespace Trippy.Bussiness.Services
         {
 
             TripKiloMeterDTO tripkiloMeterDTO = new TripKiloMeterDTO();
-            tripkiloMeterDTO.TripOrderId = tripKiloMeter.TripKiloMeterId;
+            tripkiloMeterDTO.TripKiloMeterId = tripKiloMeter.TripKiloMeterId;
+            tripkiloMeterDTO.TripOrderId = tripKiloMeter.TripOrderId;
             tripkiloMeterDTO.DriverId = tripKiloMeter.DriverId;
             tripkiloMeterDTO.VehicleId = tripKiloMeter.VehicleId;
             tripkiloMeterDTO.TripStartTime = tripKiloMeter.TripStartTime;
