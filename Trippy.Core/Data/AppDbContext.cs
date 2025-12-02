@@ -48,6 +48,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
         public IEnumerable<object> TripOrder { get; set; }
         public DbSet<UserLoginLog> UserLoginLogs { get; set; }
+        public DbSet<CustomerDepartment> CustomerDepartments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
          
