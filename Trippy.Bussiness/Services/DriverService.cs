@@ -76,23 +76,7 @@ namespace Trippy.Bussiness.Services
             return await drivers.ToListAsync ();
         }
 
-        //private static DriverDTO ConvertDriverToDTO(Driver driver)
-        //{
-        //    DriverDTO driverDTO = new DriverDTO();
-        //    driverDTO.DriverId = driver.DriverId;
-        //    driverDTO.DriverName = driver.DriverName;
-        //    driverDTO.Nationality = driver.Nationality;
-        //    driverDTO.License = driver.License;
-        //    driverDTO.ImageSrc = driver.ImageSrc;
-        //    driverDTO.IsActive = driver.IsActive;
-        //    driverDTO.IsRented = driver.IsRented;
-        //    driverDTO.DOB = driver.DOB;
-        //    driverDTO.DOBString = driver.DOB.HasValue ? driver.DOB.Value.ToString("dd MMMM yyyy hh:mm tt") : "";
-
-            
-
-        //    return driverDTO;
-        //}
+      
 
         private  async  Task<DriverDTO> ConvertDriverToDTO(Driver driver)
         {
