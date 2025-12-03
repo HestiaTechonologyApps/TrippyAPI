@@ -9,6 +9,8 @@ namespace Trippy.Domain.Interfaces.IRepositories
 {
     public interface IInvoiceMasterRepository : IGenericRepository<InvoiceMaster>
     {
-
+      
+       
+      
     }
 }

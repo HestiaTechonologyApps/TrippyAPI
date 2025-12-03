@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +14,18 @@ namespace Trippy.Bussiness.Services
     public class InvoiceMasterService : IInvoiceMasterService
     {
         private readonly IInvoiceMasterRepository _repo;
+        private readonly ITripOrderRepository _tripOrderRepository;
         private readonly IAuditRepository _auditRepository;
         private readonly ICurrentUserService _currentUser;
         public String AuditTableName { get; set; } = "INVOICEMASTER";
-        public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService)
+        public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService, ITripOrderRepository tripOrderRepository)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
             _currentUser = currentUserService;
+            _tripOrderRepository = tripOrderRepository;
         }
-        public async Task<InvoiceMasterDTO> CreateAsync(InvoiceMasterDTO invoiceMasterDTO )
+        public async Task<InvoiceMasterDTO> CreateAsync(InvoiceMasterDTO invoiceMasterDTO)
         {
             InvoiceMaster invoiceMaster = new InvoiceMaster();
             invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
@@ -31,8 +34,8 @@ namespace Trippy.Bussiness.Services
             invoiceMaster.TotalAmount = invoiceMasterDTO.TotalAmount;
             invoiceMaster.CreatedOn = DateTime.UtcNow;
             invoiceMaster.IsDeleted = false;
-            
-            
+
+
             foreach (var detailDto in invoiceMasterDTO.InvoiceDetailDtos)
             {
                 InvoiceDetail invoiceDetail = new InvoiceDetail();
@@ -45,8 +48,9 @@ namespace Trippy.Bussiness.Services
 
                 // Here you can also handle InvoiceDetailTaxDTO if needed
 
-             
+
             }
+
 
 
 
@@ -78,7 +82,7 @@ namespace Trippy.Bussiness.Services
             invoicemasterDTO.IsDeleted = invoiceMaster.IsDeleted;
             invoicemasterDTO.CreatedBy = "";
 
-           // invoicemasterDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMaster", invoiceMaster.InvoicemasterId);
+            // invoicemasterDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMaster", invoiceMaster.InvoicemasterId);
             return invoicemasterDTO;
         }
         public async Task<bool> DeleteAsync(int id)
@@ -120,7 +124,7 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
             var invoiceMasterdto = await ConvertInvoiceMasterToDTO(q);
-           // invoiceMasterdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMasters", invoiceMasterdto.InvoicemasterId);
+            // invoiceMasterdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMasters", invoiceMasterdto.InvoicemasterId);
 
             return invoiceMasterdto;
         }
@@ -139,6 +143,56 @@ namespace Trippy.Bussiness.Services
                changedBy: _currentUser.Email.ToString() // Replace with actual user info
            );
             return true;
+        }
+
+        public async Task<List<TripDashboardDTO>> GetAllInvoicDashboardListbyStatusAsync(int year)
+        {
+
+            DateTime today = DateTime.Today;
+            DateTime lastWeekStart = today.AddDays(-7);
+            DateTime prevWeekStart = today.AddDays(-14);
+            DateTime prevWeekEnd = today.AddDays(-7);
+
+            var trips =  _tripOrderRepository.QuerableTripListAsyc();
+            if (year > 0)
+            {
+                trips = trips.Where(t => t.VehicleTakeOfTime.Year == year);
+            }
+            var UninvoicedTrips = await trips.Where(t => t.Status == "Completed" && t.IsInvoiced == false).CountAsync();
+
+
+
+
+
+            var dashboard = new List<TripDashboardDTO>
+            {
+                  new TripDashboardDTO
+        {
+            Title = "UnInvoiced Trips",
+            Value = UninvoicedTrips,
+            Change = 0,
+            Color = "#28A745",
+            Route = "completed"
+        },   
+                new TripDashboardDTO
+        {
+            Title = "Pending Invoices",
+            Value = UninvoicedTrips,
+            Change = 0,
+            Color = "#28A745",
+            Route = "completed"
+        },  new TripDashboardDTO
+        {
+            Title = "Completed Invoices",
+            Value = UninvoicedTrips,
+            Change = 0,
+            Color = "#28A745",
+            Route = "completed"
+        },
+            };
+
+            return dashboard;
+
         }
     }
 }
