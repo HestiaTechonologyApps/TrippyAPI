@@ -9,11 +9,13 @@ namespace Trippy.Bussiness.Services
     public class ListService : IListService
     {
         private readonly ITripOrderRepository _repo;
+        private readonly IInvoiceMasterRepository _invoiceMasterRepository;
         private readonly ICurrentUserService _currentUser;
-        public ListService(ITripOrderRepository repo, ICurrentUserService currentUser)
+        public ListService(ITripOrderRepository repo, ICurrentUserService currentUser, IInvoiceMasterRepository invoiceMasterRepository)
         {
             _repo = repo;
             _currentUser = currentUser;
+            this._invoiceMasterRepository = invoiceMasterRepository;
         }
         public async Task<PaginatedResult<TripListDataDTO>> Get_PaginatedTripList(
           string listType,
@@ -132,6 +134,91 @@ namespace Trippy.Bussiness.Services
             };
         }
 
+
+
+
+    public async Task<PaginatedResult<InvoiceMasterDTO>> Get_PaginatedInvoiceList(
+    string listType,
+    string filtertext,
+    int pagesize,
+    int pagenumber,
+    int CustomerId,
+    int Year)
+        {
+            // Normalize pagination
+            pagesize = Math.Max(1, Math.Min(pagesize, 100));
+            pagenumber = Math.Max(pagenumber, 1);
+
+            var q = _invoiceMasterRepository.QuerableInvoiceMasterListAsyc ();  // Fixed method name
+
+            // Filter by Customer
+            if (CustomerId > 0)
+            {
+                q = q.Where(t => t.CustomerId == CustomerId);
+            }
+
+            // Filter by Year
+            if (Year > 0)
+            {
+                q = q.Where(t => t.InvoiceDate != null && t.InvoiceDate.Year == Year);
+            }
+
+            // Filter by List Type
+            if (!string.IsNullOrWhiteSpace(listType))
+            {
+                var lowerListType = listType.ToLower();
+
+                switch (lowerListType)
+                {
+                    case "completed":
+                        q = q.Where(t => t.IsCompleted ==true && t.IsDeleted==false);
+                        break;
+
+                    case "pending":
+                        q = q.Where(t => t.IsCompleted == false && t.IsDeleted == false);
+                        break;
+
+                    case "canceled":
+                        q = q.Where(t =>  t.IsDeleted == false);
+                        break;
+                    
+
+                    
+                    case "all":
+                    default:
+                        // No additional filtering
+                        break;
+                }
+            }
+
+            // Text filtering
+            if (!string.IsNullOrWhiteSpace(filtertext))
+            {
+                var filter = filtertext.ToLower();
+                q = q.Where(t =>
+                    t.CustomerName.ToLower().Contains(filter) ||
+                    t.InvoiceNum .ToLower().Contains(filter) 
+                   
+                );
+            }
+
+            // Get total count
+            var total = await q.CountAsync();
+
+            // Apply ordering and pagination
+            var data = await q
+                .OrderByDescending(t => t.InvoiceDate )  // Default ordering by date
+                .ThenBy(t => t.InvoicemasterId)           // Secondary sort for consistency
+                .Skip((pagenumber - 1) * pagesize)
+                .Take(pagesize)
+                .ToListAsync();
+
+            return new PaginatedResult<InvoiceMasterDTO>
+            {
+                Total = total,
+                Data = data.OrderBy(u => u.InvoiceDate)
+            };
+        }
 
     }
 }

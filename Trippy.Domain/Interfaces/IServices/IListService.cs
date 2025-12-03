@@ -8,7 +8,13 @@ namespace Trippy.Domain.Interfaces.IServices
           string listType,
       string filtertext,
       int pagesize,
-      int pagenumber, int CustomerId,int Year);
+      int pagenumber, int CustomerId, int Year);
+
+        Task<PaginatedResult<InvoiceMasterDTO>> Get_PaginatedInvoiceList(
+   string listType,
+string filtertext,
+int pagesize,
+int pagenumber, int CustomerId, int Year);
 
     }
 }

@@ -12,12 +12,15 @@ namespace Trippy.Domain.DTO
     {
         public int InvoicemasterId { get; set; }
         public String InvoiceNum { get; set; }
-
+        public DateTime InvoiceDate { get; set; }
         public int FinancialYearId { get; set; }
         public int CompanyId { get; set; }
-        public string CompanyName { get; set; } = "";
-        public decimal TotalAmount { get; set; }
+        public int CustomerId { get; set; }
 
+        public string CompanyName { get; set; } = "";
+        public string CustomerName { get; set; } = "";
+        public decimal TotalAmount { get; set; }
+        public bool IsCompleted { get; set; } = false;
         public DateTime CreatedOn { get; set; }
         public string CreatedOnString => CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
 

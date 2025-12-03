@@ -19,11 +19,13 @@ namespace Trippy.Core.Repositories
             _context = context;
         }
 
-        public IQueryable<InvoiceMasterDTO> GetAllInvoiceMasters()
+        public IQueryable<InvoiceMasterDTO> QuerableInvoiceMasterListAsyc()
         {
             var query = from im in _context.InvoiceMasters.AsNoTracking()
                         join fy in _context.FinancialYears.AsNoTracking()
                         on im.FinancialYearId equals fy.FinancialYearId
+                        join CustomApiResponse in _context.Customers.AsNoTracking()
+                        on im.CustomerId equals CustomApiResponse.CustomerId
                         join cmp in _context.Companies.AsNoTracking() on im.CompanyId equals cmp.CompanyId
                         where im.IsDeleted == false
                         select new InvoiceMasterDTO
@@ -31,7 +33,7 @@ namespace Trippy.Core.Repositories
                             InvoicemasterId = im.InvoicemasterId,
                             InvoiceNum = im.InvoiceNum,
                             FinancialYearId = im.FinancialYearId,
-                           
+                           IsCompleted = im.IsCompleted,
                             CompanyId = im.CompanyId,
                             CompanyName = cmp.ComapanyName,
                             TotalAmount = im.TotalAmount,

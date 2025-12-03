@@ -51,6 +51,35 @@ namespace TrippyAPI.Controllers
                      
         }
 
+
+        [HttpPost("invoice-paginated")]
+        public async Task<CustomApiResponse> GetInvoiceData_Paginated([FromBody] PaginationParameterDTO param)
+        {
+            var response = new CustomApiResponse();
+            try
+            {
+                var data = await _service.Get_PaginatedInvoiceList(
+
+                    listType: param.ListType, pagesize: param.pagesize, pagenumber: param.pagenumber, filtertext: param.filtertext, CustomerId: param.CustomerId
+                    , Year: param.Year
+                    );
+                response.IsSucess = true;
+                response.Value = data;
+                response.StatusCode = 200;
+            }
+            catch (Exception ex)
+            {
+                response.IsSucess = false;
+                response.Error = ex.Message;
+                response.StatusCode = 500;
+            }
+            return response;
+
+
+
+        }
+
+
     }
 
     public class PaginationParameterDTO

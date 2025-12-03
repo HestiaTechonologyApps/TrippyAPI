@@ -157,10 +157,14 @@ namespace Trippy.Bussiness.Services
             {
                 trips = trips.Where(t => t.VehicleTakeOfTime.Year == year);
             }
-            var UninvoicedTrips = await trips.Where(t => t.Status == "Completed" && t.IsInvoiced == false).CountAsync();
+            var UninvoicedTrips = await trips.Where(t => t.Status == "Completed" && t.IsInvoiced == false && t.VehicleTakeOfTime.Year==year ).CountAsync();
 
 
+            var newinvoices = await _repo.QuerableInvoiceMasterListAsyc().Where(i => i.CreatedOn.Year == year && i.IsDeleted == false && i.IsCompleted == false).CountAsync();
 
+            var completedinvoices = await _repo.QuerableInvoiceMasterListAsyc().Where(i => i.CreatedOn.Year == year && i.IsDeleted == false && i.IsCompleted == true).CountAsync();
+
+            var deletedinvoices = await _repo.QuerableInvoiceMasterListAsyc().Where(i => i.CreatedOn.Year == year && i.IsDeleted == true).CountAsync();
 
 
             var dashboard = new List<TripDashboardDTO>
@@ -176,14 +180,14 @@ namespace Trippy.Bussiness.Services
                 new TripDashboardDTO
         {
             Title = "Pending Invoices",
-            Value = UninvoicedTrips,
+            Value = newinvoices,
             Change = 0,
             Color = "#FACC15",
             Route = "pending-invoices"
         },  new TripDashboardDTO
         {
             Title = "Completed Invoices",
-            Value = UninvoicedTrips,
+            Value = completedinvoices,
             Change = 0,
             Color = "#28A745",
             Route = "completed-invoices"
@@ -191,7 +195,7 @@ namespace Trippy.Bussiness.Services
             new TripDashboardDTO
         {
             Title = "Canceled Invoices",
-            Value = UninvoicedTrips,
+            Value = deletedinvoices,
             Change = 0,
             Color = "#FF2A2A",
             Route = "canceled-invoices"

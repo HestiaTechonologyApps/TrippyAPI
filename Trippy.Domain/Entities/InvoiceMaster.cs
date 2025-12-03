@@ -12,12 +12,14 @@ namespace Trippy.Domain.Entities
       
         public int FinancialYearId { get; set; }
         public int CompanyId { get; set; }
+        public int CustomerId { get; set; }
 
         public decimal TotalAmount { get; set; }
-
+        public DateTime InvoiceDate { get; set; }
         public DateTime CreatedOn { get; set; }
 
         public bool IsDeleted { get; set; } = true;
+        public bool IsCompleted { get; set; } = false;
 
         public List<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
 
