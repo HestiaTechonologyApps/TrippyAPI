@@ -20,5 +20,7 @@ namespace Trippy.Domain.Interfaces.IServices
 
       // Task<List<UserLoginLogDTO>> GetUserLogsAsync(int userId);
         Task<CustomApiResponse> ChangePassWord(PasswordChangeRequest passwordChangeRequest);
+
+        Task<CustomApiResponse> UpdateProfilePicAsync(int userid, string profileImagePath);
     }
 }

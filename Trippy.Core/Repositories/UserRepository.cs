@@ -66,9 +66,9 @@ namespace Trippy.Core.Repositories
                          CreateAt = user.CreateAt,
                          CompanyId = user.CompanyId,
                          CompanyName = comp.ComapanyName,
-                         
+                         ProfileImagePath = user.ProfileImagePath
 
-                        
+
                      }).FirstAsync();
 
             return await q;

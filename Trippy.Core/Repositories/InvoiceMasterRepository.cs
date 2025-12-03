@@ -24,8 +24,8 @@ namespace Trippy.Core.Repositories
             var query = from im in _context.InvoiceMasters.AsNoTracking()
                         join fy in _context.FinancialYears.AsNoTracking()
                         on im.FinancialYearId equals fy.FinancialYearId
-                        join CustomApiResponse in _context.Customers.AsNoTracking()
-                        on im.CustomerId equals CustomApiResponse.CustomerId
+                        join cust in _context.Customers.AsNoTracking()
+                        on im.CustomerId equals cust.CustomerId
                         join cmp in _context.Companies.AsNoTracking() on im.CompanyId equals cmp.CompanyId
                         where im.IsDeleted == false
                         select new InvoiceMasterDTO

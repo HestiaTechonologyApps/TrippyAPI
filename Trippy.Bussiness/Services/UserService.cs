@@ -88,7 +88,7 @@ namespace Trippy.Bussiness.Services
             userDTO.CreateAt = user.CreateAt;
             userDTO.Lastlogin = user.Lastlogin;
             userDTO.CompanyId = user.CompanyId;
-           
+           userDTO.ProfileImagePath = user.ProfileImagePath;
 
 
             userDTO.IsActive = user.IsActive;
@@ -163,7 +163,33 @@ namespace Trippy.Bussiness.Services
 
         }
 
-       
+       //public async Task<CustomApiResponse> UpdateProfilePicAsyn(int userid, string profileImagePath)
+       // {
+       //     var user = await _repo.GetByIdAsync(userid);
+       //     if (user == null)
+       //         return new CustomApiResponse { IsSucess = false, Error = "User not found", StatusCode = 404 };
+
+       //     user.ProfileImagePath = profileImagePath;
+       //     _repo.Update(user);
+       //     await _repo.SaveChangesAsync();
+
+       //     return new CustomApiResponse { IsSucess = true, Value = profileImagePath, StatusCode = 200 };
+       // }
+
+        public async Task<CustomApiResponse> UpdateProfilePicAsync(int userid, string profileImagePath)
+        {
+            var user = await _repo.GetByIdAsync(userid);
+            if (user == null)
+                return new CustomApiResponse { IsSucess = false, Error = "User not found", StatusCode = 404 };
+
+            user.ProfileImagePath = profileImagePath;
+            _repo.Update(user);
+            await _repo.SaveChangesAsync();
+
+            return new CustomApiResponse { IsSucess = true, Value = profileImagePath, StatusCode = 200 };
+
+        }
+
 
         //public Task<List<UserLoginLog>> GetUserLogsAsync(int userId)
         //{

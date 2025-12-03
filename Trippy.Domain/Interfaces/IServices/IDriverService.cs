@@ -11,7 +11,7 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<DriverDTO> CreateAsync(Driver coupon);
         Task<bool> UpdateAsync(Driver coupon);
         Task<bool> DeleteAsync(int id);
-        Task<CustomApiResponse> UpdateProfilePicAsync(int id, string profileImagePath);
+        Task<CustomApiResponse> UpdateProfilePicAsync(int Driverid, string profileImagePath);
 
     }
 }
