@@ -15,11 +15,11 @@ namespace Trippy.Domain.DTO
 
         public int FinancialYearId { get; set; }
         public int CompanyId { get; set; }
-
+        public string CompanyName { get; set; } = "";
         public decimal TotalAmount { get; set; }
 
         public DateTime CreatedOn { get; set; }
-        public string CreatedOnString { get; set; } = "";
+        public string CreatedOnString => CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
 
         public String CreatedBy { get; set; }
 

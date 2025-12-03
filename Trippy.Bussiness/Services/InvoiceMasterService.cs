@@ -78,7 +78,6 @@ namespace Trippy.Bussiness.Services
             invoicemasterDTO.CompanyId = invoiceMaster.CompanyId;
             invoicemasterDTO.TotalAmount = invoiceMaster.TotalAmount;
             invoicemasterDTO.CreatedOn = invoiceMaster.CreatedOn;
-            invoicemasterDTO.CreatedOnString = invoiceMaster.CreatedOn.ToString("dd MMMM yyyy hh:mm tt");
             invoicemasterDTO.IsDeleted = invoiceMaster.IsDeleted;
             invoicemasterDTO.CreatedBy = "";
 
@@ -171,24 +170,33 @@ namespace Trippy.Bussiness.Services
             Title = "UnInvoiced Trips",
             Value = UninvoicedTrips,
             Change = 0,
-            Color = "#28A745",
-            Route = "completed"
+            Color = "#F8A23A",
+            Route = "uninvoiced-trips"
         },   
                 new TripDashboardDTO
         {
             Title = "Pending Invoices",
             Value = UninvoicedTrips,
             Change = 0,
-            Color = "#28A745",
-            Route = "completed"
+            Color = "#FACC15",
+            Route = "pending-invoices"
         },  new TripDashboardDTO
         {
             Title = "Completed Invoices",
             Value = UninvoicedTrips,
             Change = 0,
             Color = "#28A745",
-            Route = "completed"
+            Route = "completed-invoices"
         },
+            new TripDashboardDTO
+        {
+            Title = "Canceled Invoices",
+            Value = UninvoicedTrips,
+            Change = 0,
+            Color = "#FF2A2A",
+            Route = "canceled-invoices"
+        },
+
             };
 
             return dashboard;
