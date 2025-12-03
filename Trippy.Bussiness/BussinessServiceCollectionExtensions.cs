@@ -47,12 +47,12 @@ namespace Trippy.Bussiness
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IVehicleMaintenanceRecordService, VehicleMaintenanceService>();
             services.AddScoped<ITripKiloMeterService, TripKiloMeterService>();
-            services.AddScoped<ITripBookingModeService, TripBookingModeService>();
-            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<ITripBookingModeService, TripBookingModeService>();            
             services.AddScoped<IListService, ListService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICustomerDepartmentService, CustomerDepartmentService>();
+            services.AddScoped<IDashboardService, DashboardService>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));
 

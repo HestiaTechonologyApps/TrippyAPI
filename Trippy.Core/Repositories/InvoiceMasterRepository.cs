@@ -21,28 +21,45 @@ namespace Trippy.Core.Repositories
 
         public IQueryable<InvoiceMasterDTO> QuerableInvoiceMasterListAsyc()
         {
-            var query = from im in _context.InvoiceMasters.AsNoTracking()
-                        join fy in _context.FinancialYears.AsNoTracking()
-                        on im.FinancialYearId equals fy.FinancialYearId
-                        join CustomApiResponse in _context.Customers.AsNoTracking()
-                        on im.CustomerId equals CustomApiResponse.CustomerId
-                        join cmp in _context.Companies.AsNoTracking() on im.CompanyId equals cmp.CompanyId
-                        where im.IsDeleted == false
-                        select new InvoiceMasterDTO
-                        {
-                            InvoicemasterId = im.InvoicemasterId,
-                            InvoiceNum = im.InvoiceNum,
-                            FinancialYearId = im.FinancialYearId,
-                           IsCompleted = im.IsCompleted,
-                            CompanyId = im.CompanyId,
-                            CompanyName = cmp.ComapanyName,
-                            TotalAmount = im.TotalAmount,
-                            CreatedOn = im.CreatedOn,
-                            IsDeleted = im.IsDeleted
-                            
-                        };
-            return query.AsQueryable();
+            var query =
+                from im in _context.InvoiceMasters.AsNoTracking()
+                join fy in _context.FinancialYears.AsNoTracking()
+                    on im.FinancialYearId equals fy.FinancialYearId
+                join cust in _context.Customers.AsNoTracking()
+                    on im.CustomerId equals cust.CustomerId
+                join cmp in _context.Companies.AsNoTracking()
+                    on im.CompanyId equals cmp.CompanyId
+                where im.IsDeleted == false
+                select new
+                {
+                    im.InvoicemasterId,
+                    im.InvoiceNum,
+                    im.FinancialYearId,
+                    im.IsCompleted,
+                    im.CompanyId,
+                    CompanyName = cmp.ComapanyName,
+                    im.TotalAmount,
+                    im.CreatedOn,
+                    im.InvoiceDate,
+                    im.IsDeleted
+                };
+
+            return query
+                .Select(x => new InvoiceMasterDTO
+                {
+                    InvoicemasterId = x.InvoicemasterId,
+                    InvoiceNum = x.InvoiceNum,
+                    FinancialYearId = x.FinancialYearId,
+                    IsCompleted = x.IsCompleted,
+                    CompanyId = x.CompanyId,
+                    CompanyName = x.CompanyName,
+                    TotalAmount = x.TotalAmount,
+                    CreatedOn = x.CreatedOn,
+                    InvoiceDate = x.InvoiceDate,
+                    IsDeleted = x.IsDeleted
+                });
         }
+
 
 
     }

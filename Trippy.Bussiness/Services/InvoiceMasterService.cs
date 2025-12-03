@@ -17,6 +17,12 @@ namespace Trippy.Bussiness.Services
         private readonly ITripOrderRepository _tripOrderRepository;
         private readonly IAuditRepository _auditRepository;
         private readonly ICurrentUserService _currentUser;
+
+
+        private const int CurrentFiancialYearId= 2025;
+        private const int CategoryID= 1;
+
+
         public String AuditTableName { get; set; } = "INVOICEMASTER";
         public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService, ITripOrderRepository tripOrderRepository)
         {
@@ -117,6 +123,87 @@ namespace Trippy.Bussiness.Services
             }
 
             return invoiceMasterdtos;
+        }
+
+        public async Task<CustomApiResponse> GenerateInvoice(InvoiceMasterIdList invoiceMasterIdList)
+        {
+            CustomApiResponse customApiResponse = new CustomApiResponse();
+            String ErrorMessage = "";
+
+            InvoiceMasterDTO invoiceMasterDTO = new InvoiceMasterDTO();
+            invoiceMasterDTO.CompanyId = invoiceMasterIdList.CustomerId;
+            invoiceMasterDTO.FinancialYearId = CurrentFiancialYearId;
+            invoiceMasterDTO.InvoiceDate = DateTime.UtcNow.Date;
+            invoiceMasterDTO.CreatedOn = DateTime.UtcNow;
+            invoiceMasterDTO.IsDeleted = false;
+            invoiceMasterDTO.IsCompleted = false;          
+
+
+            foreach (var tripidid in invoiceMasterIdList.TripOrderIds ) {           
+                
+                var triporder = await _tripOrderRepository.GetByIdAsync(tripidid);
+
+                if(triporder == null)
+                {
+                    ErrorMessage= $"Trip Order Id {tripidid} not found.";
+                   
+                }
+                else
+                {
+                    if (triporder.IsInvoiced == true)
+                    {
+                        ErrorMessage += $"Trip Order Id {triporder.TripCode} is already invoiced.";
+
+                    }
+                    if (triporder.TripStatus != "Completed")
+                    {
+                        ErrorMessage += $"Trip Order Id {triporder.TripCode} is not completed yet.";
+                    }
+                    if(triporder.CustomerId != invoiceMasterIdList.CustomerId)
+                    {
+                        ErrorMessage += $"Trip Order Id {triporder.TripCode} does not belong to the selected customer.";
+                    }
+                    if (triporder.IsDeleted==true  )
+                    {
+                        ErrorMessage+= $"Trip Order Id {triporder.TripCode} is deleted.";
+                    }
+                }
+
+                if(ErrorMessage.Trim() != "")
+                {
+                    customApiResponse.IsSucess = false;
+                    customApiResponse.Error = ErrorMessage;                    
+                }
+                else
+                {
+                    invoiceMasterDTO.InvoiceDetailDtos = new List<InvoiceDetailDTO>();
+
+                    InvoiceDetailDTO invoiceDetailDTO = new InvoiceDetailDTO();
+                    invoiceDetailDTO.TripOrderId = tripidid;
+                    invoiceDetailDTO.Ammount = triporder.TripAmount;
+                    invoiceDetailDTO.CategoryId = CategoryID;
+                    invoiceDetailDTO.TotalTax= 0;
+                    invoiceDetailDTO.Discount= 0;
+                    invoiceMasterDTO.InvoiceDetailDtos.Add(invoiceDetailDTO);
+                }
+
+            }
+
+
+           if (ErrorMessage.Trim() != "")
+            {
+                customApiResponse.IsSucess = false;
+                customApiResponse.Error = ErrorMessage;
+            }
+            else
+            {
+                customApiResponse.IsSucess = true;
+                customApiResponse.Error = "";
+            }
+               
+
+
+            return customApiResponse;
         }
         public async Task<InvoiceMasterDTO?> GetByIdAsync(int id)
         {

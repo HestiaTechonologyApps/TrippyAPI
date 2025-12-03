@@ -34,7 +34,10 @@ namespace Trippy.Domain.Interfaces.IRepositories
          Task<List<CalendarEventDto>> GetDriverSchedule(int driverId, DateTime start, DateTime end);
 
         Task<int> GetUpcomingTripsUsingTakeOffTimeAsync(int CompanyId, int year,string ststus);
-        
+
+        Task<List<AuditLogDTO>> GetAuditLogNotifications(int CompanyId, string tablename = "");
+
+
     }
 
 }

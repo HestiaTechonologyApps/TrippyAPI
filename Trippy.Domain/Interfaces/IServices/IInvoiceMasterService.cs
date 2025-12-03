@@ -16,6 +16,9 @@ namespace Trippy.Domain.Interfaces.IServices
         Task<bool> UpdateAsync(InvoiceMaster invoiceMaster);
         Task<bool> DeleteAsync(int id);
         Task<List<TripDashboardDTO>> GetAllInvoicDashboardListbyStatusAsync(int year);
-        
+
+        Task<CustomApiResponse> GenerateInvoice(InvoiceMasterIdList invoiceMasterIdList);
+
+
     }
 }

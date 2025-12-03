@@ -37,4 +37,3 @@ namespace Trippy.Domain.DTO
         public int AppUserId { get; set; }
         public IFormFile ProfilePic { get; set; }
     }
-

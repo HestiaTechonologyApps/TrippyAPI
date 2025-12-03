@@ -339,7 +339,35 @@ namespace Trippy.Core.Repositories
                 t.VehicleTakeOfTime <= endTime)
                 .CountAsync();
         }
-    
+
+
+
+        public async Task<List<AuditLogDTO>> GetAuditLogNotifications(int CompanyId, string tablename = "")
+        {
+            var oneDayAgo = DateTime.UtcNow.AddDays(-1);
+
+            var audits = await (
+                from audit in _context.AuditLogs
+                join trip in _context.TripOrders
+                    on audit.RecordID equals trip.TripOrderId
+                where audit.TableName == tablename
+                      && trip.CompanyId == CompanyId
+                      && audit.ChangedAt >= oneDayAgo
+                select new AuditLogDTO
+                {
+                    LogID = audit.LogID,
+                    TableName = audit.TableName,
+                    Action = audit.Action,
+                    RecordID = audit.RecordID,
+                    ChangedBy = audit.ChangedBy,
+                    ChangedAt = audit.ChangedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                    ChangeDetails = trip.TripCode
+                }
+            ).ToListAsync();
+
+            return audits;
+        }
+
 
     }
 }

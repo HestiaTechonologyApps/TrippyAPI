@@ -1,4 +1,5 @@
 using System.Globalization;
+using Trippy.Core.Repositories;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.Domain.Interfaces.IServices;
@@ -8,9 +9,15 @@ public class DashboardService : IDashboardService
 {
     private readonly IDashboardRepository _repo; // Replace with your DbContext name
 
-    public DashboardService(IDashboardRepository repository)
+    private readonly ITripOrderRepository _tripOrderRepository;
+
+    private readonly ICurrentUserService _currentUserService;
+
+    public DashboardService(IDashboardRepository repository,ITripOrderRepository tripOrderRepository,ICurrentUserService currentUserService )
     {
         _repo = repository;
+        _tripOrderRepository = tripOrderRepository;
+        this._currentUserService = currentUserService;
     }
 
     public async Task<List<MonthlyFinancialDto>> GetMonthlyFinancialAsync(int year)
@@ -39,6 +46,15 @@ public class DashboardService : IDashboardService
     {
         return await _repo.GetExpenseCategoriesByYearAsync(year);
     }
+
+    public async Task<List<AuditLogDTO>> GetTripAuxitlogofDay()
+    {
+        var q= await _tripOrderRepository.GetAuditLogNotifications(int.Parse(_currentUserService.CompanyId), "TripOrders");
+        return   q;
+    }
+
+
+
 
     public async Task<DashboardSummaryDto> GetDashboardSummaryAsync(int year)
     {

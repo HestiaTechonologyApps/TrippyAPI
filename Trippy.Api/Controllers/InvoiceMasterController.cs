@@ -102,6 +102,33 @@ namespace Trippy.Api.Controllers
             }
             return response;
         }
+
+
+
+
+        [HttpPost("generate-invoice-master")]
+        public async Task<CustomApiResponse> GenerateInvoiceMaster([FromBody] InvoiceMasterIdList invoiceMasterIdList)
+        {
+            var response = new CustomApiResponse();
+            if(invoiceMasterIdList != null)
+            {
+
+                return  await _service.GenerateInvoice(invoiceMasterIdList);
+
+
+            }
+            else
+            {
+                response.IsSucess = false;
+                response.Error = "Not found";
+                response.StatusCode = 404;
+            }
+                
+            
+            return response;
+        }
+
+
         [HttpDelete("{id}")]
         public async Task<CustomApiResponse> Delete(int id)
         {
@@ -122,4 +149,6 @@ namespace Trippy.Api.Controllers
             return response;
         }
     }
+
+   
 }
