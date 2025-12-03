@@ -234,7 +234,7 @@ namespace Trippy.Bussiness.Services
             int completed = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Completed");
             int scheduled = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "Scheduled");
             int upcoming = await _repo.GetUpcomingTripsUsingTakeOffTimeAsync(CompanyId: Convert.ToInt16( _currentUser.CompanyId) ,year:year,ststus: "upcoming");
-            int ongoing = await _repo.GetOngoingTripCountAsync(CompanyId: Convert.ToInt16(_currentUser.CompanyId), year: year, ststus: "Ongoing");
+            int ongoing = await _repo.GetTripCountByStatusAsync(CompanyId: Convert.ToInt16(_currentUser.CompanyId), year: year, ststus: "Ongoing");
 
             int prevCancelled = await _repo.GetTripCountByStatusAndDateRangeAsync("Canceled", prevWeekStart, prevWeekEnd);
             int prevCompleted = await _repo.GetTripCountByStatusAndDateRangeAsync("Completed", prevWeekStart, prevWeekEnd);

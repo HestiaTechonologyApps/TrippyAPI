@@ -339,17 +339,7 @@ namespace Trippy.Core.Repositories
                 t.VehicleTakeOfTime <= endTime)
                 .CountAsync();
         }
-      
-        public async Task<int> GetOngoingTripCountAsync(int CompanyId, int year,string ststus)
-        {
-            var now = DateTime.UtcNow;
-            var past3Hours = now.AddHours(-3);
-
-            return await _context.TripOrders
-                .Where(t =>
-                    t.TripStatus.ToLower() == "started")
-                .CountAsync();
-        }
+    
 
     }
 }
