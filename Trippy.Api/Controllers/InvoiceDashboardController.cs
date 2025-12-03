@@ -25,7 +25,7 @@ namespace Trippy.Api.Controllers
             response.StatusCode = 200;
             try
             {
-                var dashboard = await _service.GetAllTripDashboardListbyStatusAsync(year);
+                var dashboard = await _invoiceService.GetAllInvoicDashboardListbyStatusAsync(year);
                 response.IsSucess = true;
                 response.Value = dashboard;
             }
