@@ -199,6 +199,7 @@ namespace Trippy.Bussiness.Services
             {
                 customApiResponse.IsSucess = true;
                 customApiResponse.Error = "";
+                customApiResponse.Value = invoiceMasterDTO;
             }
                
 
