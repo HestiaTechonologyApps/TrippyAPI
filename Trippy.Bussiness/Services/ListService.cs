@@ -208,7 +208,7 @@ namespace Trippy.Bussiness.Services
             // Apply ordering and pagination
             var data = await q
                 .OrderByDescending(t => t.InvoiceDate )  // Default ordering by date
-                .ThenBy(t => t.InvoicemasterId)           // Secondary sort for consistency
+                .ThenBy(t => t.InvoiceMasterId)           // Secondary sort for consistency
                 .Skip((pagenumber - 1) * pagesize)
                 .Take(pagesize)
                 .ToListAsync();

@@ -10,7 +10,7 @@ namespace Trippy.Domain.DTO
 {
     public class InvoiceMasterDTO
     {
-        public int InvoicemasterId { get; set; }
+        public int InvoiceMasterId { get; set; }
         public String InvoiceNum { get; set; }
         public DateTime InvoiceDate { get; set; }
         public int FinancialYearId { get; set; }
@@ -35,7 +35,7 @@ namespace Trippy.Domain.DTO
     {
 
         public int InvoiceDetailId { get; set; }
-        public int InvoicemasterId { get; set; }
+        public int InvoiceMasterId { get; set; }
 
         public int TripOrderId { get; set; }
         public int CategoryId { get; set; } = 0;

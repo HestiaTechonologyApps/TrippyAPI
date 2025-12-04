@@ -5,9 +5,17 @@ namespace Trippy.Domain.Entities
 {
     public class InvoiceMaster
     {
+
+        public InvoiceMaster()
+        { 
+
+            this.InvoiceDetails = new List<InvoiceDetail>();
+        }
+
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int InvoicemasterId { get; set; }
+        public int InvoiceMasterId { get; set; }
         public String InvoiceNum { get; set; } = "";
       
         public int FinancialYearId { get; set; }
@@ -21,7 +29,7 @@ namespace Trippy.Domain.Entities
         public bool IsDeleted { get; set; } = true;
         public bool IsCompleted { get; set; } = false;
 
-        public List<InvoiceDetail> InvoiceDetails { get; set; } = new List<InvoiceDetail>();
+       public virtual  List<InvoiceDetail> InvoiceDetails { get; set; }
 
     }
 

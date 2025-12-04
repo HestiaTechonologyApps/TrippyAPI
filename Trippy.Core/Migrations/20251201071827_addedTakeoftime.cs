@@ -38,16 +38,16 @@ namespace Trippy.Core.Migrations
                 column: "InvoiceDetailId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvoiceDetails_InvoicemasterId",
+                name: "IX_InvoiceDetails_InvoiceMasterId",
                 table: "InvoiceDetails",
-                column: "InvoicemasterId");
+                column: "InvoiceMasterId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_InvoiceDetails_InvoiceMasters_InvoicemasterId",
+                name: "FK_InvoiceDetails_InvoiceMasters_InvoiceMasterId",
                 table: "InvoiceDetails",
-                column: "InvoicemasterId",
+                column: "InvoiceMasterId",
                 principalTable: "InvoiceMasters",
-                principalColumn: "InvoicemasterId",
+                principalColumn: "InvoiceMasterId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -63,7 +63,7 @@ namespace Trippy.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_InvoiceDetails_InvoiceMasters_InvoicemasterId",
+                name: "FK_InvoiceDetails_InvoiceMasters_InvoiceMasterId",
                 table: "InvoiceDetails");
 
             migrationBuilder.DropForeignKey(
@@ -75,7 +75,7 @@ namespace Trippy.Core.Migrations
                 table: "InvoiceDetailTaxes");
 
             migrationBuilder.DropIndex(
-                name: "IX_InvoiceDetails_InvoicemasterId",
+                name: "IX_InvoiceDetails_InvoiceMasterId",
                 table: "InvoiceDetails");
 
             migrationBuilder.DropColumn(

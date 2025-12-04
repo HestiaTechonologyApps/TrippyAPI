@@ -601,7 +601,7 @@ namespace Trippy.Core.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("InvoicemasterId")
+                    b.Property<int>("InvoiceMasterId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalTax")
@@ -642,11 +642,11 @@ namespace Trippy.Core.Migrations
 
             modelBuilder.Entity("Trippy.Domain.Entities.InvoiceMaster", b =>
                 {
-                    b.Property<int>("InvoicemasterId")
+                    b.Property<int>("InvoiceMasterId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoicemasterId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceMasterId"));
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
@@ -667,7 +667,7 @@ namespace Trippy.Core.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("InvoicemasterId");
+                    b.HasKey("InvoiceMasterId");
 
                     b.ToTable("InvoiceMasters");
                 });

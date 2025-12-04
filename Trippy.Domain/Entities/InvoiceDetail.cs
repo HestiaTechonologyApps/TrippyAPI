@@ -8,7 +8,7 @@ namespace Trippy.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InvoiceDetailId { get; set; }
-        public int InvoicemasterId { get; set; }
+        public int InvoiceMasterId { get; set; }
 
         public int TripOrderId { get; set; }
         public int CategoryId { get; set; }
@@ -21,6 +21,7 @@ namespace Trippy.Domain.Entities
 
         public decimal TotalDiscount { get; set; } = 0;
 
+        public virtual InvoiceMaster InvoiceMaster { get; set; }
         public List<InvoiceDetailTax> InvoiceDetailTaxes { get; set; } = new List<InvoiceDetailTax>();
 
     }

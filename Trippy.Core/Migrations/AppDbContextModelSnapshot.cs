@@ -688,7 +688,7 @@ namespace Trippy.Core.Migrations
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("InvoicemasterId")
+                    b.Property<int>("InvoiceMasterId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalDiscount")
@@ -702,7 +702,7 @@ namespace Trippy.Core.Migrations
 
                     b.HasKey("InvoiceDetailId");
 
-                    b.HasIndex("InvoicemasterId");
+                    b.HasIndex("InvoiceMasterId");
 
                     b.ToTable("InvoiceDetails");
                 });
@@ -736,11 +736,11 @@ namespace Trippy.Core.Migrations
 
             modelBuilder.Entity("Trippy.Domain.Entities.InvoiceMaster", b =>
                 {
-                    b.Property<int>("InvoicemasterId")
+                    b.Property<int>("InvoiceMasterId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoicemasterId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceMasterId"));
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
@@ -770,7 +770,7 @@ namespace Trippy.Core.Migrations
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("InvoicemasterId");
+                    b.HasKey("InvoiceMasterId");
 
                     b.ToTable("InvoiceMasters");
                 });
@@ -1172,11 +1172,13 @@ namespace Trippy.Core.Migrations
 
             modelBuilder.Entity("Trippy.Domain.Entities.InvoiceDetail", b =>
                 {
-                    b.HasOne("Trippy.Domain.Entities.InvoiceMaster", null)
+                    b.HasOne("Trippy.Domain.Entities.InvoiceMaster", "InvoiceMaster")
                         .WithMany("InvoiceDetails")
-                        .HasForeignKey("InvoicemasterId")
+                        .HasForeignKey("InvoiceMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("InvoiceMaster");
                 });
 
             modelBuilder.Entity("Trippy.Domain.Entities.InvoiceDetailTax", b =>

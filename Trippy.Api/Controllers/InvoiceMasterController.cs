@@ -80,7 +80,7 @@ namespace Trippy.Api.Controllers
         public async Task<CustomApiResponse> Update(int id, [FromBody] InvoiceMaster invoiceMaster)
         {
             var response = new CustomApiResponse();
-            if (id != invoiceMaster.InvoicemasterId)
+            if (id != invoiceMaster.InvoiceMasterId)
             {
                 response.IsSucess = false;
                 response.Error = "Id mismatch";
@@ -107,13 +107,13 @@ namespace Trippy.Api.Controllers
 
 
         [HttpPost("generate-invoice-master")]
-        public async Task<CustomApiResponse> GenerateInvoiceMaster([FromBody] InvoiceMasterIdList invoiceMasterIdList)
+        public async Task<CustomApiResponse> GenerateInvoiceMaster([FromBody] InvoiceMasterIdList InvoiceMasterIdList)
         {
             var response = new CustomApiResponse();
-            if(invoiceMasterIdList != null)
+            if(InvoiceMasterIdList != null)
             {
 
-                return  await _service.GenerateInvoice(invoiceMasterIdList);
+                return  await _service.GenerateInvoice(InvoiceMasterIdList);
 
 
             }

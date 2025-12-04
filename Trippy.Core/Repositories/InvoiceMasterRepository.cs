@@ -32,7 +32,7 @@ namespace Trippy.Core.Repositories
                 
                 select new
                 {
-                    im.InvoicemasterId,
+                    im.InvoiceMasterId,
                     im.InvoiceNum,
                     im.FinancialYearId,
                     im.IsCompleted,
@@ -49,7 +49,7 @@ namespace Trippy.Core.Repositories
             return query
                 .Select(x => new InvoiceMasterDTO
                 {
-                    InvoicemasterId = x.InvoicemasterId,
+                    InvoiceMasterId = x.InvoiceMasterId,
                     InvoiceNum = x.InvoiceNum,
                     FinancialYearId = x.FinancialYearId,
                     IsCompleted = x.IsCompleted,

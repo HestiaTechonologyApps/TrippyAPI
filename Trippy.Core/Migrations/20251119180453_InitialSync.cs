@@ -271,7 +271,7 @@ namespace Trippy.Core.Migrations
             //    {
             //        InvoiceDetailId = table.Column<int>(type: "int", nullable: false)
             //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        InvoicemasterId = table.Column<int>(type: "int", nullable: false),
+            //        InvoiceMasterId = table.Column<int>(type: "int", nullable: false),
             //        TripOrderId = table.Column<int>(type: "int", nullable: false),
             //        CategoryId = table.Column<int>(type: "int", nullable: false),
             //        Ammount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -302,7 +302,7 @@ namespace Trippy.Core.Migrations
             //    name: "InvoiceMasters",
             //    columns: table => new
             //    {
-            //        InvoicemasterId = table.Column<int>(type: "int", nullable: false)
+            //        InvoiceMasterId = table.Column<int>(type: "int", nullable: false)
             //            .Annotation("SqlServer:Identity", "1, 1"),
             //        InvoiceNum = table.Column<string>(type: "nvarchar(max)", nullable: false),
             //        FinancialYearId = table.Column<int>(type: "int", nullable: false),
@@ -313,7 +313,7 @@ namespace Trippy.Core.Migrations
             //    },
             //    constraints: table =>
             //    {
-            //        table.PrimaryKey("PK_InvoiceMasters", x => x.InvoicemasterId);
+            //        table.PrimaryKey("PK_InvoiceMasters", x => x.InvoiceMasterId);
             //    });
 
             //migrationBuilder.CreateTable(

@@ -12,8 +12,8 @@ using Trippy.InfraCore.Data;
 namespace Trippy.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251123180619_tripnotetriporderid")]
-    partial class tripnotetriporderid
+    [Migration("20251204094952_addedmiggorinv")]
+    partial class addedmiggorinv
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,6 +191,57 @@ namespace Trippy.Core.Migrations
                     b.ToTable("CategoryTaxes");
                 });
 
+            modelBuilder.Entity("Trippy.Domain.Entities.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
+
+                    b.Property<string>("CommentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInternal")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ParentCommentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecordID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CommentId");
+
+                    b.ToTable("comments");
+                });
+
             modelBuilder.Entity("Trippy.Domain.Entities.Company", b =>
                 {
                     b.Property<int>("CompanyId")
@@ -332,6 +383,9 @@ namespace Trippy.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -357,6 +411,9 @@ namespace Trippy.Core.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nationalilty")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -366,6 +423,27 @@ namespace Trippy.Core.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("Trippy.Domain.Entities.CustomerDepartment", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+
+                    b.Property<string>("DepartmentDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("CustomerDepartments");
+                });
+
             modelBuilder.Entity("Trippy.Domain.Entities.Driver", b =>
                 {
                     b.Property<int>("DriverId")
@@ -373,6 +451,9 @@ namespace Trippy.Core.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DriverId"));
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -386,6 +467,9 @@ namespace Trippy.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsRented")
@@ -482,6 +566,9 @@ namespace Trippy.Core.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -601,8 +688,14 @@ namespace Trippy.Core.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("InvoiceMasterId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalDiscount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalTax")
                         .HasColumnType("decimal(18,2)");
@@ -611,6 +704,8 @@ namespace Trippy.Core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("InvoiceDetailId");
+
+                    b.HasIndex("InvoiceMasterId");
 
                     b.ToTable("InvoiceDetails");
                 });
@@ -637,6 +732,8 @@ namespace Trippy.Core.Migrations
 
                     b.HasKey("InvoiceDetailTaxId");
 
+                    b.HasIndex("InvoiceDetailId");
+
                     b.ToTable("InvoiceDetailTaxes");
                 });
 
@@ -654,12 +751,21 @@ namespace Trippy.Core.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("FinancialYearId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("InvoiceNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -721,6 +827,10 @@ namespace Trippy.Core.Migrations
                     b.Property<int>("VehicleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("WaitingHours")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TripKiloMeterId");
 
                     b.ToTable("TripKiloMeters");
@@ -770,8 +880,15 @@ namespace Trippy.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
@@ -791,6 +908,9 @@ namespace Trippy.Core.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInvoiced")
                         .HasColumnType("bit");
 
                     b.Property<string>("PaymentDetails")
@@ -842,6 +962,9 @@ namespace Trippy.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("VehicleTakeOfTime")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("TripOrderId");
 
                     b.ToTable("TripOrders");
@@ -882,6 +1005,10 @@ namespace Trippy.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProfileImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -895,6 +1022,29 @@ namespace Trippy.Core.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Trippy.Domain.Entities.UserLoginLog", b =>
+                {
+                    b.Property<int>("UserLoginLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserLoginLogId"));
+
+                    b.Property<DateTime>("ActionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserLoginLogId");
+
+                    b.ToTable("UserLoginLogs");
+                });
+
             modelBuilder.Entity("Trippy.Domain.Entities.Vehicle", b =>
                 {
                     b.Property<int>("VehicleId")
@@ -906,6 +1056,9 @@ namespace Trippy.Core.Migrations
                     b.Property<string>("ChassisNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -970,6 +1123,9 @@ namespace Trippy.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleMaintenanceRecordId"));
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
 
@@ -1015,6 +1171,36 @@ namespace Trippy.Core.Migrations
                     b.HasKey("VehicleMaintenanceRecordId");
 
                     b.ToTable("VehicleMaintenanceRecords");
+                });
+
+            modelBuilder.Entity("Trippy.Domain.Entities.InvoiceDetail", b =>
+                {
+                    b.HasOne("Trippy.Domain.Entities.InvoiceMaster", "InvoiceMaster")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("InvoiceMasterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InvoiceMaster");
+                });
+
+            modelBuilder.Entity("Trippy.Domain.Entities.InvoiceDetailTax", b =>
+                {
+                    b.HasOne("Trippy.Domain.Entities.InvoiceDetail", null)
+                        .WithMany("InvoiceDetailTaxes")
+                        .HasForeignKey("InvoiceDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Trippy.Domain.Entities.InvoiceDetail", b =>
+                {
+                    b.Navigation("InvoiceDetailTaxes");
+                });
+
+            modelBuilder.Entity("Trippy.Domain.Entities.InvoiceMaster", b =>
+                {
+                    b.Navigation("InvoiceDetails");
                 });
 #pragma warning restore 612, 618
         }

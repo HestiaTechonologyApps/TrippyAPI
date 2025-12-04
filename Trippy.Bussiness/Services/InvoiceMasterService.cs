@@ -47,6 +47,8 @@ namespace Trippy.Bussiness.Services
             invoiceMaster.CreatedOn = DateTime.UtcNow;
             invoiceMaster.IsDeleted = false;
 
+
+
             invoiceMaster.InvoiceDetails = new List<InvoiceDetail>();
 
             foreach (var detailDto in invoiceMasterDTO.InvoiceDetailDtos)
@@ -72,11 +74,11 @@ namespace Trippy.Bussiness.Services
             await _repo.AddAsync(invoiceMaster);
             await _repo.SaveChangesAsync();
 
-            invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum + " - " + invoiceMaster.InvoicemasterId;
+            invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum + " - " + invoiceMaster.InvoiceMasterId;
             await this._auditRepository.LogAuditAsync<InvoiceMaster>(
                 tableName: AuditTableName,
                 action: "create",
-                recordId: invoiceMaster.InvoicemasterId,
+                recordId: invoiceMaster.InvoiceMasterId,
                 oldEntity: null,
                 newEntity: invoiceMaster,
                 changedBy: _currentUser.Email.ToString() // Replace with actual user info
@@ -87,7 +89,7 @@ namespace Trippy.Bussiness.Services
         private async Task<InvoiceMasterDTO> ConvertInvoiceMasterToDTO(InvoiceMaster invoiceMaster)
         {
             InvoiceMasterDTO invoicemasterDTO = new InvoiceMasterDTO();
-            invoicemasterDTO.InvoicemasterId = invoiceMaster.InvoicemasterId;
+            invoicemasterDTO.InvoiceMasterId = invoiceMaster.InvoiceMasterId;
             invoicemasterDTO.InvoiceNum = invoiceMaster.InvoiceNum;
             invoicemasterDTO.FinancialYearId = invoiceMaster.FinancialYearId;
             invoicemasterDTO.CompanyId = invoiceMaster.CompanyId;
@@ -96,7 +98,8 @@ namespace Trippy.Bussiness.Services
             invoicemasterDTO.IsDeleted = invoiceMaster.IsDeleted;
             invoicemasterDTO.CreatedBy = "";
 
-            // invoicemasterDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMaster", invoiceMaster.InvoicemasterId);
+
+            // invoicemasterDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMaster", invoiceMaster.InvoiceMasterId);
             return invoicemasterDTO;
         }
         public async Task<bool> DeleteAsync(int id)
@@ -108,7 +111,7 @@ namespace Trippy.Bussiness.Services
             await _auditRepository.LogAuditAsync<InvoiceMaster>(
                 tableName: AuditTableName,
                 action: "Delete",
-                recordId: invoiceMaster.InvoicemasterId,
+                recordId: invoiceMaster.InvoiceMasterId,
                 oldEntity: invoiceMaster,
                 newEntity: invoiceMaster,
                 changedBy: _currentUser.Email.ToString() // Replace with actual user info
@@ -134,12 +137,12 @@ namespace Trippy.Bussiness.Services
             return invoiceMasterdtos;
         }
 
-        public async Task<CustomApiResponse> GenerateInvoice(InvoiceMasterIdList invoiceMasterIdList)
+        public async Task<CustomApiResponse> GenerateInvoice(InvoiceMasterIdList InvoiceMasterIdList)
         {
             CustomApiResponse customApiResponse = new CustomApiResponse();
             String ErrorMessage = "";
 
-            var customer = await _customerRepository.GetByIdAsync(invoiceMasterIdList.CustomerId);
+            var customer = await _customerRepository.GetByIdAsync(InvoiceMasterIdList.CustomerId);
             if (customer == null)
             {
                 customApiResponse.IsSucess = false;
@@ -157,7 +160,7 @@ namespace Trippy.Bussiness.Services
 
 
             InvoiceMasterDTO invoiceMasterDTO = new InvoiceMasterDTO();
-            invoiceMasterDTO.CustomerId = invoiceMasterIdList.CustomerId;
+            invoiceMasterDTO.CustomerId = InvoiceMasterIdList.CustomerId;
             invoiceMasterDTO.InvoiceNum = "MINV-";
             invoiceMasterDTO.CustomerName = customer.CustomerName;
             invoiceMasterDTO.CompanyName = company.FirstOrDefault().ComapanyName;
@@ -169,7 +172,7 @@ namespace Trippy.Bussiness.Services
             invoiceMasterDTO.IsCompleted = false;
             invoiceMasterDTO.InvoiceDetailDtos = new List<InvoiceDetailDTO>();
 
-            foreach (var tripidid in invoiceMasterIdList.TripOrderIds ) {           
+            foreach (var tripidid in InvoiceMasterIdList.TripOrderIds ) {           
                 
                 var triporder = await _tripOrderRepository.GetByIdAsync(tripidid);
 
@@ -189,7 +192,7 @@ namespace Trippy.Bussiness.Services
                     {
                         ErrorMessage += $"Trip Order Id {triporder.TripCode} is not completed yet.";
                     }
-                    if(triporder.CustomerId != invoiceMasterIdList.CustomerId)
+                    if(triporder.CustomerId != InvoiceMasterIdList.CustomerId)
                     {
                         ErrorMessage += $"Trip Order Id {triporder.TripCode} does not belong to the selected customer.";
                     }
@@ -241,20 +244,20 @@ namespace Trippy.Bussiness.Services
             var q = await _repo.GetByIdAsync(id);
             if (q == null) return null;
             var invoiceMasterdto = await ConvertInvoiceMasterToDTO(q);
-            // invoiceMasterdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMasters", invoiceMasterdto.InvoicemasterId);
+            // invoiceMasterdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMasters", invoiceMasterdto.InvoiceMasterId);
 
             return invoiceMasterdto;
         }
         public async Task<bool> UpdateAsync(InvoiceMaster invoiceMaster)
         {
-            var oldentity = await _repo.GetByIdAsync(invoiceMaster.InvoicemasterId);
+            var oldentity = await _repo.GetByIdAsync(invoiceMaster.InvoiceMasterId);
             _repo.Detach(oldentity);
             _repo.Update(invoiceMaster);
             await _repo.SaveChangesAsync();
             await _auditRepository.LogAuditAsync<InvoiceMaster>(
                tableName: AuditTableName,
                action: "update",
-               recordId: invoiceMaster.InvoicemasterId,
+               recordId: invoiceMaster.InvoiceMasterId,
                oldEntity: oldentity,
                newEntity: invoiceMaster,
                changedBy: _currentUser.Email.ToString() // Replace with actual user info
