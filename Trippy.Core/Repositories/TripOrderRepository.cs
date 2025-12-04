@@ -330,7 +330,7 @@ namespace Trippy.Core.Repositories
         public async Task<int> GetUpcomingTripsUsingTakeOffTimeAsync(int ComanyId, int year, string ststus)
         {
             DateTime now = DateTime.UtcNow;
-            DateTime startTime = now.AddHours(-3);   // past 3 hours
+            DateTime startTime = now.AddHours(-18);   // past 3 hours
             DateTime endTime = now.AddHours(24);     // next 24 hours
 
             return await _context.TripOrders

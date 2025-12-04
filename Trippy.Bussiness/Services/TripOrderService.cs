@@ -224,7 +224,7 @@ namespace Trippy.Bussiness.Services
             DateTime prevWeekStart = today.AddDays(-14);
             DateTime prevWeekEnd = today.AddDays(-7);
             DateTime now = DateTime.Now;
-            DateTime upcomingStart = now.AddHours(-3);
+            DateTime upcomingStart = now.AddHours(-18);
             DateTime upcomingEnd = now.AddHours(24);
            
 
