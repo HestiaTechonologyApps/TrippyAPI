@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Trippy.CORE.Repositories;
 using Trippy.Domain.DTO;
 using Trippy.Domain.Entities;
 using Trippy.Domain.Interfaces.IRepositories;
 using Trippy.Domain.Interfaces.IServices;
+using Trippy.InfraCore.Repositories;
 
 namespace Trippy.Bussiness.Services
 {
@@ -15,6 +17,8 @@ namespace Trippy.Bussiness.Services
     {
         private readonly IInvoiceMasterRepository _repo;
         private readonly ITripOrderRepository _tripOrderRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ICompanyRepository _companyRepository;
         private readonly IAuditRepository _auditRepository;
         private readonly ICurrentUserService _currentUser;
 
@@ -24,23 +28,26 @@ namespace Trippy.Bussiness.Services
 
 
         public String AuditTableName { get; set; } = "INVOICEMASTER";
-        public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService, ITripOrderRepository tripOrderRepository)
+        public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService, ITripOrderRepository tripOrderRepository,ICustomerRepository customerRepository, ICompanyRepository companyRepository)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
             _currentUser = currentUserService;
             _tripOrderRepository = tripOrderRepository;
+            _customerRepository = customerRepository;
+            _companyRepository = companyRepository;
         }
         public async Task<InvoiceMasterDTO> CreateAsync(InvoiceMasterDTO invoiceMasterDTO)
         {
             InvoiceMaster invoiceMaster = new InvoiceMaster();
-            invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
+           // invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
             invoiceMaster.FinancialYearId = invoiceMasterDTO.FinancialYearId;
             invoiceMaster.CompanyId = invoiceMasterDTO.CompanyId;
             invoiceMaster.TotalAmount = invoiceMasterDTO.TotalAmount;
             invoiceMaster.CreatedOn = DateTime.UtcNow;
             invoiceMaster.IsDeleted = false;
 
+            invoiceMaster.InvoiceDetails = new List<InvoiceDetail>();
 
             foreach (var detailDto in invoiceMasterDTO.InvoiceDetailDtos)
             {
@@ -64,6 +71,8 @@ namespace Trippy.Bussiness.Services
 
             await _repo.AddAsync(invoiceMaster);
             await _repo.SaveChangesAsync();
+
+            invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum + " - " + invoiceMaster.InvoicemasterId;
             await this._auditRepository.LogAuditAsync<InvoiceMaster>(
                 tableName: AuditTableName,
                 action: "create",
@@ -130,14 +139,35 @@ namespace Trippy.Bussiness.Services
             CustomApiResponse customApiResponse = new CustomApiResponse();
             String ErrorMessage = "";
 
+            var customer = await _customerRepository.GetByIdAsync(invoiceMasterIdList.CustomerId);
+            if (customer == null)
+            {
+                customApiResponse.IsSucess = false;
+                customApiResponse.Error = "Customer not found.";
+                return customApiResponse;
+            }
+
+            var company = await _companyRepository.GetAllAsync();
+            if (company == null)
+            {
+                customApiResponse.IsSucess = false;
+                customApiResponse.Error = "Company not found.";
+                return customApiResponse;
+            }
+
+
             InvoiceMasterDTO invoiceMasterDTO = new InvoiceMasterDTO();
-            invoiceMasterDTO.CompanyId = invoiceMasterIdList.CustomerId;
+            invoiceMasterDTO.CustomerId = invoiceMasterIdList.CustomerId;
+            invoiceMasterDTO.InvoiceNum = "MINV-";
+            invoiceMasterDTO.CustomerName = customer.CustomerName;
+            invoiceMasterDTO.CompanyName = company.FirstOrDefault().ComapanyName;
+            invoiceMasterDTO.CompanyId = company.FirstOrDefault().CompanyId;
             invoiceMasterDTO.FinancialYearId = CurrentFiancialYearId;
             invoiceMasterDTO.InvoiceDate = DateTime.UtcNow.Date;
             invoiceMasterDTO.CreatedOn = DateTime.UtcNow;
             invoiceMasterDTO.IsDeleted = false;
-            invoiceMasterDTO.IsCompleted = false;          
-
+            invoiceMasterDTO.IsCompleted = false;
+            invoiceMasterDTO.InvoiceDetailDtos = new List<InvoiceDetailDTO>();
 
             foreach (var tripidid in invoiceMasterIdList.TripOrderIds ) {           
                 
@@ -176,7 +206,7 @@ namespace Trippy.Bussiness.Services
                 }
                 else
                 {
-                    invoiceMasterDTO.InvoiceDetailDtos = new List<InvoiceDetailDTO>();
+                    
 
                     InvoiceDetailDTO invoiceDetailDTO = new InvoiceDetailDTO();
                     invoiceDetailDTO.TripOrderId = tripidid;
