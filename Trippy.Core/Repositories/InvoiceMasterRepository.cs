@@ -29,7 +29,7 @@ namespace Trippy.Core.Repositories
                     on im.CustomerId equals cust.CustomerId
                 join cmp in _context.Companies.AsNoTracking()
                     on im.CompanyId equals cmp.CompanyId
-                where im.IsDeleted == false
+                
                 select new
                 {
                     im.InvoicemasterId,
@@ -38,6 +38,8 @@ namespace Trippy.Core.Repositories
                     im.IsCompleted,
                     im.CompanyId,
                     CompanyName = cmp.ComapanyName,
+                   im.CustomerId,
+                   CustomerName =cust.CustomerName,
                     im.TotalAmount,
                     im.CreatedOn,
                     im.InvoiceDate,
@@ -53,6 +55,7 @@ namespace Trippy.Core.Repositories
                     IsCompleted = x.IsCompleted,
                     CompanyId = x.CompanyId,
                     CompanyName = x.CompanyName,
+                    CustomerName = x.CustomerName,
                     TotalAmount = x.TotalAmount,
                     CreatedOn = x.CreatedOn,
                     InvoiceDate = x.InvoiceDate,

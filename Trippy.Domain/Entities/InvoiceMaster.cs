@@ -8,7 +8,7 @@ namespace Trippy.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int InvoicemasterId { get; set; }
-        public String InvoiceNum { get; set; }
+        public String InvoiceNum { get; set; } = "";
       
         public int FinancialYearId { get; set; }
         public int CompanyId { get; set; }
