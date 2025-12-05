@@ -21,7 +21,8 @@ namespace Trippy.Core.Repositories
             _context = context;
             _currentUser = currentUser;
         }
-        public async Task<IQueryable<VehicleDTO>> GetQuerableVehicleList() {
+        public async Task<IQueryable<VehicleDTO>> GetQuerableVehicleList()
+        {
             var q = (from vech in _context.Vehicles
                      join cmp in _context.Companies
                      on vech.CompanyId equals cmp.CompanyId
@@ -39,8 +40,8 @@ namespace Trippy.Core.Repositories
                          ChassisNumber = vech.ChassisNumber,
                          EngineNumber = vech.EngineNumber,
                          RegistrationExpiry = vech.RegistrationExpiry,
-                        CreatedBy = vech.CreatedBy,
-                        CreatedDate = vech.CreatedDate,
+                         CreatedBy = vech.CreatedBy,
+                         CreatedDate = vech.CreatedDate,
 
                          RegistrationNumber = vech.RegistrationNumber,
                          Location = vech.Location,
@@ -51,5 +52,17 @@ namespace Trippy.Core.Repositories
 
             return q;
         }
+    }
+
+    public class NotificationRepository : GenericRepository<NotificationQueue>, INotificationRepository
+    {
+        private readonly AppDbContext _context;
+        private readonly ICurrentUserService _currentUser;
+        public NotificationRepository(AppDbContext context, ICurrentUserService currentUser) : base(context)
+        {
+            _context = context;
+            _currentUser = currentUser;
+        }
+
     }
 }

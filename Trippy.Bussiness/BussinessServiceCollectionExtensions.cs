@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Trippy.Business.Services;
 using Trippy.Bussiness.Services;
+using Trippy.Bussiness.Services.Provider;
 using Trippy.Domain.Configurations;
+using Trippy.Domain.Interfaces;
 using Trippy.Domain.Interfaces.IServices;
 
 
@@ -53,6 +55,8 @@ namespace Trippy.Bussiness
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICustomerDepartmentService, CustomerDepartmentService>();
             services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<INotificationService ,  NotificationService>();
+            services.AddScoped<IEmailProvider ,  SmtpEmailProvider>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
             //services.Configure<WalletSettings>(configuration.GetSection("Wallet"));
 

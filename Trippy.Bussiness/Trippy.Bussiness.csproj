@@ -21,4 +21,7 @@
     <ProjectReference Include="..\Trippy.Core\Trippy.Core.csproj" />
     <ProjectReference Include="..\Trippy.Domain\Trippy.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Provider\NewFolder\" />
+  </ItemGroup>
 </Project>

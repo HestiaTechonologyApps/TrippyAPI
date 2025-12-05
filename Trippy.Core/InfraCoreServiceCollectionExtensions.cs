@@ -55,6 +55,8 @@ namespace Trippy.InfraCore
             services.AddScoped<IDashboardRepository, DashboardRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICustomerDepartmentRepository, CustomerDepartmentRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            
             //services.AddScoped<ICustomResponseBuilder, CustomResponseBuilder>();
 
             //// Add helpers or utilities

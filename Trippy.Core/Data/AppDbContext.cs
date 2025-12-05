@@ -39,6 +39,8 @@ namespace Trippy.InfraCore.Data
         public DbSet<TripBookingMode> TripBookingModes { get; set; }
 
 
+        public DbSet<NotificationQueue> NotificationQueue { get; set; } = default!;
+        public DbSet<DeadLetterNotification> DeadLetterNotifications { get; set; } = default!;
 
         public DbSet<AuditLog> AuditLogs { get; set; }
        

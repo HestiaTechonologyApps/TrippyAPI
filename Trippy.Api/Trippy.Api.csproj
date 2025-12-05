@@ -51,6 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Jobs\NewFolder\" />
     <Folder Include="logs\" />
   </ItemGroup>
 
