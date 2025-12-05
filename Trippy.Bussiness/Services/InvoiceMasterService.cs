@@ -98,6 +98,17 @@ namespace Trippy.Bussiness.Services
             invoicemasterDTO.IsDeleted = invoiceMaster.IsDeleted;
             invoicemasterDTO.CreatedBy = "";
 
+            invoicemasterDTO.InvoiceDetailDtos = invoiceMaster.InvoiceDetails
+       .Select(x => new InvoiceDetailDTO
+       {
+           InvoiceDetailId = x.InvoiceDetailId,
+           InvoiceMasterId = x.InvoiceMasterId,
+           TripOrderId = x.TripOrderId,
+           CategoryId = x.CategoryId,
+           Ammount = x.Ammount,
+           TotalTax = x.TotalTax,
+           Discount = x.Discount
+       }).ToList();
 
             // invoicemasterDTO.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMaster", invoiceMaster.InvoiceMasterId);
             return invoicemasterDTO;

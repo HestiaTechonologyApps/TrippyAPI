@@ -29,7 +29,7 @@ namespace Trippy.Core.Repositories
                     on im.CustomerId equals cust.CustomerId
                 join cmp in _context.Companies.AsNoTracking()
                     on im.CompanyId equals cmp.CompanyId
-                
+                where im.IsDeleted == false
                 select new
                 {
                     im.InvoiceMasterId,
@@ -61,6 +61,18 @@ namespace Trippy.Core.Repositories
                     InvoiceDate = x.InvoiceDate,
                     IsDeleted = x.IsDeleted
                 });
+        }
+        public async Task<List<InvoiceMaster>> GetAllAsync()
+        {
+            return await _context.InvoiceMasters
+                .Include(x => x.InvoiceDetails)   // ⭐ IMPORTANT
+                .ToListAsync();
+        }
+        public async Task<InvoiceMaster?> GetByIdAsync(int id)
+        {
+            return await _context.InvoiceMasters
+                .Include(x => x.InvoiceDetails)   // ⭐ IMPORTANT ⭐
+                .FirstOrDefaultAsync(x => x.InvoiceMasterId == id);
         }
 
 
