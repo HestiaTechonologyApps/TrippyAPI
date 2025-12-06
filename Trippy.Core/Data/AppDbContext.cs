@@ -37,7 +37,7 @@ namespace Trippy.InfraCore.Data
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<Comment> comments { get; set; }
         public DbSet<TripBookingMode> TripBookingModes { get; set; }
-
+        public DbSet<AppMasterSetting> AppMasterSettings { get; set; }
 
 
         public DbSet<AuditLog> AuditLogs { get; set; }
