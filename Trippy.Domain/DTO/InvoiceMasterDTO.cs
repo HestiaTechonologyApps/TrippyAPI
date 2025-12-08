@@ -17,7 +17,7 @@ namespace Trippy.Domain.DTO
         public int CompanyId { get; set; }
         public int CustomerId { get; set; }
 
-        public string CompanyName { get; set; } = "";
+        public String ComapanyName { get; set; } = "";
         public string CustomerName { get; set; } = "";
         public decimal TotalAmount { get; set; }
         public bool IsCompleted { get; set; } = false;

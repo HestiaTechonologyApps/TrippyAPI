@@ -37,7 +37,7 @@ namespace Trippy.Core.Repositories
                     im.FinancialYearId,
                     im.IsCompleted,
                     im.CompanyId,
-                    CompanyName = cmp.ComapanyName,
+                    ComapanyName = cmp.ComapanyName,
                    im.CustomerId,
                    CustomerName =cust.CustomerName,
                     im.TotalAmount,
@@ -54,7 +54,7 @@ namespace Trippy.Core.Repositories
                     FinancialYearId = x.FinancialYearId,
                     IsCompleted = x.IsCompleted,
                     CompanyId = x.CompanyId,
-                    CompanyName = x.CompanyName,
+                    ComapanyName = x.ComapanyName,
                     CustomerName = x.CustomerName,
                     TotalAmount = x.TotalAmount,
                     CreatedOn = x.CreatedOn,
@@ -65,13 +65,13 @@ namespace Trippy.Core.Repositories
         public async Task<List<InvoiceMaster>> GetAllAsync()
         {
             return await _context.InvoiceMasters
-                .Include(x => x.InvoiceDetails)   // ⭐ IMPORTANT
+                .Include(x => x.InvoiceDetails)   
                 .ToListAsync();
         }
         public async Task<InvoiceMaster?> GetByIdAsync(int id)
         {
             return await _context.InvoiceMasters
-                .Include(x => x.InvoiceDetails)   // ⭐ IMPORTANT ⭐
+                .Include(x => x.InvoiceDetails)   
                 .FirstOrDefaultAsync(x => x.InvoiceMasterId == id);
         }
 
