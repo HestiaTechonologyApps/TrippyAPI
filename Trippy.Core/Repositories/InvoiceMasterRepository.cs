@@ -38,8 +38,8 @@ namespace Trippy.Core.Repositories
                     im.IsCompleted,
                     im.CompanyId,
                     CompanyName = cmp.ComapanyName,
-                   im.CustomerId,
-                   CustomerName =cust.CustomerName,
+                    im.CustomerId,
+                    CustomerName = cust.CustomerName,
                     im.TotalAmount,
                     im.CreatedOn,
                     im.InvoiceDate,
@@ -75,8 +75,62 @@ namespace Trippy.Core.Repositories
                 .FirstOrDefaultAsync(x => x.InvoiceMasterId == id);
         }
 
+        public async Task<InvoiceMasterDTO?> GetByIdWithDetailsAsync(int id)
+        {
+            InvoiceMasterDTO invoiceMasterDTO1 = null;
 
+            var Invmaster = from x in _context.InvoiceMasters
+                            join com in _context.Companies on x.CompanyId equals com.CompanyId
+                            join cust in _context.Customers on x.CustomerId equals cust.CustomerId
+                            select new InvoiceMasterDTO
+                            {
+                                InvoiceMasterId = x.InvoiceMasterId,
+                                InvoiceNum = x.InvoiceNum,
+                                FinancialYearId = x.FinancialYearId,
+                                IsCompleted = x.IsCompleted,
+                                CompanyId = x.CompanyId,
+                                CompanyName = com.ComapanyName,
+                                CustomerName = cust.CustomerName,
+                                TotalAmount = x.TotalAmount,
+                                CreatedOn = x.CreatedOn,
+                                InvoiceDate = x.InvoiceDate,
+                                IsDeleted = x.IsDeleted
+
+                            };
+            invoiceMasterDTO1 = await Invmaster.FirstOrDefaultAsync();
+            if (invoiceMasterDTO1 != null)
+            {
+
+
+
+                var invoicedetails = from x in _context.InvoiceDetails
+                                     join trp in _context.TripOrders on x.TripOrderId equals trp.TripOrderId
+                                     where x.InvoiceMasterId == invoiceMasterDTO1.InvoiceMasterId
+
+                                     select new InvoiceDetailDTO
+                                     {
+                                         InvoiceDetailId = x.InvoiceDetailId,
+                                         InvoiceMasterId = x.InvoiceMasterId,
+                                         TripOrderId = x.TripOrderId,
+                                         TripCode = trp.TripCode,
+                                         CategoryId = x.CategoryId,
+                                         Ammount = x.Ammount,
+                                         TotalTax = x.TotalTax,
+                                         Discount = x.Discount
+                                     };
+
+
+                invoiceMasterDTO1.InvoiceDetailDtos = await invoicedetails.ToListAsync();
+            }
+
+
+
+            return invoiceMasterDTO1;
+
+
+
+
+        }
 
     }
-
 }
