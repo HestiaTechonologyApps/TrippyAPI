@@ -93,6 +93,7 @@ namespace Trippy.Bussiness.Services
             invoicemasterDTO.InvoiceNum = invoiceMaster.InvoiceNum;
             invoicemasterDTO.FinancialYearId = invoiceMaster.FinancialYearId;
             invoicemasterDTO.CompanyId = invoiceMaster.CompanyId;
+            invoicemasterDTO.CustomerId = invoiceMaster.CustomerId;
             invoicemasterDTO.TotalAmount = invoiceMaster.TotalAmount;
             invoicemasterDTO.CreatedOn = invoiceMaster.CreatedOn;
             invoicemasterDTO.IsDeleted = invoiceMaster.IsDeleted;
@@ -133,19 +134,19 @@ namespace Trippy.Bussiness.Services
         {
 
 
-            List<InvoiceMasterDTO> invoiceMasterdtos = new List<InvoiceMasterDTO>();
+           // List<InvoiceMasterDTO> invoiceMasterdtos = new List<InvoiceMasterDTO>();
 
             var invoiceMasters = await _repo.GetAllAsync();
 
-            foreach (var invoiceMaster in invoiceMasters)
-            {
-                InvoiceMasterDTO invoiceMasterDTO = await ConvertInvoiceMasterToDTO(invoiceMaster);
-                invoiceMasterdtos.Add(invoiceMasterDTO);
+            //foreach (var invoiceMaster in invoiceMasters)
+            //{
+            //    InvoiceMasterDTO invoiceMasterDTO = await ConvertInvoiceMasterToDTO(invoiceMaster);
+            //    invoiceMasterdtos.Add(invoiceMasterDTO);
 
 
-            }
+            //}
 
-            return invoiceMasterdtos;
+            return await _repo.QuerableInvoiceMasterListAsyc().ToListAsync();
         }
 
         public async Task<CustomApiResponse> GenerateInvoice(InvoiceMasterIdList InvoiceMasterIdList)
@@ -174,7 +175,7 @@ namespace Trippy.Bussiness.Services
             invoiceMasterDTO.CustomerId = InvoiceMasterIdList.CustomerId;
             invoiceMasterDTO.InvoiceNum = "MINV-";
             invoiceMasterDTO.CustomerName = customer.CustomerName;
-            invoiceMasterDTO.CompanyName = company.FirstOrDefault().ComapanyName;
+            invoiceMasterDTO.ComapanyName = company.FirstOrDefault().ComapanyName;
             invoiceMasterDTO.CompanyId = company.FirstOrDefault().CompanyId;
             invoiceMasterDTO.FinancialYearId = CurrentFiancialYearId;
             invoiceMasterDTO.InvoiceDate = DateTime.UtcNow.Date;
@@ -252,12 +253,8 @@ namespace Trippy.Bussiness.Services
         }
         public async Task<InvoiceMasterDTO?> GetByIdAsync(int id)
         {
-            var q = await _repo.GetByIdAsync(id);
-            if (q == null) return null;
-            var invoiceMasterdto = await ConvertInvoiceMasterToDTO(q);
-            // invoiceMasterdto.AuditLogs = await _auditRepository.GetAuditLogsForEntityAsync("InvoiceMasters", invoiceMasterdto.InvoiceMasterId);
-
-            return invoiceMasterdto;
+            return await _repo.QuerableInvoiceMasterListAsyc()
+                      .FirstOrDefaultAsync(im => im.InvoiceMasterId == id);
         }
         public async Task<bool> UpdateAsync(InvoiceMaster invoiceMaster)
         {

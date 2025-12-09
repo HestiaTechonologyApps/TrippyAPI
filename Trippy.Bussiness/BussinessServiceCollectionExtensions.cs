@@ -55,6 +55,7 @@ namespace Trippy.Bussiness
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICustomerDepartmentService, CustomerDepartmentService>();
             services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IAppMasterSettingService, AppMasterSettingService>();
             services.AddScoped<INotificationService ,  NotificationService>();
             services.AddScoped<IEmailProvider ,  SmtpEmailProvider>();
             //services.Configure<OtpSettings>(configuration.GetSection("OtpSettings"));
