@@ -54,6 +54,7 @@ namespace Trippy.Core.Repositories
                     FinancialYearId = x.FinancialYearId,
                     IsCompleted = x.IsCompleted,
                     CompanyId = x.CompanyId,
+                    CustomerId = x.CustomerId,
                     ComapanyName = x.ComapanyName,
                     CustomerName = x.CustomerName,
                     TotalAmount = x.TotalAmount,

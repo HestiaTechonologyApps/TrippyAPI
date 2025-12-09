@@ -93,6 +93,7 @@ namespace Trippy.Bussiness.Services
             invoicemasterDTO.InvoiceNum = invoiceMaster.InvoiceNum;
             invoicemasterDTO.FinancialYearId = invoiceMaster.FinancialYearId;
             invoicemasterDTO.CompanyId = invoiceMaster.CompanyId;
+            invoicemasterDTO.CustomerId = invoiceMaster.CustomerId;
             invoicemasterDTO.TotalAmount = invoiceMaster.TotalAmount;
             invoicemasterDTO.CreatedOn = invoiceMaster.CreatedOn;
             invoicemasterDTO.IsDeleted = invoiceMaster.IsDeleted;
