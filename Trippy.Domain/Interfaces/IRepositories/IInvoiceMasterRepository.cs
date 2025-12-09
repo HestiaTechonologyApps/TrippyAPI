@@ -14,7 +14,7 @@ namespace Trippy.Domain.Interfaces.IRepositories
         IQueryable<InvoiceMasterDTO> QuerableInvoiceMasterListAsyc();
         Task<List<InvoiceMaster>> GetAllAsync();
         Task<InvoiceMaster?> GetByIdAsync(int id);
-
+        Task<InvoiceMasterDTO?> GetByIdWithDetailsAsync(int id);
 
     }
 }

@@ -23,12 +23,12 @@ namespace Trippy.Bussiness.Services
         private readonly ICurrentUserService _currentUser;
 
 
-        private const int CurrentFiancialYearId= 2025;
-        private const int CategoryID= 1;
+        private const int CurrentFiancialYearId = 2025;
+        private const int CategoryID = 1;
 
 
         public String AuditTableName { get; set; } = "INVOICEMASTER";
-        public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService, ITripOrderRepository tripOrderRepository,ICustomerRepository customerRepository, ICompanyRepository companyRepository)
+        public InvoiceMasterService(IInvoiceMasterRepository repo, IAuditRepository auditRepository, ICurrentUserService currentUserService, ITripOrderRepository tripOrderRepository, ICustomerRepository customerRepository, ICompanyRepository companyRepository)
         {
             _repo = repo;
             this._auditRepository = auditRepository;
@@ -40,9 +40,10 @@ namespace Trippy.Bussiness.Services
         public async Task<InvoiceMasterDTO> CreateAsync(InvoiceMasterDTO invoiceMasterDTO)
         {
             InvoiceMaster invoiceMaster = new InvoiceMaster();
-           // invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
+            // invoiceMaster.InvoiceNum = invoiceMasterDTO.InvoiceNum;
             invoiceMaster.FinancialYearId = invoiceMasterDTO.FinancialYearId;
             invoiceMaster.CompanyId = invoiceMasterDTO.CompanyId;
+            invoiceMaster.CustomerId = invoiceMasterDTO.CustomerId;
             invoiceMaster.TotalAmount = invoiceMasterDTO.TotalAmount;
             invoiceMaster.CreatedOn = DateTime.UtcNow;
             invoiceMaster.IsDeleted = false;
@@ -184,14 +185,15 @@ namespace Trippy.Bussiness.Services
             invoiceMasterDTO.IsCompleted = false;
             invoiceMasterDTO.InvoiceDetailDtos = new List<InvoiceDetailDTO>();
 
-            foreach (var tripidid in InvoiceMasterIdList.TripOrderIds ) {           
-                
+            foreach (var tripidid in InvoiceMasterIdList.TripOrderIds)
+            {
+
                 var triporder = await _tripOrderRepository.GetByIdAsync(tripidid);
 
-                if(triporder == null)
+                if (triporder == null)
                 {
-                    ErrorMessage= $"Trip Order Id {tripidid} not found.";
-                   
+                    ErrorMessage = $"Trip Order Id {tripidid} not found.";
+
                 }
                 else
                 {
@@ -204,38 +206,38 @@ namespace Trippy.Bussiness.Services
                     {
                         ErrorMessage += $"Trip Order Id {triporder.TripCode} is not completed yet.";
                     }
-                    if(triporder.CustomerId != InvoiceMasterIdList.CustomerId)
+                    if (triporder.CustomerId != InvoiceMasterIdList.CustomerId)
                     {
                         ErrorMessage += $"Trip Order Id {triporder.TripCode} does not belong to the selected customer.";
                     }
-                    if (triporder.IsDeleted==true  )
+                    if (triporder.IsDeleted == true)
                     {
-                        ErrorMessage+= $"Trip Order Id {triporder.TripCode} is deleted.";
+                        ErrorMessage += $"Trip Order Id {triporder.TripCode} is deleted.";
                     }
                 }
 
-                if(ErrorMessage.Trim() != "")
+                if (ErrorMessage.Trim() != "")
                 {
                     customApiResponse.IsSucess = false;
-                    customApiResponse.Error = ErrorMessage;                    
+                    customApiResponse.Error = ErrorMessage;
                 }
                 else
                 {
-                    
+
 
                     InvoiceDetailDTO invoiceDetailDTO = new InvoiceDetailDTO();
                     invoiceDetailDTO.TripOrderId = tripidid;
                     invoiceDetailDTO.Ammount = triporder.TripAmount;
                     invoiceDetailDTO.CategoryId = CategoryID;
-                    invoiceDetailDTO.TotalTax= 0;
-                    invoiceDetailDTO.Discount= 0;
+                    invoiceDetailDTO.TotalTax = 0;
+                    invoiceDetailDTO.Discount = 0;
                     invoiceMasterDTO.InvoiceDetailDtos.Add(invoiceDetailDTO);
                 }
 
             }
 
 
-           if (ErrorMessage.Trim() != "")
+            if (ErrorMessage.Trim() != "")
             {
                 customApiResponse.IsSucess = false;
                 customApiResponse.Error = ErrorMessage;
@@ -246,7 +248,7 @@ namespace Trippy.Bussiness.Services
                 customApiResponse.Error = "";
                 customApiResponse.Value = invoiceMasterDTO;
             }
-               
+
 
 
             return customApiResponse;
@@ -281,12 +283,12 @@ namespace Trippy.Bussiness.Services
             DateTime prevWeekStart = today.AddDays(-14);
             DateTime prevWeekEnd = today.AddDays(-7);
 
-            var trips =  _tripOrderRepository.QuerableTripListAsyc();
+            var trips = _tripOrderRepository.QuerableTripListAsyc();
             if (year > 0)
             {
                 trips = trips.Where(t => t.VehicleTakeOfTime.Year == year);
             }
-            var UninvoicedTrips = await trips.Where(t => t.Status == "Completed" && t.IsInvoiced == false && t.VehicleTakeOfTime.Year==year ).CountAsync();
+            var UninvoicedTrips = await trips.Where(t => t.Status == "Completed" && t.IsInvoiced == false && t.VehicleTakeOfTime.Year == year).CountAsync();
 
 
             var newinvoices = await _repo.QuerableInvoiceMasterListAsyc().Where(i => i.CreatedOn.Year == year && i.IsDeleted == false && i.IsCompleted == false).CountAsync();
@@ -305,7 +307,7 @@ namespace Trippy.Bussiness.Services
             Change = 0,
             Color = "#F8A23A",
             Route = "uninvoiced-trips"
-        },   
+        },
                 new TripDashboardDTO
         {
             Title = "Pending Invoices",

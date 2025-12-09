@@ -36,7 +36,7 @@ namespace Trippy.Domain.DTO
 
         public int InvoiceDetailId { get; set; }
         public int InvoiceMasterId { get; set; }
-
+        public String TripCode { get; set; }
         public int TripOrderId { get; set; }
         public int CategoryId { get; set; } = 0;
 
