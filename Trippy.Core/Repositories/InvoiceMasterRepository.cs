@@ -90,7 +90,7 @@ namespace Trippy.Core.Repositories
                                 FinancialYearId = x.FinancialYearId,
                                 IsCompleted = x.IsCompleted,
                                 CompanyId = x.CompanyId,
-                                CompanyName = com.ComapanyName,
+                                ComapanyName = com.ComapanyName,
                                 CustomerName = cust.CustomerName,
                                 TotalAmount = x.TotalAmount,
                                 CreatedOn = x.CreatedOn,
