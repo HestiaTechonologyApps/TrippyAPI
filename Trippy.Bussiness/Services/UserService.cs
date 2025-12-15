@@ -107,19 +107,52 @@ namespace Trippy.Bussiness.Services
 
         public async Task<bool> UpdateAsync(User user)
         {
-            user.CompanyId = int.Parse(_currentUser.CompanyId);
-            var oldentity = await _repo.GetByIdAsync(user.UserId);
-            _repo.Detach(oldentity);
-            _repo.Update(user);
+            var existingUser = await _repo.GetByIdAsync(user.UserId);
+            if (existingUser == null)
+                return false;
+
+            
+            var oldEntitySnapshot = new User
+            {
+                UserId = existingUser.UserId,
+                UserName = existingUser.UserName,
+                UserEmail = existingUser.UserEmail,
+                PhoneNumber = existingUser.PhoneNumber,
+                Address = existingUser.Address,
+                ProfileImagePath = existingUser.ProfileImagePath,
+                IsActive = existingUser.IsActive,
+                Islocked = existingUser.Islocked,
+                CompanyId = existingUser.CompanyId,
+                CreateAt = existingUser.CreateAt,
+                Lastlogin = existingUser.Lastlogin,
+            };
+
+            
+            existingUser.UserName = user.UserName;
+            existingUser.UserEmail = user.UserEmail;
+            existingUser.Address = user.Address;
+            existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.IsActive = user.IsActive;
+            existingUser.CompanyId = int.Parse(_currentUser.CompanyId);
+
+            
+            if (!string.IsNullOrWhiteSpace(user.ProfileImagePath))
+            {
+                existingUser.ProfileImagePath = user.ProfileImagePath;
+            }
+
             await _repo.SaveChangesAsync();
+
+            // 🔹 Correct audit OLD vs NEW
             await _auditRepository.LogAuditAsync<User>(
-               tableName: AuditTableName,
-               action: "update",
-               recordId: user.UserId,
-               oldEntity: oldentity,
-               newEntity: user,
-               changedBy: _currentUser.Email.ToString()  // Replace with actual user info
-           );
+                tableName: AuditTableName,
+                action: "update",
+                recordId: existingUser.UserId,
+                oldEntity: oldEntitySnapshot,   
+                newEntity: existingUser,        
+                changedBy: _currentUser.Email
+            );
+
             return true;
         }
 
