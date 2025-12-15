@@ -80,6 +80,7 @@ namespace Trippy.Bussiness.Services
             expenseMasterDTO.Amount = expenseMaster.Amount;
             expenseMasterDTO.RelatedEntityId = expenseMaster.RelatedEntityId;
             expenseMaster.RelatedEntityType = expenseMaster.RelatedEntityType;
+            expenseMasterDTO.CreatedBy = expenseMaster.CreatedBy;
             expenseMasterDTO.PaymentMode = expenseMaster.PaymentMode;
             expenseMasterDTO.IsDeleted = expenseMaster.IsDeleted;
             expenseMasterDTO.CompanyId = expenseMaster.CompanyId;

@@ -73,7 +73,7 @@ namespace Trippy.Core.Repositories
                          RelatedEntityType = exp.RelatedEntityType,
                          ExpenseVoucher = exp.ExpenseVoucher,
                          PaymentMode = exp.PaymentMode,
-                         
+                         CreatedBy = exp.CreatedBy,
                          Remark = exp.Remark,
                          IsActive = exp.IsActive
                      }).ToList();
